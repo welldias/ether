@@ -21,7 +21,8 @@ backward-compatible with an earlier rendering engine called AVRIL that was
 developed by Bernie Roehl.
 
 Compiling and installing:
-# ./configure
-# make
-# make install (as root)
+
+./configure
+make
+make install (as root)
 
