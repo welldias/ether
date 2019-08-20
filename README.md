@@ -16,7 +16,7 @@ Most important, Ether is GPL software.
 
 Who developed Ether?
 
-Ether was developed by Wellington (aka Well). It's designed to be somewhat 
+Ether was developed by Well Dias. It's designed to be somewhat 
 backward-compatible with an earlier rendering engine called AVRIL that was
 developed by Bernie Roehl.
 
