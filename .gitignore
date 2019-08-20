@@ -1,0 +1,27 @@
+# Generic rules
+*.[oad]
+.deps
+.libs
+*.l[oa]
+*~
+*.so
+*.swp
+*.bb
+*.bbg
+*.html
+*.gcno
+*.gcda
+*.info
+*.css
+*.png
+*.P
+*.swo
+*.tex
+*.gif
+
+*.orig
+# Ctags file for source code
+tags
+
+#Cscope file
+cscope.out
