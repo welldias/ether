@@ -48,6 +48,7 @@ typedef enum _Ether_Video_Command
 	ETHER_VIDEO_GET_DESCRIPTION,
 	ETHER_VIDEO_SETUP, 
 	ETHER_VIDEO_SHUTDOWN, 
+	ETHER_VIDEO_GET_ERROR,
 	ETHER_VIDEO_GET_MODE,
 	ETHER_VIDEO_SET_DRAW_PAGE, 
 	ETHER_VIDEO_SET_VIEW_PAGE, 
@@ -62,8 +63,18 @@ typedef enum _Ether_Video_Command
 	ETHER_VIDEO_CURSOR_SHOW, 
 	ETHER_VIDEO_CURSOR_RESET,
 	ETHER_VIDEO_CURSOR_MOVE, 
+	ETHER_VIDEO_GET_STATUS,
 	ETHER_VIDEO_CURSOR_SET_APPEARANCE
 } EtherVideoCommand;
+
+typedef enum _Ether_Display_Status
+{
+	ETHER_DISPLAY_STATUS_UNKNOW = 0,
+	ETHER_DISPLAY_CONFIGURATED,
+	ETHER_DISPLAY_INITIATED,
+	ETHER_DISPLAY_STOPPED,
+	ETHER_DISPLAY_RUNNING
+} EtherDisplayStatus;
 
 typedef int EtherDisplayDriverFunction(EtherDisplayCommand cmd, int lparm, void *pparm1);
 typedef int EtherVideoDriverFunction  (EtherVideoCommand cmd, int lparm, void *pparm1);
@@ -105,6 +116,7 @@ struct _Ether_Outputfacet
 	EtherOutputfacet *next;    /**< only used to link detail facets */
 };
 
+
 /* Display functions */
 EAPI void          ether_display_driver_set           (EtherDisplayDriverFunction *driver);
 EAPI int           ether_display_init                 (EtherRaster *raster);
@@ -141,6 +153,8 @@ EAPI int           ether_display_depth_get            (void);
 EAPI int           ether_display_update               (void);
 EAPI int           ether_display_send_command         (EtherDisplayCommand cmd, int lparm, void *pparm1);
 
+EAPI EtherDisplayStatus ether_display_status_get      ();
+
 /* Video functions */
 EAPI void          ether_video_driver_set             (EtherVideoDriverFunction *driver);
 EAPI int           ether_video_mode_get               (void);
@@ -162,6 +176,7 @@ EAPI int           ether_video_cursor_hide            (void);
 EAPI int           ether_video_cursor_show            (void);
 EAPI int           ether_video_cursor_reset           (void);
 EAPI int           ether_video_cursor_move            (int x, int y);
+EAPI int           ether_video_error_get              (const char** description);
 
 /* XY clipping functions */
 EAPI void               ether_display_xyclip_set      (int left, int top, int right, int bottom);

@@ -51,8 +51,8 @@ ether_application_draw_over(EtherRenderStatus *stat)
 	if(ether_config_position_display_get())
 	{
 		sprintf(buff, "Position: %ld,%ld",
-			(long)floor(ETHER_SCALAR_TO_DOUBLE(ether_camera_world_x_get(cam))),
-			(long)floor(ETHER_SCALAR_TO_DOUBLE(ether_camera_world_z_get(cam))));
+			(long)floor(ETHER_SCALAR_TO_FLOAT(ether_camera_world_x_get(cam))),
+			(long)floor(ETHER_SCALAR_TO_FLOAT(ether_camera_world_z_get(cam))));
 		if(ether_display_text_width_get(buff) + 10 < wwidth-1)
 			ether_ui_drop_text(10, 10, _ETHER_APP_WHITECOLOR, buff);
 	}

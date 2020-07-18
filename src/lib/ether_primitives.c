@@ -142,9 +142,9 @@ ether_primitives_cone(EtherScalar radius, EtherScalar height, int nsides, EtherS
 		verts[i][X] = radius * (EtherScalar)cos((i*2*PI)/nsides);
 		verts[i][Y] = 0;
 		verts[i][Z] = radius * (EtherScalar)sin((i*2*PI)/nsides);
-		norms[i][X] = ETHER_DOUBLE_TO_FACTOR(cos((i*2*PI)/nsides));
+		norms[i][X] = ETHER_FLOAT_TO_FACTOR(cos((i*2*PI)/nsides));
 		norms[i][Y] = 0;
-		norms[i][Z] = ETHER_DOUBLE_TO_FACTOR(sin((i*2*PI)/nsides));
+		norms[i][Z] = ETHER_FLOAT_TO_FACTOR(sin((i*2*PI)/nsides));
 	}
 	rep->facets = NULL;
 	for(i = 1; i <= nsides; ++i)
@@ -211,15 +211,15 @@ ether_primitives_cylinder(EtherScalar bottom_radius, EtherScalar top_radius, Eth
 		verts[i][X] = bottom_radius * (EtherScalar)cos((i*2*PI)/nsides);
 		verts[i][Y] = 0;
 		verts[i][Z] = bottom_radius * (EtherScalar)sin((i*2*PI)/nsides);
-		norms[i][X] = ETHER_DOUBLE_TO_FACTOR(cos((i*2*PI)/nsides));
+		norms[i][X] = ETHER_FLOAT_TO_FACTOR(cos((i*2*PI)/nsides));
 		norms[i][Y] = 0;
-		norms[i][Z] = ETHER_DOUBLE_TO_FACTOR(sin((i*2*PI)/nsides));
+		norms[i][Z] = ETHER_FLOAT_TO_FACTOR(sin((i*2*PI)/nsides));
 		verts[i+nsides][X] = top_radius * (EtherScalar)cos((i*2*PI)/nsides);
 		verts[i+nsides][Y] = height;
 		verts[i+nsides][Z] = top_radius * (EtherScalar)sin((i*2*PI)/nsides);
-		norms[i+nsides][X] = ETHER_DOUBLE_TO_FACTOR(cos((i*2*PI)/nsides));
+		norms[i+nsides][X] = ETHER_FLOAT_TO_FACTOR(cos((i*2*PI)/nsides));
 		norms[i+nsides][Y] = 0;
-		norms[i+nsides][Z] = ETHER_DOUBLE_TO_FACTOR(sin((i*2*PI)/nsides));
+		norms[i+nsides][Z] = ETHER_FLOAT_TO_FACTOR(sin((i*2*PI)/nsides));
 	}
 	rep->facets = NULL;
 	for(i = 0; i < nsides; ++i)

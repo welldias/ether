@@ -839,7 +839,7 @@ _ether_drivers_compute_slope_table(void)
 		return -1;
 	_ether_drivers_slope_table[0] = 0;
 	for (i = 1; i < n; ++i)
-		_ether_drivers_slope_table[i] = ETHER_DOUBLE_TO_FACTOR(1.0 / i);
+		_ether_drivers_slope_table[i] = ETHER_FLOAT_TO_FACTOR(1.0 / i);
 	return 0;
 }
 
