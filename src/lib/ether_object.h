@@ -11,7 +11,7 @@
  * it, or by simply calling ether_object_create()). If you use 
  * ether_object_create(), you can optionally specify a shape for the 
  * object to use; if you don't want to assign a shape, use NULL. You 
- * can also destroy objects using Ether_object_destroy().
+ * can also destroy objects using ether_object_destroy().
  * 
  */
 

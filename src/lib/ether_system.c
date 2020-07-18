@@ -65,11 +65,16 @@ ether_system_run(void)
 	ether_system_request_refresh();
 	while (ether_system_is_running())
 	{
+		if (ether_display_status_get() == ETHER_DISPLAY_STOPPED) {
+			ether_system_stop_running();
+		}
+
 		/*
 		if(ether_keyboard_check())
 		ether_application_key(ether_keyboard_read());
 		check_mouse();
 		*/
+
 		ether_task_run();
 		/* ether_device_pollall(); */
 
@@ -180,7 +185,7 @@ ether_system_command_line(int argc, char* argv[])
 void
 ether_system_request_refresh(void)
 {
-	_ether_system_need_to_redraw = 1;
+	_ether_system_need_to_redraw = TRUE;
 }
 
 int
@@ -192,13 +197,13 @@ ether_system_query_refresh(void)
 void
 ether_system_start_running(void)
 {
-	_ether_system_running = 1;
+	_ether_system_running = TRUE;
 }
 
 void
 ether_system_stop_running(void)
 {
-	_ether_system_running = 0;
+	_ether_system_running = FALSE;
 }
 
 int

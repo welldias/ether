@@ -57,8 +57,8 @@ static EtherWldList    *_ether_wld_named_surfacemaps  = NULL;  /* list of named 
 static EtherSurfaceMap *_ether_wld_currmap            = NULL;  /* points to current map */
 static int                _ether_wld_currmap_maxentries = 0;     /* number of entries allocated in current map */
 static EtherSurface      _ether_wld_default_surface    = { ETHER_SURF_SIMPLE, 15, 128 };
-static EtherScalar       _ether_wld_default_hither     = ETHER_DOUBLE_TO_SCALAR(10);
-static EtherScalar       _ether_wld_default_yon        = ETHER_DOUBLE_TO_SCALAR(1000000000L);
+static EtherScalar       _ether_wld_default_hither     = ETHER_FLOAT_TO_SCALAR(10);
+static EtherScalar       _ether_wld_default_yon        = ETHER_FLOAT_TO_SCALAR(1000000000L);
 static EtherCamera      *_ether_wld_most_recent_camera = NULL;
 static char              *_ether_wld_options            = "";    /* set by "options" statement */
 
@@ -161,20 +161,20 @@ ether_wld_process_line(char *buff)
 			_ether_wld_create_camera(argc, argv); 
 			break;
 		case ST_AMBIENT: 
-			ether_world_ambient_set(ETHER_DOUBLE_TO_FACTOR(atof(argv[1])/128.0)); 
+			ether_world_ambient_set(ETHER_FLOAT_TO_FACTOR(atof(argv[1])/128.0)); 
 			break;
 		case ST_WORLDSCALE: 
-			ether_world_scale_set(ETHER_DOUBLE_TO_SCALAR(atof(argv[1]))); 
+			ether_world_scale_set(ETHER_FLOAT_TO_SCALAR(atof(argv[1]))); 
 			break;
 		case ST_LOADPATH: 
 			_ether_wld_file_set_load_path(argv[1]);
 			break;
 		case ST_ANGLESTEP: 
-			ether_world_turnstep_set(ETHER_DOUBLE_TO_ANGLE(atof(argv[1]))); 
+			ether_world_turnstep_set(ETHER_FLOAT_TO_ANGLE(atof(argv[1]))); 
 			break;
 		case ST_STEPSIZE: 
 		case ST_SPACESTEP: 
-			ether_world_movestep_set(ETHER_DOUBLE_TO_SCALAR(atof(argv[1]))); 
+			ether_world_movestep_set(ETHER_FLOAT_TO_SCALAR(atof(argv[1]))); 
 			break;
 		case ST_FLYMODE: 
 			ether_world_movement_mode_set(strtoul(argv[1], NULL, 0) ? 1 : 0); 
@@ -204,7 +204,7 @@ ether_wld_process_line(char *buff)
 			break;
 		case ST_YON:
 			{
-				EtherScalar y = ETHER_DOUBLE_TO_SCALAR(atof(argv[1]));
+				EtherScalar y = ETHER_FLOAT_TO_SCALAR(atof(argv[1]));
 				if(_ether_wld_most_recent_camera)
 					ether_camera_yon_set(_ether_wld_most_recent_camera, y);
 				_ether_wld_default_yon = y;
@@ -233,11 +233,11 @@ ether_wld_process_line(char *buff)
 					break;
 				x = y = z = 0;
 				if(argc > 2)
-					x = ETHER_DOUBLE_TO_SCALAR(atof(argv[2]));
+					x = ETHER_FLOAT_TO_SCALAR(atof(argv[2]));
 				if(argc > 3)
-					y = ETHER_DOUBLE_TO_SCALAR(atof(argv[3]));
+					y = ETHER_FLOAT_TO_SCALAR(atof(argv[3]));
 				if(argc > 4)
-					z = ETHER_DOUBLE_TO_SCALAR(atof(argv[4]));
+					z = ETHER_FLOAT_TO_SCALAR(atof(argv[4]));
 				ether_object_move(obj, x, y, z);
 			}
 			break;
@@ -249,11 +249,11 @@ ether_wld_process_line(char *buff)
 					break;
 				rx = ry = rz = 0;
 				if(argc > 2) 
-					rx = ETHER_DOUBLE_TO_ANGLE(atof(argv[2]));
+					rx = ETHER_FLOAT_TO_ANGLE(atof(argv[2]));
 				if(argc > 3) 
-					ry = ETHER_DOUBLE_TO_ANGLE(atof(argv[3]));
+					ry = ETHER_FLOAT_TO_ANGLE(atof(argv[3]));
 				if(argc > 4) 
-					rz = ETHER_DOUBLE_TO_ANGLE(atof(argv[4]));
+					rz = ETHER_FLOAT_TO_ANGLE(atof(argv[4]));
 				ether_object_rot_reset(obj);
 				ether_object_rot_y(obj, ry);
 				ether_object_rot_x(obj, rx);
@@ -429,12 +429,12 @@ _ether_wld_create_object(int argc, char *argv[])
 		case 14: parent = argv[13];
 		case 13: map = _ether_wld_find_on_list(_ether_wld_named_surfacemaps, argv[12]);
 		case 12: /* we ignore the depthtype field for now; should use it */
-		case 11: tz = ETHER_DOUBLE_TO_SCALAR(atof(argv[10]));
-		case 10: ty = ETHER_DOUBLE_TO_SCALAR(atof(argv[9]));
-		case 9:  tx = ETHER_DOUBLE_TO_SCALAR(atof(argv[8]));
-		case 8:  rz = ETHER_DOUBLE_TO_SCALAR(atof(argv[7]));
-		case 7:  ry = ETHER_DOUBLE_TO_SCALAR(atof(argv[6]));
-		case 6:  rx = ETHER_DOUBLE_TO_SCALAR(atof(argv[5]));
+		case 11: tz = ETHER_FLOAT_TO_SCALAR(atof(argv[10]));
+		case 10: ty = ETHER_FLOAT_TO_SCALAR(atof(argv[9]));
+		case 9:  tx = ETHER_FLOAT_TO_SCALAR(atof(argv[8]));
+		case 8:  rz = ETHER_FLOAT_TO_SCALAR(atof(argv[7]));
+		case 7:  ry = ETHER_FLOAT_TO_SCALAR(atof(argv[6]));
+		case 6:  rx = ETHER_FLOAT_TO_SCALAR(atof(argv[5]));
 		case 5:  sz = (float)atof(argv[4]);
 		case 4:  sy = (float)atof(argv[3]);
 		case 3:  sx = (float)atof(argv[2]);
@@ -548,9 +548,9 @@ _ether_wld_create_polyobj(int argc, char *argv[], int nsides)
 	}
 	for(i = 0; i < ether_rep_count_vertices(rep); ++i)
 	{
-		rep->vertices[i][X] = ETHER_DOUBLE_TO_SCALAR(atof(argv[3 + i * 3]));
-		rep->vertices[i][Y] = ETHER_DOUBLE_TO_SCALAR(atof(argv[3 + i * 3 + 1]));
-		rep->vertices[i][Z] = ETHER_DOUBLE_TO_SCALAR(atof(argv[3 + i * 3 + 2]));
+		rep->vertices[i][X] = ETHER_FLOAT_TO_SCALAR(atof(argv[3 + i * 3]));
+		rep->vertices[i][Y] = ETHER_FLOAT_TO_SCALAR(atof(argv[3 + i * 3 + 1]));
+		rep->vertices[i][Z] = ETHER_FLOAT_TO_SCALAR(atof(argv[3 + i * 3 + 2]));
 		ether_facet_point_set(facet1, i, i);
 		if(facet2)
 			ether_facet_point_set(facet2, i, ether_rep_count_vertices(rep)-1 - i);
@@ -573,12 +573,12 @@ static int _ether_wld_create_segment(int argc, char *argv[])
 	switch (argc)
 	{
 		default: /* ignore extra arguments */
-		case 8: tz = ETHER_DOUBLE_TO_SCALAR(atof(argv[7]));
-		case 7: ty = ETHER_DOUBLE_TO_SCALAR(atof(argv[6]));
-		case 6: tx = ETHER_DOUBLE_TO_SCALAR(atof(argv[5]));
-		case 5: rz = ETHER_DOUBLE_TO_SCALAR(atof(argv[4]));
-		case 4: ry = ETHER_DOUBLE_TO_SCALAR(atof(argv[3]));
-		case 3: rx = ETHER_DOUBLE_TO_SCALAR(atof(argv[2]));
+		case 8: tz = ETHER_FLOAT_TO_SCALAR(atof(argv[7]));
+		case 7: ty = ETHER_FLOAT_TO_SCALAR(atof(argv[6]));
+		case 6: tx = ETHER_FLOAT_TO_SCALAR(atof(argv[5]));
+		case 5: rz = ETHER_FLOAT_TO_SCALAR(atof(argv[4]));
+		case 4: ry = ETHER_FLOAT_TO_SCALAR(atof(argv[3]));
+		case 3: rx = ETHER_FLOAT_TO_SCALAR(atof(argv[2]));
 		case 2: name = argv[1];
 			break;
 		case 1: case 0: return -2;
@@ -617,12 +617,12 @@ static int _ether_wld_create_figure(int argc, char *argv[])
 	{
 		default: /* ignore extra arguments */
 		case 12: parent = argv[11];
-		case 11: tz  = ETHER_DOUBLE_TO_SCALAR(atof(argv[10]));
-		case 10: ty  = ETHER_DOUBLE_TO_SCALAR(atof(argv[9]));
-		case 9: tx   = ETHER_DOUBLE_TO_SCALAR(atof(argv[8]));
-		case 8: rz   = ETHER_DOUBLE_TO_SCALAR(atof(argv[7]));
-		case 7: ry   = ETHER_DOUBLE_TO_SCALAR(atof(argv[6]));
-		case 6: rx   = ETHER_DOUBLE_TO_SCALAR(atof(argv[5]));
+		case 11: tz  = ETHER_FLOAT_TO_SCALAR(atof(argv[10]));
+		case 10: ty  = ETHER_FLOAT_TO_SCALAR(atof(argv[9]));
+		case 9: tx   = ETHER_FLOAT_TO_SCALAR(atof(argv[8]));
+		case 8: rz   = ETHER_FLOAT_TO_SCALAR(atof(argv[7]));
+		case 7: ry   = ETHER_FLOAT_TO_SCALAR(atof(argv[6]));
+		case 6: rx   = ETHER_FLOAT_TO_SCALAR(atof(argv[5]));
 		case 5: sz   = (float)atof(argv[4]);
 		case 4: sy   = (float)atof(argv[3]);
 		case 3: sx   = (float)atof(argv[2]);
@@ -676,15 +676,15 @@ _ether_wld_create_light(int argc, char *argv[])
 	{
 		default:  /* ignore extra arguments */
 		case 7: name = argv[6];
-		case 6: ether_light_intensity_set(light, ETHER_DOUBLE_TO_FACTOR(atof(argv[5])/128));
+		case 6: ether_light_intensity_set(light, ETHER_FLOAT_TO_FACTOR(atof(argv[5])/128));
 		case 5:
 			if(!strcasecmp(argv[4], "spot"))
 				spot = 1;
 			else
 				spot = atoi(argv[4]);
-		case 4: z = ETHER_DOUBLE_TO_FACTOR(atof(argv[3]));
-		case 3: y = ETHER_DOUBLE_TO_FACTOR(atof(argv[2]));
-		case 2: x = ETHER_DOUBLE_TO_FACTOR(atof(argv[1]));
+		case 4: z = ETHER_FLOAT_TO_FACTOR(atof(argv[3]));
+		case 3: y = ETHER_FLOAT_TO_FACTOR(atof(argv[2]));
+		case 2: x = ETHER_FLOAT_TO_FACTOR(atof(argv[1]));
 			break;
 		case 1: case 0: return -2;
 	}
@@ -765,15 +765,15 @@ static int _ether_wld_create_camera(int argc, char *argv[])
 	switch (argc)
 	{
 		default:  /* ignore extra arguments */
-		case 11: yon    = ETHER_DOUBLE_TO_SCALAR(atof(argv[10]));
-		case 10: hither = ETHER_DOUBLE_TO_SCALAR(atof(argv[9]));
+		case 11: yon    = ETHER_FLOAT_TO_SCALAR(atof(argv[10]));
+		case 10: hither = ETHER_FLOAT_TO_SCALAR(atof(argv[9]));
 		case 9:  zoom   = (float)atof(argv[8]);
-		case 8:  roll   = ETHER_DOUBLE_TO_ANGLE(atof(argv[7]));
-		case 7:  pan    = ETHER_DOUBLE_TO_ANGLE(atof(argv[6]));
-		case 6:  tilt   = ETHER_DOUBLE_TO_ANGLE(atof(argv[5]));
-		case 5:  z      = ETHER_DOUBLE_TO_SCALAR(atof(argv[4]));
-		case 4:  y      = ETHER_DOUBLE_TO_SCALAR(atof(argv[3]));
-		case 3:  x      = ETHER_DOUBLE_TO_SCALAR(atof(argv[2]));
+		case 8:  roll   = ETHER_FLOAT_TO_ANGLE(atof(argv[7]));
+		case 7:  pan    = ETHER_FLOAT_TO_ANGLE(atof(argv[6]));
+		case 6:  tilt   = ETHER_FLOAT_TO_ANGLE(atof(argv[5]));
+		case 5:  z      = ETHER_FLOAT_TO_SCALAR(atof(argv[4]));
+		case 4:  y      = ETHER_FLOAT_TO_SCALAR(atof(argv[3]));
+		case 3:  x      = ETHER_FLOAT_TO_SCALAR(atof(argv[2]));
 		case 2:  name   = argv[1];
 			break;
 		case 1: case 0: return -2;

@@ -19,8 +19,8 @@ ether_camera_init(EtherCamera *camera)
 {
 	if (camera == NULL) 
 		return NULL;
-	camera->hither = ETHER_DOUBLE_TO_SCALAR(10);
-	camera->yon = ETHER_DOUBLE_TO_SCALAR(1000000000L);
+	camera->hither = ETHER_FLOAT_TO_SCALAR(10);
+	camera->yon = ETHER_FLOAT_TO_SCALAR(1000000000L);
 	camera->zoom = 4;  
 	camera->aspect = 1.33f;
 	camera->ortho = 0;  

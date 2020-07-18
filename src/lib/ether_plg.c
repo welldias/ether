@@ -104,17 +104,17 @@ ether_plg_read(FILE *in)
           rep->normals = calloc(nv, sizeof(EtherVector));
         if(rep->normals)
         {
-          rep->normals[i][X] = ETHER_DOUBLE_TO_FACTOR(nx);
-          rep->normals[i][Y] = ETHER_DOUBLE_TO_FACTOR(ny);
-          rep->normals[i][Z] = ETHER_DOUBLE_TO_FACTOR(nz);
+          rep->normals[i][X] = ETHER_FLOAT_TO_FACTOR(nx);
+          rep->normals[i][Y] = ETHER_FLOAT_TO_FACTOR(ny);
+          rep->normals[i][Z] = ETHER_FLOAT_TO_FACTOR(nz);
         }
       }
       float v1 = x * _ether_plg_sx + _ether_plg_tx;
       float v2 = y * _ether_plg_sy + _ether_plg_ty;
       float v3 = z * _ether_plg_sz + _ether_plg_tz;
-      rep->vertices[i][X] = ETHER_DOUBLE_TO_SCALAR(v1);
-      rep->vertices[i][Y] = ETHER_DOUBLE_TO_SCALAR(v2);
-      rep->vertices[i][Z] = ETHER_DOUBLE_TO_SCALAR(v3);
+      rep->vertices[i][X] = ETHER_FLOAT_TO_SCALAR(v1);
+      rep->vertices[i][Y] = ETHER_FLOAT_TO_SCALAR(v2);
+      rep->vertices[i][Z] = ETHER_FLOAT_TO_SCALAR(v3);
     }
     for(i = 0; i < nf; ++i)
     {
@@ -327,15 +327,15 @@ _ether_plg_output_vertex(EtherVector *v, EtherVector *n)
 {
   fprintf(_ether_plg_outfile, 
       "%ld %ld %ld", 
-      (long)ETHER_SCALAR_TO_DOUBLE((*v)[X]), 
-      (long)ETHER_SCALAR_TO_DOUBLE((*v)[Y]), 
-      (long)ETHER_SCALAR_TO_DOUBLE((*v)[Z]));
+      (long)ETHER_SCALAR_TO_FLOAT((*v)[X]), 
+      (long)ETHER_SCALAR_TO_FLOAT((*v)[Y]), 
+      (long)ETHER_SCALAR_TO_FLOAT((*v)[Z]));
   if(n)
     fprintf(_ether_plg_outfile,
 	"%ld %ld %ld",
-	(long) ETHER_SCALAR_TO_DOUBLE((*n)[X]),
-	(long) ETHER_SCALAR_TO_DOUBLE((*n)[Y]),
-	(long) ETHER_SCALAR_TO_DOUBLE((*n)[Z]));
+	(long) ETHER_SCALAR_TO_FLOAT((*n)[X]),
+	(long) ETHER_SCALAR_TO_FLOAT((*n)[Y]),
+	(long) ETHER_SCALAR_TO_FLOAT((*n)[Z]));
   fprintf(_ether_plg_outfile, "\n");
   return 0;
 }
@@ -358,7 +358,7 @@ _ether_plg_output_rep(EtherRep *rep)
 {
   fprintf(_ether_plg_outfile, 
       "rep_%ld %d %d %d %d\n",
-      (long) ETHER_SCALAR_TO_DOUBLE(ether_rep_size_get(rep)),
+      (long) ETHER_SCALAR_TO_FLOAT(ether_rep_size_get(rep)),
       ether_rep_count_vertices(rep),
       ether_rep_count_facets(rep),
       0,

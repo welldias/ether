@@ -50,6 +50,14 @@ extern "C" {
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #endif
 
+#ifndef FALSE
+#define FALSE (0)
+#endif
+
+#ifndef TRUE
+#define TRUE (!0)
+#endif
+
 #define X    0
 #define Y    1
 #define Z    2
@@ -57,22 +65,22 @@ extern "C" {
 #define YROT 4
 #define ZROT 5
 
-#define ETHER_DOUBLE_TO_SCALAR(f) ((EtherScalar)(f))
-#define ETHER_SCALAR_TO_DOUBLE(s) ((double)(s))
-#define ETHER_DOUBLE_TO_FACTOR(f) ((EtherFactor) ((f) * ETHER_UNITY))
-#define ETHER_FACTOR_TO_DOUBLE(f) ((double)((f) / ETHER_UNITY))
-#define ETHER_DOUBLE_TO_ANGLE(f)  ((EtherAngle) ((f) * ETHER_ANGLE_CONVERSION))
-#define ETHER_ANGLE_TO_DOUBLE(a)  ((double)((a)/ETHER_ANGLE_CONVERSION))
+#define ETHER_FLOAT_TO_SCALAR(f) ((EtherScalar)(f))
+#define ETHER_SCALAR_TO_FLOAT(s) ((float)(s))
+#define ETHER_FLOAT_TO_FACTOR(f) ((EtherFactor) ((f) * ETHER_UNITY))
+#define ETHER_FACTOR_TO_FLOAT(f) ((float)((f) / ETHER_UNITY))
+#define ETHER_FLOAT_TO_ANGLE(f)  ((EtherAngle) ((f) * ETHER_ANGLE_CONVERSION))
+#define ETHER_ANGLE_TO_FLOAT(a)  ((float)((a)/ETHER_ANGLE_CONVERSION))
 
 /* Three special data types are used in Ether:
- * - Ether_Scalar : a measure of virtual distance
- * - Ether_Angle  : a multiplication factor, usually in the range -1 to +1
- * - Ether_Factor : measured in 65536th's of a degree
+ * - EtherScalar : a measure of virtual distance
+ * - EtherAngle  : a multiplication factor, usually in the range -1 to +1
+ * - EtherFactor : measured in 65536th's of a degree
  */
 
-typedef double EtherScalar;
-typedef double EtherAngle;
-typedef double EtherFactor;
+typedef float EtherScalar;
+typedef float EtherAngle;
+typedef float EtherFactor;
 
 typedef size_t       EtherTime;
 typedef unsigned int EtherColor;
