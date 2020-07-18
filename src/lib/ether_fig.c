@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <Ether.h>
 #include "ether_private.h"
 #include <ctype.h>
@@ -119,17 +121,17 @@ _ether_fig_process_attribute(char *buff, EtherObject *obj, char *rootname)
     long tx, ty, tz;
     sscanf(buff, "pos = %ld,%ld,%ld", &tx, &ty, &tz);
     ether_object_move(obj, 
-      ETHER_FLOAT_TO_SCALAR(tx*_ether_fig_xscale), 
-      ETHER_FLOAT_TO_SCALAR(ty*_ether_fig_yscale), 
-      ETHER_FLOAT_TO_SCALAR(tz*_ether_fig_zscale));
+      ETHER_DOUBLE_TO_SCALAR(tx*_ether_fig_xscale), 
+      ETHER_DOUBLE_TO_SCALAR(ty*_ether_fig_yscale), 
+      ETHER_DOUBLE_TO_SCALAR(tz*_ether_fig_zscale));
   }
   else if (match(buff, "rot"))
   {
     float rx, ry, rz;
     sscanf(buff, "rot = %f,%f,%f", &rx, &ry, &rz);
-    ether_object_rot_y(obj, ETHER_FLOAT_TO_ANGLE(ry));
-    ether_object_rot_x(obj, ETHER_FLOAT_TO_ANGLE(rx));
-    ether_object_rot_z(obj, ETHER_FLOAT_TO_ANGLE(rz));
+    ether_object_rot_y(obj, ETHER_DOUBLE_TO_ANGLE(ry));
+    ether_object_rot_x(obj, ETHER_DOUBLE_TO_ANGLE(rx));
+    ether_object_rot_z(obj, ETHER_DOUBLE_TO_ANGLE(rz));
   }
   else if (match(buff, "name"))
   {

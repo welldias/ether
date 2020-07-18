@@ -1,7 +1,6 @@
 #include <Ether.h>
 #include "ether_private.h"
 
-
 typedef struct _Ether_Render_Output_Object  EtherRenderOutputObject;
 typedef struct _Ether_Temp_Vertex           EtherTempVertex;
 
@@ -106,7 +105,7 @@ static EtherLight        *_ether_render_lightlist = NULL;   /* point to (world) 
 static int                 _ether_render_nlights = 0;        /* number of lights in the scene */                      
 static EtherLocalLight  *_ether_render_locallights = NULL;
 static int                 _ether_render_maxlights = 0;
-static EtherFactor        _ether_render_ambient = ETHER_FLOAT_TO_FACTOR(0.5);
+static EtherFactor        _ether_render_ambient = ETHER_DOUBLE_TO_FACTOR(0.5);
 
 static EtherRenderStatus _ether_render_status;
 #ifdef ETHER_NEW_PROC
@@ -300,19 +299,19 @@ ether_render_begin(EtherCamera *camera, EtherLight *lights)
   /* compute screen scale factors and set clipping plane coefficients */
   if(_ether_render_ortho && 0)
   {
-    _ether_render_screenscale_x = (long int)ETHER_FLOAT_TO_SCALAR(_ether_render_window_halfwidth);
-    _ether_render_screenscale_y = (long int)ETHER_FLOAT_TO_SCALAR(-camera->aspect * _ether_render_window_halfheight);
+    _ether_render_screenscale_x = (long int)ETHER_DOUBLE_TO_SCALAR(_ether_render_window_halfwidth);
+    _ether_render_screenscale_y = (long int)ETHER_DOUBLE_TO_SCALAR(-camera->aspect * _ether_render_window_halfheight);
 
     /* cright = window_halfwidth * orthodiv / screenscale_x */
-    _ether_render_cright = ETHER_FLOAT_TO_FACTOR(_ether_render_orthodiv);
+    _ether_render_cright = ETHER_DOUBLE_TO_FACTOR(_ether_render_orthodiv);
 
     /* ctop = window_halfheight * orthodiv / screenscale_y */
-    _ether_render_ctop = ETHER_FLOAT_TO_FACTOR(_ether_render_orthodiv / camera->aspect);
+    _ether_render_ctop = ETHER_DOUBLE_TO_FACTOR(_ether_render_orthodiv / camera->aspect);
   }
   else
   {
-    _ether_render_screenscale_x = (long int)ETHER_FLOAT_TO_SCALAR(camera->zoom * _ether_render_window_halfwidth);
-    _ether_render_screenscale_y = (long int)ETHER_FLOAT_TO_SCALAR(-camera->zoom * camera->aspect * _ether_render_window_halfheight);
+    _ether_render_screenscale_x = (long int)ETHER_DOUBLE_TO_SCALAR(camera->zoom * _ether_render_window_halfwidth);
+    _ether_render_screenscale_y = (long int)ETHER_DOUBLE_TO_SCALAR(-camera->zoom * camera->aspect * _ether_render_window_halfheight);
 
     /* copy clipping plane coefficients for object culling */
     _ether_render_aright = camera->aright;
@@ -351,18 +350,18 @@ ether_render_horizon(void)
   /* compute endpoints of "chord" of horizon circle, in world space */
   if(_ether_render_viewdir[X] == 0 && _ether_render_viewdir[Y] == 0 && _ether_render_viewdir[Z] == 0)
     return;
-  p[X] = ether_math_factor_multiply(_ether_render_viewdir[X] - _ether_render_viewdir[Z], ETHER_FLOAT_TO_SCALAR(32000));
+  p[X] = ether_math_factor_multiply(_ether_render_viewdir[X] - _ether_render_viewdir[Z], ETHER_DOUBLE_TO_SCALAR(32000));
   p[Y] = 0;
-  p[Z] = ether_math_factor_multiply(_ether_render_viewdir[Z] + _ether_render_viewdir[X], ETHER_FLOAT_TO_SCALAR(32000));
-  q[X] = ether_math_factor_multiply(_ether_render_viewdir[X] + _ether_render_viewdir[Z], ETHER_FLOAT_TO_SCALAR(32000));
+  p[Z] = ether_math_factor_multiply(_ether_render_viewdir[Z] + _ether_render_viewdir[X], ETHER_DOUBLE_TO_SCALAR(32000));
+  q[X] = ether_math_factor_multiply(_ether_render_viewdir[X] + _ether_render_viewdir[Z], ETHER_DOUBLE_TO_SCALAR(32000));
   q[Y] = 0;
-  q[Z] = ether_math_factor_multiply(_ether_render_viewdir[Z] - _ether_render_viewdir[X], ETHER_FLOAT_TO_SCALAR(32000));
-  if(_ether_render_viewdir[Y] < -ETHER_FLOAT_TO_FACTOR(0.85))
+  q[Z] = ether_math_factor_multiply(_ether_render_viewdir[Z] - _ether_render_viewdir[X], ETHER_DOUBLE_TO_SCALAR(32000));
+  if(_ether_render_viewdir[Y] < -ETHER_DOUBLE_TO_FACTOR(0.85))
   {
     ether_display_clear(ether_world_ground_color_get());
     return;
   }
-  if(_ether_render_viewdir[Y] > ETHER_FLOAT_TO_FACTOR(0.85))
+  if(_ether_render_viewdir[Y] > ETHER_DOUBLE_TO_FACTOR(0.85))
   {
     ether_display_clear(ether_world_sky_color_get());
     return;
@@ -813,11 +812,11 @@ _ether_render_camera_update(EtherCamera *camera)
 {
   EtherVector right;
   EtherVector up;
-  ether_vector_create(right, ETHER_FLOAT_TO_SCALAR(camera->zoom * 10000), 0, ETHER_FLOAT_TO_SCALAR(-10000));
+  ether_vector_create(right, ETHER_DOUBLE_TO_SCALAR(camera->zoom * 10000), 0, ETHER_DOUBLE_TO_SCALAR(-10000));
   ether_vector_normalize(right);
   camera->aright = right[X];
   camera->cright = right[Z];
-  ether_vector_create(up, 0, ETHER_FLOAT_TO_SCALAR(camera->zoom * camera->aspect * 10000), ETHER_FLOAT_TO_SCALAR(-10000));
+  ether_vector_create(up, 0, ETHER_DOUBLE_TO_SCALAR(camera->zoom * camera->aspect * 10000), ETHER_DOUBLE_TO_SCALAR(-10000));
   ether_vector_normalize(up);
   camera->btop = up[Y];
   camera->ctop = up[Z];

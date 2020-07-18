@@ -142,36 +142,36 @@ ether_matrix_translate(EtherMatrix result, EtherVector v, int leftside)
 void
 ether_matrix_rotations_get(EtherMatrix m, EtherAngle *rx, EtherAngle *ry, EtherAngle *rz)
 {
-  float m00 = ETHER_FACTOR_TO_FLOAT(m[0][0]);
-  float m01 = ETHER_FACTOR_TO_FLOAT(m[0][1]);
-  float m10 = ETHER_FACTOR_TO_FLOAT(m[1][0]);
-  float m11 = ETHER_FACTOR_TO_FLOAT(m[1][1]);
-  float m20 = ETHER_FACTOR_TO_FLOAT(m[2][0]);
-  float m21 = ETHER_FACTOR_TO_FLOAT(m[2][1]);
-  float m22 = ETHER_FACTOR_TO_FLOAT(m[2][2]);
+  double m00 = ETHER_FACTOR_TO_DOUBLE(m[0][0]);
+  double m01 = ETHER_FACTOR_TO_DOUBLE(m[0][1]);
+  double m10 = ETHER_FACTOR_TO_DOUBLE(m[1][0]);
+  double m11 = ETHER_FACTOR_TO_DOUBLE(m[1][1]);
+  double m20 = ETHER_FACTOR_TO_DOUBLE(m[2][0]);
+  double m21 = ETHER_FACTOR_TO_DOUBLE(m[2][1]);
+  double m22 = ETHER_FACTOR_TO_DOUBLE(m[2][2]);
   if((1.0 - fabs(m21)) < _ETHER_EPSILON)
   {
     if(rx)
-      *rx = ETHER_FLOAT_TO_ANGLE(((m21 < 0) ? 90 : -90));
+      *rx = ETHER_DOUBLE_TO_ANGLE(((m21 < 0) ? 90 : -90));
     if(ry)
-      *ry = ETHER_FLOAT_TO_ANGLE(0.0);
+      *ry = ETHER_DOUBLE_TO_ANGLE(0.0);
     if(rz)
-      *rz = ETHER_FLOAT_TO_ANGLE(-atan2(m10, m00) * 180 / PI);
+      *rz = ETHER_DOUBLE_TO_ANGLE(-atan2(m10, m00) * 180 / PI);
   }
   else
   {
-    float rotz, a;
+    double rotz, a;
     if(ry)
-      *ry = ETHER_FLOAT_TO_ANGLE(atan2(-m20, m22) * 180 / PI);
+      *ry = ETHER_DOUBLE_TO_ANGLE(atan2(-m20, m22) * 180 / PI);
     if(rz)
-      *rz = ETHER_FLOAT_TO_ANGLE(atan2(-m01, m11) * 180 / PI);
-    rotz = (float)atan2(-m01, m11);
+      *rz = ETHER_DOUBLE_TO_ANGLE(atan2(-m01, m11) * 180 / PI);
+    rotz = (double)atan2(-m01, m11);
     if(fabs(fabs(rotz) - PI / 2.0) < _ETHER_EPSILON)
-      a =  m01 / (float)sin(rotz);
+      a =  m01 / (double)sin(rotz);
     else
-      a = m11 / (float)cos(rotz);
+      a = m11 / (double)cos(rotz);
     if(rx)
-      *rx = - ETHER_FLOAT_TO_ANGLE(atan2(-m21, a) * 180 / PI);
+      *rx = - ETHER_DOUBLE_TO_ANGLE(atan2(-m21, a) * 180 / PI);
   }
 }
 
@@ -193,7 +193,7 @@ ether_matrix_translation_set(EtherMatrix m, EtherVector v)
   ether_vector_copy(m[3], v);
 }
 
-#define _ETHER_FACTOR_PRODUCT(f1, f2)      (ETHER_FACTOR_TO_FLOAT(f1) * ETHER_FACTOR_TO_FLOAT(f2))
+#define _ETHER_FACTOR_PRODUCT(f1, f2)      (ETHER_FACTOR_TO_DOUBLE(f1) * ETHER_FACTOR_TO_DOUBLE(f2))
 
 static void 
 _ether_matrix_mult3x3(EtherMatrix result, EtherMatrix m1, EtherMatrix m2)
@@ -201,7 +201,7 @@ _ether_matrix_mult3x3(EtherMatrix result, EtherMatrix m1, EtherMatrix m2)
   int i, j;
   for (i = 0; i < 3; ++i)
     for (j = 0; j < 3; ++j)
-      result[i][j] = ETHER_FLOAT_TO_FACTOR(
+      result[i][j] = ETHER_DOUBLE_TO_FACTOR(
           _ETHER_FACTOR_PRODUCT(m1[i][0], m2[0][j]) +
           _ETHER_FACTOR_PRODUCT(m1[i][1], m2[1][j]) +
           _ETHER_FACTOR_PRODUCT(m1[i][2], m2[2][j]) );

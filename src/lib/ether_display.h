@@ -73,36 +73,36 @@ extern EtherVideoDriverFunction    *_ether_video_current_driver;
 
 struct _Ether_Outputvertex
 {
-	long int x,y,z;                            /**< X, Y screen coordinates and Z-depth */
-	EtherColor red;                            /**< components of the color */
-	EtherColor green;
-	EtherColor blue; 
-	EtherOutputvertex *next;                  /**< doubly-linked circular list */
-	EtherOutputvertex *prev;
+	long int x,y,z;           /**< X, Y screen coordinates and Z-depth */
+	EtherColor red;           /**< components of the color */
+	EtherColor green;		  
+	EtherColor blue; 		  
+	EtherOutputvertex *next;  /**< doubly-linked circular list */
+	EtherOutputvertex *prev;  
 
 	/* don't rely on anything below here staying the same */
-	int u, v;                                  /**< texture map coordinates */
-	EtherFactor intensity;                    /**< intensity of light at this vertex */
-	int  outcode;                              /**< used for XY clipping */
+	int u, v;                 /**< texture map coordinates */
+	EtherFactor intensity;    /**< intensity of light at this vertex */
+	int  outcode;             /**< used for XY clipping */
 };
 
 struct _Ether_Outputfacet
 {
-	EtherOutputvertex *points;                /**< linked list of vertices for this facet */
-	EtherSurface *surface;                    /**< surface properties */
-	EtherColor color;                         /**< color of this facet (flat shading only) */
+	EtherOutputvertex *points; /**< linked list of vertices for this facet */
+	EtherSurface *surface;     /**< surface properties */
+	EtherColor color;          /**< color of this facet (flat shading only) */
 	
 	/* don't rely on anything below here staying the same */
-	EtherFactor intensity;                    /**< amount of light falling on this facet */
-	int xclip;                                 /**< this facet needs X clipping */
-	int yclip;                                 /**< this facet needs Y clipping */
-	int highlight : 1;                         /**< this facet is highlighted */
-	EtherFacet *original;                     /**< points back at the facet we came from */
-	void *outobj;                              /**< points back at the outobject we belong to */
-	long int minbound[3];                      /**< bounding box for smarter sorting */
+	EtherFactor intensity;     /**< amount of light falling on this facet */
+	int xclip;                 /**< this facet needs X clipping */
+	int yclip;                 /**< this facet needs Y clipping */
+	int highlight : 1;         /**< this facet is highlighted */
+	EtherFacet *original;      /**< points back at the facet we came from */
+	void *outobj;              /**< points back at the outobject we belong to */
+	long int minbound[3];      /**< bounding box for smarter sorting */
 	long int maxbound[3];  
-	EtherOutputfacet *details;                /**< linked list of detail facets */
-	EtherOutputfacet *next;                   /**< only used to link detail facets */
+	EtherOutputfacet *details; /**< linked list of detail facets */
+	EtherOutputfacet *next;    /**< only used to link detail facets */
 };
 
 /* Display functions */

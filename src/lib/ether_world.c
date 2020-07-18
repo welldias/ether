@@ -13,22 +13,22 @@ static int _ether_world_find_bounds(EtherObject *obj);
 
 static EtherWorld _ether_world =
 {
-    NULL,               /* objects */
-    NULL,               /* lights */
-    NULL,               /* cameras */
-    NULL,               /* current camera */
-    NULL,               /* left-eye camera */
-    NULL,               /* right-eye camera */
-    ETHER_FLOAT_TO_FACTOR(0.5),  /* ambient light */
-    ETHER_FLOAT_TO_SCALAR(1),    /* world scale */
-    ETHER_FLOAT_TO_SCALAR(100),  /* movestep */
-    ETHER_FLOAT_TO_ANGLE(5),     /* turnstep */
-    1,                  /* movement mode */
-    1,                  /* screenclear */
-    1,                  /* horizon */
-    { 0x88, 3 },        /* horizon colors */
-    2,                  /* ncolors */
-    {{{0}},{{0}},0}     /* palette */
+    NULL,                        /* objects */
+    NULL,                        /* lights */
+    NULL,                        /* cameras */
+    NULL,                        /* current camera */
+    NULL,                        /* left-eye camera */
+    NULL,                        /* right-eye camera */
+    ETHER_DOUBLE_TO_FACTOR(0.5),  /* ambient light */
+    ETHER_DOUBLE_TO_SCALAR(1),    /* world scale */
+    ETHER_DOUBLE_TO_SCALAR(100),  /* movestep */
+    ETHER_DOUBLE_TO_ANGLE(5),     /* turnstep */
+    1,                           /* movement mode */
+    1,                           /* screenclear */
+    1,                           /* horizon */
+    { 0x88, 3 },                 /* horizon colors */
+    2,                           /* ncolors */
+    {{{0}},{{0}},0}              /* palette */
 };
 
 EtherWorld *ether_world_current = &_ether_world;   /* the currently active world */
@@ -54,12 +54,12 @@ ether_world_init(EtherWorld *world)
     world->camera = NULL;
     world->left_camera = NULL;
     world->right_camera = NULL;
-    world->ambient = ETHER_FLOAT_TO_FACTOR(0.5);
+    world->ambient = ETHER_DOUBLE_TO_FACTOR(0.5);
     world->screenclear = 1;
     world->horizon = 1;
     world->movement_mode = 1;
-    world->movestep = ETHER_FLOAT_TO_FACTOR(100);
-    world->rotstep = ETHER_FLOAT_TO_ANGLE(5);
+    world->movestep = ETHER_DOUBLE_TO_FACTOR(100);
+    world->rotstep = ETHER_DOUBLE_TO_ANGLE(5);
     world->horizoncolors[0] = 0x88;  
     world->horizoncolors[1] = 0;
     world->nhorizoncolors = 2;

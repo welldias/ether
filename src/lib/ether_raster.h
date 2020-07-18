@@ -32,7 +32,7 @@ struct _Ether_Raster
   unsigned char *data;
 };
 
-EAPI EtherRaster  *ether_raster_create         (int width, int height, int depth);
+EAPI EtherRaster   *ether_raster_create         (int width, int height, int depth);
 EAPI void           ether_raster_destroy        (EtherRaster *raster);
 EAPI void           ether_raster_window_set     (EtherRaster *raster, int left, int top, int right, int bottom);
 EAPI void           ether_raster_window_get     (EtherRaster *raster, int *left, int *top, int *right, int *bottom);

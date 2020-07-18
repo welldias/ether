@@ -174,7 +174,8 @@ ether_display_version_get(void)
 char *
 ether_display_description_get(void)
 {
-	strcpy(_ether_display_current_desc, "Unknown display driver");
+	const char* description = "Unknown display driver";
+	strcpy_s(_ether_display_current_desc, strlen(description), description);
 	(*_ether_display_current_driver)(ETHER_DISPLAY_GET_DESCRIPTION, sizeof(_ether_display_current_desc)-2, _ether_display_current_desc);
 	return _ether_display_current_desc;
 }
@@ -471,7 +472,8 @@ ether_video_version_get(void)
 char *
 ether_video_description_get(void)
 {
-	strcpy(_ether_video_current_desc, "Unknown video driver");
+	const char* description = "Unknown video driver";
+	strcpy_s(_ether_video_current_desc, strlen(description), description);
 	(*_ether_video_current_driver)(ETHER_VIDEO_GET_DESCRIPTION, sizeof(_ether_video_current_desc)-2, _ether_video_current_desc);
 	return _ether_video_current_desc;
 }

@@ -1,12 +1,9 @@
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_primitives.h>
 #include <Ether.h>
 
 #include <stdio.h>
 
 #define WIDTH 650
 #define HEIGHT 490
-
 
 void ether_blit(EtherRaster *raster);
 void draw_palette(void);

@@ -1,4 +1,6 @@
-#include <allegro5/allegro.h>
+#define _CRT_SECURE_NO_WARNINGS
+
+//#include <allegro5/allegro.h>
 #include <Ether.h>
 #include "ether_private.h"
 #include "ether_drivers.h"
@@ -81,7 +83,7 @@ static Ether_Raster        _ether_drivers_video_raster   =
 };
 #endif
 
-ALLEGRO_DISPLAY *_drivers_display = NULL;
+//ALLEGRO_DISPLAY *_drivers_display = NULL;
 
 unsigned char table_data[] = "`~!@#$%^&*()_+{}[]:;<>?/,.`~!@#$%^&*()_+{}[]:;<>?/,.`~!@#$%^&*()_+{}[]:;<>?/,.`~!@#$%^&*()_+{}[]:;<>?/,.`~!@#$%^&*()_+{}[]:;<>?/,.`~!@#$%^&*()_+{}[]:;<>?/,.`~!@#$%^&*()_+{}[]:;<>?/,.`~!@#$%^&*()_+{}[]:;<>?/,.`~!@#$%^&*()_+{}[]:;<>?/,.`~!@#$%^&*()_+{}[]:;<";
 
@@ -396,19 +398,24 @@ ether_drivers_display_default(EtherDisplayCommand cmd, int lparm1, void *pparm1)
 					return -1;
 			}
 
+			/*
       if (!al_init()) {
         return -1;
       }
+	  */
 
-      al_install_keyboard();
-
+      //al_install_keyboard();
+	  /*
       _drivers_display = al_create_display(
           ether_raster_width_get (_ether_drivers_our_raster),
           ether_raster_height_get(_ether_drivers_our_raster));
+	  */
+
+	  /*
       if (!_drivers_display) {
         return -1;
       }
-
+	  */
 			if(_ether_drivers_compute_slope_table())
 				return -2;
 			if(_ether_drivers_compute_line_table())
@@ -424,7 +431,7 @@ ether_drivers_display_default(EtherDisplayCommand cmd, int lparm1, void *pparm1)
 			break;
 		}
     case ETHER_DISPLAY_QUIT:
-      al_destroy_display(_drivers_display);
+      //al_destroy_display(_drivers_display);
       break;
 		case ETHER_DISPLAY_POINT:
 		{
@@ -582,15 +589,16 @@ ether_drivers_video_default(EtherVideoCommand cmd, int lparm1, void *pparm1)
       EtherRaster  *raster = (EtherRaster *)pparm1;
 
       unsigned char *data = NULL;
-      unsigned int x,y;
+      //int x,y;
 
-      al_clear_to_color(al_map_rgb(0,0,0));
+      //al_clear_to_color(al_map_rgb(0,0,0));
 
-      al_lock_bitmap(al_get_backbuffer(_drivers_display), ALLEGRO_PIXEL_FORMAT_ANY, 0);
+      //al_lock_bitmap(al_get_backbuffer(_drivers_display), ALLEGRO_PIXEL_FORMAT_ANY, 0);
 
       pal = ether_world_palette_get();
       data = raster->data;
 
+	  /*
       for( y = 0; y < raster->height; y++ )
       {
         for( x = 0; x < raster->width; x++ )
@@ -603,9 +611,10 @@ ether_drivers_video_default(EtherVideoCommand cmd, int lparm1, void *pparm1)
           data++;
         }
       }
+	  */
 
-      al_unlock_bitmap(al_get_backbuffer(_drivers_display));
-      al_flip_display();
+      //al_unlock_bitmap(al_get_backbuffer(_drivers_display));
+      //al_flip_display();
 
 #if 0
 			int x;
@@ -830,7 +839,7 @@ _ether_drivers_compute_slope_table(void)
 		return -1;
 	_ether_drivers_slope_table[0] = 0;
 	for (i = 1; i < n; ++i)
-		_ether_drivers_slope_table[i] = ETHER_FLOAT_TO_FACTOR(1.0 / i);
+		_ether_drivers_slope_table[i] = ETHER_DOUBLE_TO_FACTOR(1.0 / i);
 	return 0;
 }
 

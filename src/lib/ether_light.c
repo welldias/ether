@@ -19,7 +19,7 @@ ether_light_init(EtherLight *light)
 		return NULL;
     light->type = ETHER_LIGHT_DIRECTIONAL;
     light->on = 1;
-    light->intensity = ETHER_FLOAT_TO_ANGLE(0.5);
+    light->intensity = ETHER_DOUBLE_TO_ANGLE(0.5);
     light->object = NULL;
     light->name = "No Name";
     light->applic_data = NULL;

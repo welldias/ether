@@ -3,10 +3,6 @@
 
 static EtherObject *_ether_obj_list;
 
-/*
-   this routine is based on TransBox, by Jim Arvo
-   (published in the first volume of "Graphics Gems")
- */
 static void  _ether_object_transform_bbox     (EtherObject *object);
 static void  _ether_object_recursive_updater  (EtherObject *object, int flag);
     

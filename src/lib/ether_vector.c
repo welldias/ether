@@ -1,7 +1,7 @@
 #include <Ether.h>
 
-#define _ETHER_SCALAR_PRODUCT(s1, s2)      (ETHER_SCALAR_TO_FLOAT(s1) * ETHER_SCALAR_TO_FLOAT(s2))
-#define _ETHER_SCALAR_FACTOR_PRODUCT(s, f) (ETHER_SCALAR_TO_FLOAT(s)  * ETHER_FACTOR_TO_FLOAT(f))
+#define _ETHER_SCALAR_PRODUCT(s1, s2)      (ETHER_SCALAR_TO_DOUBLE(s1) * ETHER_SCALAR_TO_DOUBLE(s2))
+#define _ETHER_SCALAR_FACTOR_PRODUCT(s, f) (ETHER_SCALAR_TO_DOUBLE(s)  * ETHER_FACTOR_TO_DOUBLE(f))
 
 EtherVector Ether_VectorNULL = { 0, 0, 0 };
 
@@ -38,7 +38,7 @@ ether_vector_negative(EtherVector v)
 EtherFactor 
 ether_vector_dotproduct(EtherVector v1, EtherVector v2)
 {
-	return ETHER_FLOAT_TO_SCALAR(
+	return ETHER_DOUBLE_TO_SCALAR(
 		_ETHER_SCALAR_FACTOR_PRODUCT(v1[X], v2[X]) +
 		_ETHER_SCALAR_FACTOR_PRODUCT(v1[Y], v2[Y]) + 
 		_ETHER_SCALAR_FACTOR_PRODUCT(v1[Z], v2[Z]) );
@@ -47,31 +47,31 @@ ether_vector_dotproduct(EtherVector v1, EtherVector v2)
 EtherScalar 
 ether_vector_crossproduct(EtherVector result, EtherVector v1, EtherVector v2)
 {
-	float xf, yf, zf, m;
+	double xf, yf, zf, m;
 
 	xf = _ETHER_SCALAR_PRODUCT(v1[Y], v2[Z]) - _ETHER_SCALAR_PRODUCT(v2[Y], v1[Z]);
 	yf = _ETHER_SCALAR_PRODUCT(v2[X], v1[Z]) - _ETHER_SCALAR_PRODUCT(v1[X], v2[Z]);
 	zf = _ETHER_SCALAR_PRODUCT(v1[X], v2[Y]) - _ETHER_SCALAR_PRODUCT(v2[X], v1[Y]);
 	
-	m = (float)sqrt(xf * xf + yf * yf + zf * zf);
+	m = sqrt(xf * xf + yf * yf + zf * zf);
 	if (m == 0) 
 		xf = yf = zf = 0;
 	else
 		xf /= m;  yf /= m;  zf /= m;
-	result[X] = ETHER_FLOAT_TO_FACTOR(xf);
-	result[Y] = ETHER_FLOAT_TO_FACTOR(yf);
-	result[Z] = ETHER_FLOAT_TO_FACTOR(zf);
-	return ETHER_FLOAT_TO_SCALAR(m);
+	result[X] = ETHER_DOUBLE_TO_FACTOR(xf);
+	result[Y] = ETHER_DOUBLE_TO_FACTOR(yf);
+	result[Z] = ETHER_DOUBLE_TO_FACTOR(zf);
+	return ETHER_DOUBLE_TO_SCALAR(m);
 }
 
 EtherScalar 
 ether_vector_magnitude(EtherVector v)
 {
-	float m = _ETHER_SCALAR_PRODUCT(v[X], v[X]) + 
+	double m = _ETHER_SCALAR_PRODUCT(v[X], v[X]) + 
 		_ETHER_SCALAR_PRODUCT(v[Y], v[Y]) + 
 		_ETHER_SCALAR_PRODUCT(v[Z], v[Z]);
 
-	return ETHER_FLOAT_TO_SCALAR(sqrt(m));
+	return ETHER_DOUBLE_TO_SCALAR(sqrt(m));
 }
 
 void

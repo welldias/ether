@@ -12,7 +12,6 @@
  * 
  */
 
-
 typedef enum _Ether_Surface_Type
 {
    ETHER_SURF_SIMPLE = 0,

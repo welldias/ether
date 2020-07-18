@@ -119,8 +119,9 @@ ether_raster_write_scanline(EtherRaster *raster, int n, unsigned char *buff)
 unsigned char *
 ether_raster_data_get(EtherRaster *raster)
 {
-	/*--> Algo está acontecendo com este teste */
-	/* sempre está retornando NULL. Talvez um mal gerenciamento de memoria. */
+	/*--> TODO: Algo está acontecendo com este teste 
+	            sempre está retornando NULL. Talvez um 
+				mal gerenciamento de memoria. */
 	if(raster)
 	  return raster->data;
 	return NULL;
