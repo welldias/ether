@@ -1,6 +1,5 @@
 #include <Ether.h>
 
-
 static EtherFactor _ether_math_sin_table[258];
 
 void 
@@ -15,7 +14,7 @@ ether_math_init(void)
    * our angle.
    */
   for (i = 0; i < 256; ++i)
-    _ether_math_sin_table[i] = ETHER_FLOAT_TO_FACTOR(sin(i * ((PI/2) / 256)));
+    _ether_math_sin_table[i] = ETHER_DOUBLE_TO_FACTOR(sin(i * ((PI/2) / 256)));
   _ether_math_sin_table[256] = _ether_math_sin_table[257] = ETHER_UNITY;
 }
 
@@ -28,37 +27,37 @@ ether_math_scalar_abs (EtherScalar alpha)
 EtherScalar 
 ether_math_scalar_round(EtherScalar alpha)
 {
-  return ETHER_FLOAT_TO_SCALAR(floor(ETHER_SCALAR_TO_FLOAT(alpha) + 0.5));
+  return ETHER_DOUBLE_TO_SCALAR(floor(ETHER_SCALAR_TO_DOUBLE(alpha) + 0.5));
 }
 
 EtherFactor 
 ether_math_scalar_divide(EtherScalar alpha, EtherScalar beta)
 {
-  return (EtherFactor)(((float)(alpha)) / ((float)(beta)));
+  return (EtherFactor)(((EtherScalar)(alpha)) / ((EtherScalar)(beta)));
 }
 
 EtherScalar 
 ether_math_scalar_mult_div(EtherScalar alpha, EtherScalar beta, EtherScalar gamma)
 {
-	return (EtherScalar)((((float)(alpha)) * ((float)(beta))) / ((float)(gamma)));
+	return (EtherScalar)((((EtherScalar)(alpha)) * ((EtherScalar)(beta))) / ((EtherScalar)(gamma)));
 }
 
 EtherScalar 
 ether_math_factor_multiply(EtherFactor alpha, EtherScalar beta)
 {
-	return (EtherScalar)(((float)(alpha)) * ((float)(beta)));
+	return (EtherScalar)(((EtherScalar)(alpha)) * ((EtherScalar)(beta)));
 }
 
 EtherFactor
 ether_math_sine(EtherAngle angle)
 {
-	return ETHER_FLOAT_TO_FACTOR(sin((PI * ETHER_ANGLE_TO_FLOAT(angle)) / 180.0));
+	return ETHER_DOUBLE_TO_FACTOR(sin((PI * ETHER_ANGLE_TO_DOUBLE(angle)) / 180.0));
 }
 
 EtherFactor
 ether_math_cosine(EtherAngle angle)
 {
-	return ether_math_sine(angle + ETHER_FLOAT_TO_ANGLE(90));
+	return ether_math_sine(angle + ETHER_DOUBLE_TO_ANGLE(90));
 }
 
 

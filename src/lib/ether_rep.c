@@ -4,11 +4,11 @@ static unsigned int _ether_rep_find_id;
 static int          _ether_rep_facet_count;
 static int          _ether_rep_npoints_count;
 static int          _ether_rep_nedges_added;
-static EtherFacet *_ether_rep_found_facet;
-static EtherRep   *_ether_rep_this_rep;
-static float        _ether_rep_normal_x;
-static float        _ether_rep_normal_y;
-static float        _ether_rep_normal_z;
+static EtherFacet  *_ether_rep_found_facet;
+static EtherRep    *_ether_rep_this_rep;
+static double       _ether_rep_normal_x;
+static double       _ether_rep_normal_y;
+static double       _ether_rep_normal_z;
 static int          _ether_rep_vertex_num;
 
 static void         _ether_rep_recursive_traversal    (EtherFacet *facet, int (*function)(EtherFacet *f));
@@ -136,9 +136,9 @@ ether_rep_compute_vertex_normals(EtherRep *rep)
 			_ether_rep_normal_z * _ether_rep_normal_z);
 		if(mag)
 		{
-			rep->normals[_ether_rep_vertex_num][X] = ETHER_FLOAT_TO_FACTOR(_ether_rep_normal_x / mag);
-			rep->normals[_ether_rep_vertex_num][Y] = ETHER_FLOAT_TO_FACTOR(_ether_rep_normal_y / mag);
-			rep->normals[_ether_rep_vertex_num][Z] = ETHER_FLOAT_TO_FACTOR(_ether_rep_normal_y / mag);
+			rep->normals[_ether_rep_vertex_num][X] = ETHER_DOUBLE_TO_FACTOR(_ether_rep_normal_x / mag);
+			rep->normals[_ether_rep_vertex_num][Y] = ETHER_DOUBLE_TO_FACTOR(_ether_rep_normal_y / mag);
+			rep->normals[_ether_rep_vertex_num][Z] = ETHER_DOUBLE_TO_FACTOR(_ether_rep_normal_y / mag);
 		}
 		else
 		{
@@ -154,7 +154,7 @@ ether_rep_build_edges(EtherRep *rep)
 {
 	_ether_rep_npoints_count = 0;
 	ether_rep_traverse_facets(rep, _ether_rep_facet_npoints_counter);
-	rep->edges = calloc(_ether_rep_npoints_count / 2, sizeof(Ether_Edge));
+	rep->edges = calloc(_ether_rep_npoints_count / 2, sizeof(EtherEdge));
 	if(rep->edges == NULL)
 		return;
 	_ether_rep_this_rep = rep;
@@ -314,8 +314,8 @@ static int _ether_rep_add_normals(EtherFacet *f)
 	if(i >= n)
 		return 0;
 	ether_facet_normal_get(f, v);
-	_ether_rep_normal_x += ETHER_FACTOR_TO_FLOAT(v[X]);
-	_ether_rep_normal_y += ETHER_FACTOR_TO_FLOAT(v[Y]);
-	_ether_rep_normal_z += ETHER_FACTOR_TO_FLOAT(v[Z]);
+	_ether_rep_normal_x += ETHER_FACTOR_TO_DOUBLE(v[X]);
+	_ether_rep_normal_y += ETHER_FACTOR_TO_DOUBLE(v[Y]);
+	_ether_rep_normal_z += ETHER_FACTOR_TO_DOUBLE(v[Z]);
 	return 0;
 }

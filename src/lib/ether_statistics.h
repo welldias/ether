@@ -29,7 +29,7 @@ struct _Ether_Statistics
 	int facets_need_z_clipping;
 };
 
-EAPI void                 ether_statistics_clear  (void);
-EAPI EtherStatistics    *ether_statistics_get    (void);
+EAPI void                ether_statistics_clear (void);
+EAPI EtherStatistics    *ether_statistics_get   (void);
 
 #endif /* __ETHER_STATISTICS_H__ */

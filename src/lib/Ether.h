@@ -57,12 +57,12 @@ extern "C" {
 #define YROT 4
 #define ZROT 5
 
-#define ETHER_FLOAT_TO_SCALAR(f) ((EtherScalar)(f))
-#define ETHER_SCALAR_TO_FLOAT(s) ((float)(s))
-#define ETHER_FLOAT_TO_FACTOR(f) ((EtherFactor) ((f) * ETHER_UNITY))
-#define ETHER_FACTOR_TO_FLOAT(f) ((float)((f) / ETHER_UNITY))
-#define ETHER_FLOAT_TO_ANGLE(f)  ((EtherAngle) ((f) * ETHER_ANGLE_CONVERSION))
-#define ETHER_ANGLE_TO_FLOAT(a)  ((float)((a)/ETHER_ANGLE_CONVERSION))
+#define ETHER_DOUBLE_TO_SCALAR(f) ((EtherScalar)(f))
+#define ETHER_SCALAR_TO_DOUBLE(s) ((double)(s))
+#define ETHER_DOUBLE_TO_FACTOR(f) ((EtherFactor) ((f) * ETHER_UNITY))
+#define ETHER_FACTOR_TO_DOUBLE(f) ((double)((f) / ETHER_UNITY))
+#define ETHER_DOUBLE_TO_ANGLE(f)  ((EtherAngle) ((f) * ETHER_ANGLE_CONVERSION))
+#define ETHER_ANGLE_TO_DOUBLE(a)  ((double)((a)/ETHER_ANGLE_CONVERSION))
 
 /* Three special data types are used in Ether:
  * - Ether_Scalar : a measure of virtual distance
@@ -70,17 +70,17 @@ extern "C" {
  * - Ether_Factor : measured in 65536th's of a degree
  */
 
-typedef float EtherScalar;
-typedef float EtherAngle;
-typedef float EtherFactor;
+typedef double EtherScalar;
+typedef double EtherAngle;
+typedef double EtherFactor;
 
-typedef unsigned int EtherTime;
+typedef size_t       EtherTime;
 typedef unsigned int EtherColor;
 
 typedef struct _Ether_Shape        EtherShape;
 typedef struct _Ether_Surface_Map  EtherSurfaceMap;
 typedef struct _Ether_Facet        EtherFacet;
-typedef struct _Ether_Edge         Ether_Edge;
+typedef struct _Ether_Edge         EtherEdge;
 typedef struct _Ether_Rep          EtherRep;
 typedef struct _Ether_Surface      EtherSurface;
 typedef struct _Ether_Object       EtherObject;

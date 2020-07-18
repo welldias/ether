@@ -13,11 +13,7 @@
 #define _ETHER_MEMSET(obj, c) memset(&obj, c, sizeof(obj))
 #define _ETHER_NUM_ELEMS(a) (sizeof(a)/sizeof(a[0]))
 
-#ifndef WIN32_WCE
-	#include <signal.h>
-#endif
-
-#ifdef WIN32
+#ifdef MS_OS_WINDOWS
 #include <ctype.h>
 #define strcasecmp(a, b) _stricmp(a, b)
 #define strdup(a) _strdup(a)
@@ -34,7 +30,7 @@ struct _Ether_Local_Light
 } ;
 
 /* ether_math.c */
-void        _ether_math_mult3x3   (EtherMatrix result, EtherMatrix m1, EtherMatrix m2);
+void _ether_math_mult3x3   (EtherMatrix result, EtherMatrix m1, EtherMatrix m2);
 
 /* ether_transform.c */
 void        _ether_transform   (EtherVector result, EtherMatrix m, EtherVector v);

@@ -11,6 +11,9 @@ ether_statistics_get(void)
 void 
 ether_statistics_clear(void)
 {
+	memset(&_Ether_Stats, 0, sizeof(EtherStatistics));
+
+	/*
 	_Ether_Stats.objects_processed = 0;
 	_Ether_Stats.objects_not_invisible = 0;
 	_Ether_Stats.objects_not_behind = 0;
@@ -35,4 +38,5 @@ ether_statistics_clear(void)
 	_Ether_Stats.facets_need_x_clipping = 0;
 	_Ether_Stats.facets_need_y_clipping = 0;
 	_Ether_Stats.facets_need_z_clipping = 0;
+	*/
 }

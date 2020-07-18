@@ -16,15 +16,15 @@ int main(int argc, char **argv)
   //ether_render_draw_mode_set(1);
 
   cube = ether_object_create(ether_primitives_box(100, 100, 100, NULL));
-  ether_object_rot_y(cube, ETHER_FLOAT_TO_ANGLE(45));
+  ether_object_rot_y(cube, ETHER_DOUBLE_TO_ANGLE(45));
   ether_coloring(cube);
 
   light = ether_light_create();
-  ether_light_rot_y(light, ETHER_FLOAT_TO_ANGLE(45));
-  ether_light_rot_x(light, ETHER_FLOAT_TO_ANGLE(45));
+  ether_light_rot_y(light, ETHER_DOUBLE_TO_ANGLE(45));
+  ether_light_rot_x(light, ETHER_DOUBLE_TO_ANGLE(45));
 
   camera = ether_camera_create();
-  ether_camera_rot_x(camera, ETHER_FLOAT_TO_ANGLE(45));
+  ether_camera_rot_x(camera, ETHER_DOUBLE_TO_ANGLE(45));
   ether_camera_move(camera, 0, 500, -500);
 
   ether_task_create(ether_rot_obj, cube, 0);
