@@ -54,7 +54,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>MS_OS_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\lib;$(ProjectDir)src\external\glfw\include;$(ProjectDir)src\external\glad\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\lib;$(ProjectDir)src\external\glfw\include;$(ProjectDir)src\external\glad\include;$(ProjectDir)src\external\stb_image</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -71,7 +71,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>MS_OS_WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\lib;$(ProjectDir)src\external\glfw\include;$(ProjectDir)src\external\glad\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src\lib;$(ProjectDir)src\external\glfw\include;$(ProjectDir)src\external\glad\include;$(ProjectDir)src\external\stb_image</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -97,12 +97,14 @@
     <ClInclude Include="src\lib\ether_matrix.h" />
     <ClInclude Include="src\lib\ether_object.h" />
     <ClInclude Include="src\lib\ether_palette.h" />
+    <ClInclude Include="src\lib\ether_texture.h" />
     <ClInclude Include="src\lib\ether_plg.h" />
     <ClInclude Include="src\lib\ether_primitives.h" />
     <ClInclude Include="src\lib\ether_private.h" />
     <ClInclude Include="src\lib\ether_raster.h" />
     <ClInclude Include="src\lib\ether_render.h" />
     <ClInclude Include="src\lib\ether_rep.h" />
+    <ClInclude Include="src\lib\ether_shader.h" />
     <ClInclude Include="src\lib\ether_shape.h" />
     <ClInclude Include="src\lib\ether_statistics.h" />
     <ClInclude Include="src\lib\ether_surface.h" />
@@ -114,7 +116,7 @@
     <ClInclude Include="src\lib\ether_world.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\bin\example1.c" />
+    <ClCompile Include="src\bin\opengl03.c" />
     <ClCompile Include="src\external\glad\src\glad.c" />
     <ClCompile Include="src\lib\ether_allegro.c" />
     <ClCompile Include="src\lib\ether_application.c" />
@@ -130,11 +132,13 @@
     <ClCompile Include="src\lib\ether_memory.c" />
     <ClCompile Include="src\lib\ether_object.c" />
     <ClCompile Include="src\lib\ether_palette.c" />
+    <ClCompile Include="src\lib\ether_texture.c" />
     <ClCompile Include="src\lib\ether_plg.c" />
     <ClCompile Include="src\lib\ether_primitives.c" />
     <ClCompile Include="src\lib\ether_raster.c" />
     <ClCompile Include="src\lib\ether_render.c" />
     <ClCompile Include="src\lib\ether_rep.c" />
+    <ClCompile Include="src\lib\ether_shader.c" />
     <ClCompile Include="src\lib\ether_shape.c" />
     <ClCompile Include="src\lib\ether_statistics.c" />
     <ClCompile Include="src\lib\ether_surface.c" />
