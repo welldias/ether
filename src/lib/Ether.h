@@ -51,11 +51,11 @@ extern "C" {
 #endif
 
 #ifndef FALSE
-#define FALSE (0)
+#define FALSE 0
 #endif
 
 #ifndef TRUE
-#define TRUE (!0)
+#define TRUE 1
 #endif
 
 #define X    0
@@ -85,8 +85,8 @@ typedef float EtherFactor;
 typedef size_t       EtherTime;
 typedef unsigned int EtherColor;
 
-typedef unsigned int Shader;
-typedef unsigned int Texture;
+typedef unsigned int EtherShader;
+typedef unsigned int EtherTexture;
 
 typedef struct _Ether_Shape        EtherShape;
 typedef struct _Ether_Surface_Map  EtherSurfaceMap;

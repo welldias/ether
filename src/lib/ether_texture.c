@@ -4,7 +4,7 @@
 
 #include <Ether.h>
 
-int ether_texture_load(char const* picturePath, Texture* id)
+int ether_texture_load(char const* picturePath, EtherTexture* id)
 {
 	int result = -1;
 	int width, height, nrChannels;
@@ -36,7 +36,7 @@ int ether_texture_load(char const* picturePath, Texture* id)
 	return 0;
 }
 
-int ether_texture_unload(Texture id)
+int ether_texture_unload(EtherTexture id)
 {
 	return 0;
 }
