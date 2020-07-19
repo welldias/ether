@@ -6,10 +6,10 @@ static const char* SHADER_TYPE_VERTEX   = "VERTEX";
 static const char* SHADER_TYPE_FRAGMENT = "FRAGMENT";
 static const char* SHADER_TYPE_PROGRAM  = "PROGRAM";
 
-static int _ether_shader_check_compile_erros(Shader id, const char* type);
+static int _ether_shader_check_compile_erros(EtherShader id, const char* type);
 static int _ether_shader_file_loader(const char* fileName, char** shaderSource);
 
-int ether_shader_load(const char* vertexPath, const char* fragmentPath, Shader* id)
+int ether_shader_load(const char* vertexPath, const char* fragmentPath, EtherShader* id)
 {
     int result = -1;
     char* vertextCode = NULL;
@@ -56,19 +56,19 @@ stop_return:
     return result;
 }
 
-int ether_shader_unload(Shader id)
+int ether_shader_unload(EtherShader id)
 {
     glDeleteProgram(id);
     return 0;
 }
 
-int ether_shader_use(Shader id)
+int ether_shader_use(EtherShader id)
 {
     glUseProgram(id);
     return 0;
 }
 
-int ether_shader_uniform_boolean(Shader id, const char* name, int value)
+int ether_shader_uniform_boolean(EtherShader id, const char* name, int value)
 {
     if (name == NULL)
         return -1;
@@ -77,7 +77,7 @@ int ether_shader_uniform_boolean(Shader id, const char* name, int value)
     return 0;
 }
 
-int ether_shader_uniform_integer(Shader id, const char* name, int value)
+int ether_shader_uniform_integer(EtherShader id, const char* name, int value)
 {
     if (name == NULL)
         return -1;
@@ -86,7 +86,7 @@ int ether_shader_uniform_integer(Shader id, const char* name, int value)
     return 0;
 }
 
-int ether_shader_uniform_float(Shader id, const char* name, float value)
+int ether_shader_uniform_float(EtherShader id, const char* name, float value)
 {
     if (name == NULL)
         return -1;
@@ -95,7 +95,7 @@ int ether_shader_uniform_float(Shader id, const char* name, float value)
     return 0;
 }
 
-int _ether_shader_check_compile_erros(Shader id, const char* type)
+int _ether_shader_check_compile_erros(EtherShader id, const char* type)
 {
     int success = FALSE;
     char infoLog[512];
