@@ -85,6 +85,9 @@ typedef float EtherFactor;
 typedef size_t       EtherTime;
 typedef unsigned int EtherColor;
 
+typedef unsigned int Shader;
+typedef unsigned int Texture;
+
 typedef struct _Ether_Shape        EtherShape;
 typedef struct _Ether_Surface_Map  EtherSurfaceMap;
 typedef struct _Ether_Facet        EtherFacet;
@@ -124,6 +127,8 @@ typedef struct _Ether_Outputfacet  EtherOutputfacet;
 #include <ether_plg.h>
 #include <ether_fig.h>
 #include <ether_wld.h>
+#include <ether_shader.h>
+#include <ether_texture.h>
 
 #ifdef __cplusplus
 }

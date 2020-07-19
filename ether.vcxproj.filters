@@ -96,6 +96,12 @@
     <ClInclude Include="src\lib\ether_glfw_driver.h">
       <Filter>lib</Filter>
     </ClInclude>
+    <ClInclude Include="src\lib\ether_shader.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lib\ether_texture.h">
+      <Filter>lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lib\ether_allegro.c">
@@ -182,13 +188,19 @@
     <ClCompile Include="src\lib\ether_world.c">
       <Filter>lib</Filter>
     </ClCompile>
-    <ClCompile Include="src\bin\example1.c">
-      <Filter>bin</Filter>
-    </ClCompile>
     <ClCompile Include="src\external\glad\src\glad.c">
       <Filter>bin</Filter>
     </ClCompile>
     <ClCompile Include="src\lib\ether_glfw_driver.c">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\ether_shader.c">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bin\opengl03.c">
+      <Filter>bin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\ether_texture.c">
       <Filter>lib</Filter>
     </ClCompile>
   </ItemGroup>
