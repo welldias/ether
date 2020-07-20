@@ -1,11 +1,11 @@
 #ifndef __ETHER_MATRIX_H__
 #define __ETHER_MATRIX_H__
 
-/* A Ether_Matrix is a 4 by 3 array that stores location 
+/* A EtherMatrix is a 4 by 3 array that stores location 
  * and orientation information.  All Ether matrices are homogeneous; 
  * the upper 3 by 3 submatrix stores rotation information and 
  * the last 3-element row stores a translation vector.  
- * You should never have to deal with the Ether_Matrix type directly. 
+ * You should never have to deal with the EtherMatrix type directly. 
  * However, in case you do have a need to deal with actual matrices
  * 
  */
@@ -13,6 +13,8 @@
 typedef EtherScalar EtherMatrix[4][3];
 
 EAPI void ether_matrix_identity         (EtherMatrix m);
+EAPI void ether_matrix_add              (EtherMatrix result, EtherMatrix m1, EtherMatrix m2);
+EAPI void ether_matrix_sub              (EtherMatrix result, EtherMatrix m1, EtherMatrix m2);
 EAPI void ether_matrix_multiply         (EtherMatrix result, EtherMatrix m1, EtherMatrix m2);
 EAPI void ether_matrix_inverse          (EtherMatrix result, EtherMatrix m);
 EAPI void ether_matrix_rot_x            (EtherMatrix m, EtherAngle angle, int leftside);
@@ -27,5 +29,6 @@ EAPI void ether_matrix_rotations_get    (EtherMatrix m, EtherAngle *rx, EtherAng
 EAPI void ether_matrix_copy             (EtherMatrix dest, EtherMatrix source);
 EAPI void ether_matrix_translation_get  (EtherVector v, EtherMatrix m);
 EAPI void ether_matrix_translation_set  (EtherMatrix m, EtherVector v);
+EAPI void ether_matrix_scalar_products  (EtherMatrix result, EtherMatrix m, EtherScalar scalar);
 
 #endif /* __ETHER_MATRIX_H__ */

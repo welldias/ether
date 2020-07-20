@@ -47,13 +47,14 @@ ether_vector_dotproduct(EtherVector v1, EtherVector v2)
 EtherScalar 
 ether_vector_crossproduct(EtherVector result, EtherVector v1, EtherVector v2)
 {
-	double xf, yf, zf, m;
+	float xf, yf, zf, m;
 
 	xf = _ETHER_SCALAR_PRODUCT(v1[Y], v2[Z]) - _ETHER_SCALAR_PRODUCT(v2[Y], v1[Z]);
 	yf = _ETHER_SCALAR_PRODUCT(v2[X], v1[Z]) - _ETHER_SCALAR_PRODUCT(v1[X], v2[Z]);
 	zf = _ETHER_SCALAR_PRODUCT(v1[X], v2[Y]) - _ETHER_SCALAR_PRODUCT(v2[X], v1[Y]);
-	
-	m = sqrt(xf * xf + yf * yf + zf * zf);
+
+	m = xf * xf + yf * yf + zf * zf;
+	m = (float)sqrt(m);
 	if (m == 0) 
 		xf = yf = zf = 0;
 	else
@@ -67,7 +68,7 @@ ether_vector_crossproduct(EtherVector result, EtherVector v1, EtherVector v2)
 EtherScalar 
 ether_vector_magnitude(EtherVector v)
 {
-	double m = _ETHER_SCALAR_PRODUCT(v[X], v[X]) + 
+	float m = _ETHER_SCALAR_PRODUCT(v[X], v[X]) + 
 		_ETHER_SCALAR_PRODUCT(v[Y], v[Y]) + 
 		_ETHER_SCALAR_PRODUCT(v[Z], v[Z]);
 

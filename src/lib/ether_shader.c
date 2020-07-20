@@ -95,6 +95,87 @@ int ether_shader_uniform_float(EtherShader id, const char* name, float value)
     return 0;
 }
 
+int ether_shader_uniform_vec2(EtherShader id, const char* name, const vec2 value)
+{
+    if (name == NULL)
+        return -1;
+
+    glUniform2fv(glGetUniformLocation(id, name), 1, value);
+    return 0;
+}
+
+int ether_shader_uniform_vecf2(EtherShader id, const char* name, float x, float y)
+{
+    if (name == NULL)
+        return -1;
+
+    glUniform2f(glGetUniformLocation(id, name), x, y);
+    return 0;
+}
+
+int ether_shader_uniform_vec3(EtherShader id, const char* name, const vec3 value)
+{
+    if (name == NULL)
+        return -1;
+
+    glUniform3fv(glGetUniformLocation(id, name), 1, value);
+    return 0;
+}
+
+int ether_shader_uniform_vecf3(EtherShader id, const char* name, float x, float y, float z)
+{
+    if (name == NULL)
+        return -1;
+
+    glUniform3f(glGetUniformLocation(id, name), x, y, z);
+    return 0;
+}
+
+int ether_shader_uniform_vec4(EtherShader id, const char* name, const vec4 value)
+{
+    if (name == NULL)
+        return -1;
+
+    glUniform4fv(glGetUniformLocation(id, name), 1, value);
+    return 0;
+}
+
+int ether_shader_uniform_vecf4(EtherShader id, const char* name, float x, float y, float z, float w)
+{
+    if (name == NULL)
+        return -1;
+
+    glUniform4f(glGetUniformLocation(id, name), x, y, z, w);
+    return 0;
+}
+
+int ether_shader_uniform_mat2(EtherShader id, const char* name, const mat2 mat)
+{
+    if (name == NULL)
+        return -1;
+
+    glUniformMatrix2fv(glGetUniformLocation(id, name), 1, GL_FALSE, &mat[0][0]);
+    return 0;
+}
+
+int ether_shader_uniform_mat3(EtherShader id, const char* name, const mat3 mat)
+{
+    if (name == NULL)
+        return -1;
+
+    glUniformMatrix3fv(glGetUniformLocation(id, name), 1, GL_FALSE, &mat[0][0]);
+    return 0;
+}
+
+int ether_shader_uniform_mat4(EtherShader id, const char* name, const mat4 mat)
+{
+    if (name == NULL)
+        return -1;
+
+    glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_FALSE, &mat[0][0]);
+    return 0;
+}
+
 int _ether_shader_check_compile_erros(EtherShader id, const char* type)
 {
     int success = FALSE;
