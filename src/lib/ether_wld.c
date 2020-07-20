@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <Ether.h>
 #include "ether_private.h"
 #include <ctype.h>

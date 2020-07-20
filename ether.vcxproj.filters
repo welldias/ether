@@ -197,11 +197,11 @@
     <ClCompile Include="src\lib\ether_shader.c">
       <Filter>lib</Filter>
     </ClCompile>
-    <ClCompile Include="src\bin\opengl03.c">
-      <Filter>bin</Filter>
-    </ClCompile>
     <ClCompile Include="src\lib\ether_texture.c">
       <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bin\opengl04.c">
+      <Filter>bin</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

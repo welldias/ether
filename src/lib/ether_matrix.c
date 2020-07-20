@@ -2,7 +2,11 @@
 #include "ether_private.h"
 
 #define _ETHER_EPSILON 0.000001
-   
+#define _ETHER_FACTOR_PRODUCT(f1, f2)  (ETHER_FACTOR_TO_FLOAT(f1) * ETHER_FACTOR_TO_FLOAT(f2))
+#define _ETHER_FACTOR_ADD(f1, f2)      (ETHER_FACTOR_TO_FLOAT(f1) + ETHER_FACTOR_TO_FLOAT(f2))
+#define _ETHER_FACTOR_SUB(f1, f2)      (ETHER_FACTOR_TO_FLOAT(f1) - ETHER_FACTOR_TO_FLOAT(f2))
+
+
 static void _ether_matrix_mult3x3(EtherMatrix result, EtherMatrix m1, EtherMatrix m2);
 
 void
@@ -10,6 +14,30 @@ ether_matrix_identity(EtherMatrix m)
 {
   ether_matrix_reset_rotations(m);
   m[_ETHER_TRANS][X] = m[_ETHER_TRANS][Y] = m[_ETHER_TRANS][Z] = 0;
+}
+
+void ether_matrix_add(EtherMatrix result, EtherMatrix m1, EtherMatrix m2)
+{
+    int i, j;
+    for (i = 0; i < 3; ++i)
+        for (j = 0; j < 3; ++j)
+            result[i][j] = _ETHER_FACTOR_ADD(m1[i][j], m2[i][j]);
+}
+
+void ether_matrix_scalar_products(EtherMatrix result, EtherMatrix m, EtherScalar scalar)
+{
+    int i, j;
+    for (i = 0; i < 3; ++i)
+        for (j = 0; j < 3; ++j)
+            result[i][j] = _ETHER_FACTOR_PRODUCT(scalar, m[i][j]);
+}
+
+void ether_matrix_sub(EtherMatrix result, EtherMatrix m1, EtherMatrix m2)
+{
+    int i, j;
+    for (i = 0; i < 3; ++i)
+        for (j = 0; j < 3; ++j)
+            result[i][j] = _ETHER_FACTOR_SUB(m1[i][j], m2[i][j]);
 }
 
 void
@@ -192,8 +220,6 @@ ether_matrix_translation_set(EtherMatrix m, EtherVector v)
 {
   ether_vector_copy(m[3], v);
 }
-
-#define _ETHER_FACTOR_PRODUCT(f1, f2)      (ETHER_FACTOR_TO_FLOAT(f1) * ETHER_FACTOR_TO_FLOAT(f2))
 
 static void 
 _ether_matrix_mult3x3(EtherMatrix result, EtherMatrix m1, EtherMatrix m2)

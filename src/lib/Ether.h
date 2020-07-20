@@ -31,6 +31,8 @@ extern "C" {
 #include <string.h>
 #include <math.h>
 
+#include <cglm\cglm.h>
+
 #define ETHER_UNITY 1.0
 #define ETHER_ANGLE_CONVERSION 1
 
@@ -39,7 +41,7 @@ extern "C" {
 #endif
 
 #ifndef PI
-#define PI 3.14159265358979323846
+#define PI 3.14159265359
 #endif
 
 #ifndef max
