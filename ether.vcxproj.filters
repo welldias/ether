@@ -200,7 +200,7 @@
     <ClCompile Include="src\lib\ether_texture.c">
       <Filter>lib</Filter>
     </ClCompile>
-    <ClCompile Include="src\bin\opengl04.c">
+    <ClCompile Include="src\bin\opengl06.c">
       <Filter>bin</Filter>
     </ClCompile>
   </ItemGroup>
