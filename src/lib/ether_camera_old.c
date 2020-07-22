@@ -1,166 +1,45 @@
 #include <Ether.h>
 
-static const float cameraYaw         = -90.0f;
-static const float cameraPitch       =   0.0f;
-static const float cameraSpeed       =   2.5f;
-static const float cameraSensitivity =   0.1f;
-static const float cameraZoom        =  45.0f;
-
-static void _ether_camera_gl_update_camera_vectors(EtherCamera* camera);
-
-EtherCamera* ether_camera_gl_create(void)
+EtherCameraOld *
+ether_camera_create(void)
 {
-	EtherCamera*camera = malloc(sizeof(EtherCamera));
-    if(camera == NULL)
+    EtherCameraOld *camera = malloc(sizeof(EtherCameraOld));
+    EtherObject *obj = ether_object_create(NULL);
+    if(camera == NULL || obj == NULL)
         return NULL;
-    ether_camera_gl_init(camera);
+    ether_camera_init(camera);
+    ether_camera_obj_set(camera, obj);
+    if(ether_world_camera_get() == NULL)
+        ether_world_camera_set(camera);
+    return camera;
+}
 
+EtherCameraOld *
+ether_camera_init(EtherCameraOld *camera)
+{
+	if (camera == NULL) 
+		return NULL;
+	camera->hither = ETHER_FLOAT_TO_SCALAR(10);
+	camera->yon = ETHER_FLOAT_TO_SCALAR(1000000000L);
+	camera->zoom = 4;  
+	camera->aspect = 1.33f;
+	camera->ortho = 0;  
+	camera->orthodist = 0;
+	camera->object = NULL;
+	camera->name = "No Name";
+	camera->need_updating = 1;
 	return camera;
 }
 
-void ether_camera_gl_init(EtherCamera* camera)
-{
-	if (camera == NULL) 
-		return;
-
-	glm_vec3_copy(GLM_VEC3_ZERO, camera->position);
-	glm_vec3_copy(GLM_YUP, camera->worldUp);
-	glm_vec3_copy(GLM_FORWARD, camera->front);
-
-	camera->movementSpeed = cameraSpeed;
-	camera->mouseSensitivity = cameraSensitivity;
-	camera->zoom = cameraZoom;
-	camera->yaw = cameraYaw;
-	camera->pitch = cameraPitch;
-
-
-	_ether_camera_gl_update_camera_vectors(camera);
-}
-
-void ether_camera_gl_configure(EtherCamera* camera, float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch)
-{
-	if (camera == NULL)
-		return;
-
-	camera->position[0] = posX; camera->position[1] = posY; camera->position[2] = posZ;
-	camera->worldUp[0] = upX; camera->worldUp[1] = upY; camera->worldUp[2] = upZ;
-	glm_vec3_copy(GLM_FORWARD, camera->front);
-
-	camera->movementSpeed = cameraSpeed;
-	camera->mouseSensitivity = cameraSensitivity;
-	camera->zoom = cameraZoom;
-	camera->yaw = yaw;
-	camera->pitch = pitch;
-
-	_ether_camera_gl_update_camera_vectors(camera);
-}
-
-void ether_camera_gl_destroy(EtherCamera* camera)
+void
+ether_camera_destroy(EtherCameraOld *camera)
 {
 	if(camera == NULL) 
 		return;
+	ether_world_remove_camera(camera);
 	free(camera);
 }
 
-// returns the view matrix calculated using Euler Angles and the LookAt Matrix
-void ether_camera_gl_view_matrix_get(EtherCamera* camera, mat4 dest)
-{
-	vec3 vecAux;
-
-	if (camera == NULL)
-		return;
-
-	glm_vec3_add(camera->position, camera->front, vecAux);
-	glm_lookat(camera->position, vecAux, camera->up, dest);
-}
-
-// processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
-void ether_camera_gl_process_keyboard(EtherCamera* camera, EtherCameraMovment direction, float deltaTime)
-{
-	vec3 vecAux;
-
-	if (camera == NULL)
-		return;
-
-	float velocity = camera->movementSpeed * deltaTime;
-
-	if (direction == ETHER_CAMERA_MOVMENT_FORWARD) {
-		glm_vec3_scale(camera->front, velocity, vecAux);
-		glm_vec3_add(camera->position, vecAux, camera->position);
-	}
-	if (direction == ETHER_CAMERA_MOVMENT_BACKWARD) {
-		glm_vec3_scale(camera->front, velocity, vecAux);
-		glm_vec3_sub(camera->position, vecAux, camera->position);
-	}
-	if (direction == ETHER_CAMERA_MOVMENT_LEFT) {
-		glm_vec3_scale(camera->right, velocity, vecAux);
-		glm_vec3_sub(camera->position, vecAux, camera->position);
-	}
-	if (direction == ETHER_CAMERA_MOVMENT_RIGHT) {
-		glm_vec3_scale(camera->right, velocity, vecAux);
-		glm_vec3_add(camera->position, vecAux, camera->position);
-	}
-}
-
-// processes input received from a mouse input system. Expects the offset value in both the x and y direction.
-void ether_camera_gl_process_mouse_movement(EtherCamera* camera, float xoffset, float yoffset, int constrainPitch)
-{
-	if (camera == NULL)
-		return;
-
-	xoffset *= camera->mouseSensitivity;
-	yoffset *= camera->mouseSensitivity;
-
-	camera->yaw += xoffset;
-	camera->pitch += yoffset;
-
-	// make sure that when pitch is out of bounds, screen doesn't get flipped
-	if (constrainPitch == TRUE)
-	{
-		if (camera->pitch > 89.0f)
-			camera->pitch = 89.0f;
-		if (camera->pitch < -89.0f)
-			camera->pitch = -89.0f;
-	}
-
-	// update Front, Right and Up Vectors using the updated Euler angles
-	_ether_camera_gl_update_camera_vectors(camera);
-}
-
-// processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
-void ether_camera_gl_process_mouse_scroll(EtherCamera* camera, float yoffset)
-{
-	if (camera == NULL)
-		return;
-
-	camera->zoom -= (float)yoffset;
-	if (camera->zoom < 1.0f)
-		camera->zoom = 1.0f;
-	if (camera->zoom > 45.0f)
-		camera->zoom = 45.0f;
-}
-
-// calculates the front vector from the Camera's (updated) Euler Angles
-void _ether_camera_gl_update_camera_vectors(EtherCamera* camera)
-{
-	vec3 vecAux;
-
-	// calculate the new Front vector
-	vecAux[0] = (float)(cos(glm_rad(camera->yaw)) * cos(glm_rad(camera->pitch)));
-	vecAux[1] = (float)sin(glm_rad(camera->pitch));
-	vecAux[2] = (float)(sin(glm_rad(camera->yaw)) * cos(glm_rad(camera->pitch)));
-	glm_normalize_to(vecAux, camera->front);
-
-	// also re-calculate the Right and Up vector
-	glm_vec3_cross(camera->front, camera->worldUp, vecAux);
-	glm_normalize_to(vecAux, camera->right);
-
-	// normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-	glm_vec3_cross(camera->right, camera->front, vecAux);
-	glm_normalize_to(vecAux, camera->up);
-}
-
-#if FALSE
 void ether_camera_zoom_set(EtherCameraOld *camera, float zoom)
 {
 	if(camera)
@@ -488,4 +367,3 @@ ether_camera_up_vector_get(EtherCameraOld *camera, EtherVector vector)
 	if(camera)
 		ether_object_up_vector_get(camera->object, vector);
 }
-#endif

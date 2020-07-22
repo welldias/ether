@@ -57,7 +57,7 @@ static int                _ether_wld_currmap_maxentries = 0;     /* number of en
 static EtherSurface      _ether_wld_default_surface    = { ETHER_SURF_SIMPLE, 15, 128 };
 static EtherScalar       _ether_wld_default_hither     = ETHER_FLOAT_TO_SCALAR(10);
 static EtherScalar       _ether_wld_default_yon        = ETHER_FLOAT_TO_SCALAR(1000000000L);
-static EtherCamera      *_ether_wld_most_recent_camera = NULL;
+static EtherCameraOld      *_ether_wld_most_recent_camera = NULL;
 static char              *_ether_wld_options            = "";    /* set by "options" statement */
 
 static int     _ether_wld_getline        (char *buff, int maxbytes, FILE *in);
@@ -99,7 +99,7 @@ int
 ether_wld_read(FILE *in)
 {
 	char buff[256];
-	EtherCamera *cam;
+	EtherCameraOld *cam;
 	while(_ether_wld_getline(buff, sizeof(buff), in))
 		ether_wld_process_line(buff);
 	cam = ether_world_find_camera("1");
@@ -749,7 +749,7 @@ static int _ether_wld_create_camera(int argc, char *argv[])
 	EtherScalar x = 0, y = 0, z = 0, hither = _ether_wld_default_hither, yon = _ether_wld_default_yon;
 	EtherAngle tilt = 0, pan = 0, roll = 0;
 	EtherObject *obj;
-	EtherCamera *camera = ether_camera_create();
+	EtherCameraOld *camera = ether_camera_create();
 	if(camera == NULL)
 		return -1;
 	obj = ether_object_create(NULL);

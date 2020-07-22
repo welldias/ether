@@ -18,7 +18,7 @@ struct _Ether_Render_Status
  */
 int                   ether_render_init                 (int maxvert, int maxf, int maxobjs, int maxlights, unsigned int mempoolsize);
 void                  ether_render_quit                 (void);
-void                  ether_render_begin                (EtherCamera *camera, EtherLight *lights);
+void                  ether_render_begin                (EtherCameraOld *camera, EtherLight *lights);
 void                  ether_render_ambient_set          (EtherFactor amb);
 void                  ether_render_horizon              (void);
 EtherRenderStatus    *ether_render_objlist              (EtherObject *objects);
