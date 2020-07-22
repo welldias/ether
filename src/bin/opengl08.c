@@ -5,16 +5,31 @@
 #include <Ether.h>
 #include <ether_glfw_driver.h>
 
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-float move_cam_x = 0.0f;
-float move_cam_y = 0.0f;
-float move_cam_z = 0.0f;
+// camera
+vec3 cameraPos   = {0.0f, 0.0f,  3.0f};
+vec3 cameraFront = {0.0f, 0.0f, -1.0f};
+vec3 cameraUp    = {0.0f, 1.0f,  0.0f};
+
+bool firstMouse = true;
+float yaw   = -90.0f; // yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
+float pitch = 0.0f;
+float lastX = 800.0f / 2.0;
+float lastY = 600.0 / 2.0;
+float fov   = 45.0f;
+
+// timing
+float deltaTime = 0.0f;	// time between current frame and last frame
+float lastFrame = 0.0f;
 
 int main()
 {
@@ -40,6 +55,11 @@ int main()
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+
+    // tell GLFW to capture our mouse
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -57,7 +77,7 @@ int main()
     // build and compile our shader program
     // ------------------------------------
     EtherShader shaderId = 0;
-    if (ether_shader_load("src/bin/opengl07.vs", "src/bin/opengl07.fs", &shaderId) != 0)
+    if (ether_shader_load("src/bin/opengl08.vs", "src/bin/opengl08.fs", &shaderId) != 0)
     {
         printf("Failed to load and compile shaders\n");
         return -1;
@@ -154,6 +174,12 @@ int main()
     // -----------
     while (!glfwWindowShouldClose(window))
     {
+        // per-frame time logic
+        // --------------------
+        float currentFrame = (float)glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
         // input
         // -----
         processInput(window);
@@ -171,14 +197,13 @@ int main()
 
         // create transformations
         mat4 projection = GLM_MAT4_IDENTITY_INIT;
-        glm_perspective_default((float)SCR_WIDTH / (float)SCR_HEIGHT, projection);
+        glm_perspective(glm_rad(fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f, projection);
+        ether_shader_uniform_mat4(shaderId, "projection", projection);
 
         mat4 view = GLM_MAT4_IDENTITY_INIT;
-        vec3 v2; v2[0] = 0.0f + move_cam_x; v2[1] = 0.0f + move_cam_y; v2[2] = -3.0f + move_cam_z;
-        glm_translate(view, v2);
-
-        // note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-        ether_shader_uniform_mat4(shaderId, "projection", projection);
+        vec3 vecAux;
+        glm_vec3_add(cameraPos, cameraFront, vecAux);
+        glm_lookat(cameraPos, vecAux, cameraUp, view);
         ether_shader_uniform_mat4(shaderId, "view", view);
 
         // render boxes
@@ -191,9 +216,7 @@ int main()
 
             float angle = 20.0f * i;
             vec3 v1; v1[0] = 1.0f; v1[1] = 0.3f; v1[2] = 0.5f;
-
             glm_rotate(model, glm_rad(angle), v1);
-
             ether_shader_uniform_mat4(shaderId, "model", model);
 
             glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -223,24 +246,31 @@ int main()
 // ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow* window)
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) 
-    {
-        glfwSetWindowShouldClose(window, GL_TRUE);
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
+    vec3 auxVec;
+    float cameraSpeed = (float)2.5 * deltaTime;
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        glm_vec3_scale(cameraFront, cameraSpeed, auxVec);
+        glm_vec3_add(cameraPos, auxVec, cameraPos);
     }
-    else
-    {
-        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-            move_cam_y -= 0.1f;
-        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-            move_cam_y += 0.1f;
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-            move_cam_x -= 0.1f;
-        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-            move_cam_x += 0.1f;
-        if (glfwGetKey(window, GLFW_KEY_PAGE_DOWN) == GLFW_PRESS)
-            move_cam_z -= 0.1f;
-        if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW_PRESS)
-            move_cam_z += 0.1f;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        glm_vec3_scale(cameraFront, cameraSpeed, auxVec);
+        glm_vec3_sub(cameraPos, auxVec, cameraPos);
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        glm_vec3_cross(cameraFront, cameraUp, auxVec);
+        glm_vec3_normalize(auxVec);
+        glm_vec3_scale(auxVec, cameraSpeed, auxVec);
+        glm_vec3_sub(cameraPos, auxVec, cameraPos);
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        glm_vec3_cross(cameraFront, cameraUp, auxVec);
+        glm_vec3_normalize(auxVec);
+        glm_vec3_scale(auxVec, cameraSpeed, auxVec);
+        glm_vec3_add(cameraPos, auxVec, cameraPos);
     }
 }
 
@@ -251,4 +281,50 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    if (firstMouse)
+    {
+        lastX = (float)xpos;
+        lastY = (float)ypos;
+        firstMouse = FALSE;
+    }
+
+    float xoffset = (float)xpos - lastX;
+    float yoffset = lastY - (float)ypos;  // reversed since y-coordinates go from bottom to top
+    lastX = (float)xpos;
+    lastY = (float)ypos;
+
+    float sensitivity = 0.1f;  // change this value to your liking
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    yaw += xoffset;
+    pitch += yoffset;
+
+    // make sure that when pitch is out of bounds, screen doesn't get flipped
+    if (pitch > 89.0f)
+        pitch = 89.0f;
+    if (pitch < -89.0f)
+        pitch = -89.0f;
+
+    vec3 direction;
+
+    direction[0] = (float)(cos(glm_rad(yaw)) * cos(glm_rad(pitch)));
+    direction[1] = (float)sin(glm_rad(pitch));
+    direction[2] = (float)(sin(glm_rad(yaw)) * cos(glm_rad(pitch)));
+    glm_normalize_to(direction, cameraFront);
+}
+
+// glfw: whenever the mouse scroll wheel scrolls, this callback is called
+// ----------------------------------------------------------------------
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    fov -= (float)yoffset;
+    if (fov < 1.0f)
+        fov = 1.0f;
+    if (fov > 45.0f)
+        fov = 45.0f;
 }
