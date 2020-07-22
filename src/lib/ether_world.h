@@ -13,10 +13,10 @@ struct _Ether_World
 {
     EtherObject *objects;           /**< tree of objects */
     EtherLight  *lights;            /**< linked list of lights */
-    EtherCamera *cameras;           /**< linked list of cameras */
-    EtherCamera *camera;            /**< current camera */
-    EtherCamera *left_camera;       /**< left-eye camera */
-    EtherCamera *right_camera;      /**< right-eye camera */
+    EtherCameraOld *cameras;           /**< linked list of cameras */
+    EtherCameraOld *camera;            /**< current camera */
+    EtherCameraOld *left_camera;       /**< left-eye camera */
+    EtherCameraOld *right_camera;      /**< right-eye camera */
     EtherFactor  ambient;           /**< ambient light level */
     EtherScalar  scale;             /**< millimeters per unit of virtual space */
     EtherScalar  movestep;          /**< default movement step size */
@@ -34,9 +34,9 @@ EAPI EtherWorld     *ether_world_init                 (EtherWorld *world);
 EAPI void            ether_world_add_light            (EtherLight *light);
 EAPI void            ether_world_remove_light         (EtherLight *light);
 EAPI EtherLight     *ether_world_find_light           (char *name);
-EAPI void            ether_world_add_camera           (EtherCamera *camera);
-EAPI void            ether_world_remove_camera        (EtherCamera *camera);
-EAPI EtherCamera    *ether_world_find_camera          (char *name);
+EAPI void            ether_world_add_camera           (EtherCameraOld *camera);
+EAPI void            ether_world_remove_camera        (EtherCameraOld *camera);
+EAPI EtherCameraOld    *ether_world_find_camera          (char *name);
 EAPI void            ether_world_add_abject           (EtherObject *obj);
 EAPI void            ether_world_remove_abject        (EtherObject *obj);
 EAPI EtherObject    *ether_world_find_object          (char *name);
@@ -70,14 +70,14 @@ EAPI void            ether_world_sky_color_set        (EtherColor color);
 EAPI EtherColor      ether_world_sky_color_get        (void);
 EAPI EtherPalette   *ether_world_palette_get          (void);
 EAPI EtherLight     *ether_world_lights_get           (void);
-EAPI EtherCamera    *ether_world_cameras_get          (void);
+EAPI EtherCameraOld    *ether_world_cameras_get          (void);
 EAPI EtherObject    *ether_world_object_tree_get      (void);
-EAPI void            ether_world_camera_set           (EtherCamera *cam);
-EAPI EtherCamera    *ether_world_camera_get           (void);
-EAPI void            ether_world_left_camera_set      (EtherCamera *cam);
-EAPI EtherCamera    *ether_world_left_camera_get      (void);
-EAPI void            ether_world_right_camera_set     (EtherCamera *cam);
-EAPI EtherCamera    *ether_world_right_camera_get     (void);
+EAPI void            ether_world_camera_set           (EtherCameraOld *cam);
+EAPI EtherCameraOld    *ether_world_camera_get           (void);
+EAPI void            ether_world_left_camera_set      (EtherCameraOld *cam);
+EAPI EtherCameraOld    *ether_world_left_camera_get      (void);
+EAPI void            ether_world_right_camera_set     (EtherCameraOld *cam);
+EAPI EtherCameraOld    *ether_world_right_camera_get     (void);
 EAPI EtherObject    *ether_world_update               (void);
 EAPI void            ether_world_current_set          (EtherWorld *world);
 EAPI EtherWorld     *ether_world_current_get          (void);

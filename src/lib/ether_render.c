@@ -148,7 +148,7 @@ static int   _ether_render_zclip               (EtherFacet *facet, EtherOutputfa
 static int   _ether_render_no_zclip            (EtherFacet *facet, EtherOutputfacet *of);
 static int   _ether_render_addvertex           (long x, long y, long z, EtherFactor intensity, unsigned char ocode, EtherOutputfacet *of, int ind);
 
-static void  _ether_render_camera_update       (EtherCamera *camera);
+static void  _ether_render_camera_update       (EtherCameraOld *camera);
 static void  _ether_render_horizon_poly        (EtherOutputvertex *vertices, EtherColor color);
 static void  _ether_render_draw_horizon        (long int x1, long int y1, long int x2, long int y2);
 static void  _ether_render_process_object      (EtherObject *obj);
@@ -250,7 +250,7 @@ ether_render_quit(void)
 }
 
 void
-ether_render_begin(EtherCamera *camera, EtherLight *lights)
+ether_render_begin(EtherCameraOld *camera, EtherLight *lights)
 {
   int window_left, window_right, window_top, window_bottom;
   EtherMatrix cammat;
@@ -808,7 +808,7 @@ _ether_render_addvertex(long x, long y, long z, EtherFactor intensity, unsigned 
  */
 
 static void 
-_ether_render_camera_update(EtherCamera *camera)
+_ether_render_camera_update(EtherCameraOld *camera)
 {
   EtherVector right;
   EtherVector up;

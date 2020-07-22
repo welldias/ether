@@ -1,43 +1,36 @@
-#ifndef __ETHER_CAMERA_H__
-#define __ETHER_CAMERA_H__
+#ifndef __ETHER_CAMERA_OLD_H__
+#define __ETHER_CAMERA_OLD_H__
 
-typedef enum _Ether_Camera_Movment
+/*
+ * Ether allows you to have any number of virtual cameras. Each camera 
+ * is associated with an object, much as lights are. However, unlike 
+ * lights, cameras must be associated with an object; there's no such 
+ * thing as an "ambient" camera.  Cameras are initialized and destroyed 
+ * just like objects or light sources.
+ * 
+ * Cameras have only a few properties that are important; in particular, 
+ * a zoom factor, an aspect ratio, and hither and yon clipping plane distances.
+ */
+
+struct _Ether_Camera_Old
 {
-	ETHER_CAMERA_MOVMENT_FORWARD,
-	ETHER_CAMERA_MOVMENT_BACKWARD,
-	ETHER_CAMERA_MOVMENT_LEFT,
-	ETHER_CAMERA_MOVMENT_RIGHT
-} EtherCameraMovment;
-
-struct _Ether_Camera
-{
-    // camera Attributes
-    vec3 position;
-    vec3 front;
-    vec3 up;
-    vec3 right;
-    vec3 worldUp;
-    
-    // euler Angles
-    float yaw;
-    float pitch;
-
-    // camera options
-    float movementSpeed;
-    float mouseSensitivity;
-    float zoom;
+   EtherScalar hither;                     /**< distance to near clipping plane */
+   EtherScalar yon;                        /**< distance to far culling plane */
+   float zoom;                             /**< zoom factor (1/tan(FOV/2)) */
+   float aspect;                           /**< aspect ratio */
+   int ortho : 1;                          /**< set if we want orthographic projection (not used) */
+   char *name;                             /**< name of this camera */
+   void *applic_data;                      /**< pointer to application-specific data */
+   unsigned char need_updating;            /**< set when zoom or aspect is changed */
+   EtherScalar orthodist;                  /**< apparent "distance" for orthographic projection (not used) */
+   EtherObject *object;                    /**< the object this camera is attached to */
+   EtherFactor aright, cright, btop, ctop; /**< only used internally, for object culling */
+   EtherCameraOld *next;                      /**< cameras are kept in a linked list */
 };
 
-EAPI EtherCamera*       ether_camera_gl_create                  (void);
-EAPI void               ether_camera_gl_init                    (EtherCamera *camera);
-EAPI void               ether_camera_gl_configure               (EtherCamera *camera, float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
-EAPI void               ether_camera_gl_destroy                 (EtherCamera *camera);
-EAPI void               ether_camera_gl_view_matrix_get         (EtherCamera* camera, mat4 dest);
-EAPI void               ether_camera_gl_process_keyboard        (EtherCamera* camera, EtherCameraMovment direction, float deltaTime);
-EAPI void               ether_camera_gl_process_mouse_movement  (EtherCamera* camera, float xoffset, float yoffset, int constrainPitch);
-EAPI void               ether_camera_gl_process_mouse_scroll    (EtherCamera* camera, float yoffset);
-
-#if FALSE
+EAPI EtherCameraOld       *ether_camera_init                    (EtherCameraOld *camera);
+EAPI EtherCameraOld       *ether_camera_create                  (void);
+EAPI void                  ether_camera_destroy                 (EtherCameraOld *camera);
 EAPI void                  ether_camera_zoom_set                (EtherCameraOld *camera, float zoom);
 EAPI float                 ether_camera_zoom_get                (EtherCameraOld *camera);
 EAPI void                  ether_camera_aspect_set              (EtherCameraOld *camera, float aspect);
@@ -50,7 +43,7 @@ EAPI void                  ether_camera_obj_set                 (EtherCameraOld 
 EAPI EtherObject          *ether_camera_obj_get                 (EtherCameraOld *camera);
 EAPI void                  ether_camera_name_set                (EtherCameraOld *camera, char *name);
 EAPI char                 *ether_camera_name_get                (EtherCameraOld *camera);
-EAPI EtherCameraOld       *ether_camera_next_get                (EtherCameraOld *camera);
+EAPI EtherCameraOld          *ether_camera_next_get                (EtherCameraOld *camera);
 EAPI void                  ether_camera_application_data_set    (EtherCameraOld *camera, void *data);
 EAPI void                 *ether_camera_application_data_get    (EtherCameraOld *camera);
 EAPI void                  ether_camera_move                    (EtherCameraOld *camera, EtherScalar x, EtherScalar y, EtherScalar z);
@@ -80,6 +73,5 @@ EAPI void                  ether_camera_relative_rotations_get  (EtherCameraOld 
 EAPI void                  ether_camera_forward_vector_get      (EtherCameraOld *camera, EtherVector vector);
 EAPI void                  ether_camera_right_vector_get        (EtherCameraOld *camera, EtherVector vector);
 EAPI void                  ether_camera_up_vector_get           (EtherCameraOld *camera, EtherVector vector);
-#endif
 
-#endif /* __ETHER_CAMERA_H__ */
+#endif /* __ETHER_CAMERA_OLD_H__ */

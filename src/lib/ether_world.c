@@ -108,7 +108,7 @@ ether_world_find_light(char *name)
 }
 
 void 
-ether_world_add_camera(EtherCamera *camera)
+ether_world_add_camera(EtherCameraOld *camera)
 {
     if(ether_world_current == NULL || camera == NULL)
         return;
@@ -117,9 +117,9 @@ ether_world_add_camera(EtherCamera *camera)
 }
 
 void
-ether_world_remove_camera(EtherCamera *camera)
+ether_world_remove_camera(EtherCameraOld *camera)
 {
-    EtherCamera *p;
+    EtherCameraOld *p;
     if(ether_world_current == NULL || camera == NULL)
         return;
     if(ether_world_current->cameras == camera)
@@ -134,10 +134,10 @@ ether_world_remove_camera(EtherCamera *camera)
     camera->next = NULL;
 }
 
-EtherCamera  *
+EtherCameraOld  *
 ether_world_find_camera(char *name)
 {
-    EtherCamera *p;
+    EtherCameraOld *p;
     for (p = ether_world_current->cameras; p; p = p->next)
         if (!strcasecmp(p->name, name))
             return p;
@@ -211,7 +211,7 @@ ether_world_count_lights(void)
 int 
 ether_world_count_cameras(void)
 {
-    EtherCamera *camera;
+    EtherCameraOld *camera;
     int n = 0;
     for (camera = ether_world_current->cameras; camera; camera = camera->next)
         ++n;
@@ -393,7 +393,7 @@ ether_world_lights_get(void)
     return ether_world_current->lights;
 }
 
-EtherCamera *
+EtherCameraOld *
 ether_world_cameras_get(void)
 {
     return ether_world_current->cameras;
@@ -406,36 +406,36 @@ ether_world_object_tree_get(void)
 }
 
 void 
-ether_world_camera_set(EtherCamera *cam)
+ether_world_camera_set(EtherCameraOld *cam)
 {
     ether_world_current->camera = cam;
 }
 
-EtherCamera *
+EtherCameraOld *
 ether_world_camera_get(void)
 {
     return ether_world_current->camera;
 }
 
 void 
-ether_world_left_camera_set(EtherCamera *cam)
+ether_world_left_camera_set(EtherCameraOld *cam)
 {
     ether_world_current->left_camera = cam;
 }
 
-EtherCamera *
+EtherCameraOld *
 ether_world_left_camera_get(void)
 {
     return ether_world_current->left_camera;
 }
 
 void
-ether_world_right_camera_set(EtherCamera *cam)
+ether_world_right_camera_set(EtherCameraOld *cam)
 {
     ether_world_current->right_camera = cam;
 }
 
-EtherCamera *
+EtherCameraOld *
 ether_world_right_camera_get(void)
 {
     return ether_world_current->right_camera;
