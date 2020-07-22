@@ -116,7 +116,7 @@
     <ClInclude Include="src\lib\ether_world.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\bin\opengl06.c" />
+    <ClCompile Include="src\bin\opengl08.c" />
     <ClCompile Include="src\external\glad\src\glad.c" />
     <ClCompile Include="src\lib\ether_allegro.c" />
     <ClCompile Include="src\lib\ether_application.c" />
