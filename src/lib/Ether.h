@@ -115,6 +115,7 @@ typedef struct _Ether_Outputfacet  EtherOutputfacet;
 #include <ether_timer.h>
 #include <ether_vector.h>
 #include <ether_matrix.h>
+#include <ether_simple_noise.h>
 #include <ether_mesh.h>
 #include <ether_camera.h>
 

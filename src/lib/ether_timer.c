@@ -1,3 +1,5 @@
+#include <Windows.h>
+
 #include <Ether.h>
 
 
@@ -40,8 +42,7 @@ static void _ether_timer_systemtime_get(SystemTime* time)
 void _ether_timer_system_sleep(int milliseconds)
 {
 #ifdef MS_OS_WINDOWS
-	//TODO: fix it
-	//Sleep(milliseconds);
+	Sleep(milliseconds);
 #else
 	usleep(milliseconds * 1000);
 #endif
@@ -89,6 +90,16 @@ ether_timer_tick_rate_get(void)
 	return (EtherTime)1000;
 }
 
+void ether_timer_delay(EtherTime milliseconds)
+{
+	if (_ether_timer_notimer)
+		return;
+
+	_ether_timer_system_sleep(10);
+}
+
+
+/*
 void
 ether_timer_delay(EtherTime milliseconds)
 {
@@ -102,11 +113,11 @@ ether_timer_delay(EtherTime milliseconds)
 
 	now = 0;
 	while (milliseconds > now) {
-		_ether_timer_system_sleep(1);
+		_ether_timer_system_sleep(10);
 		_ether_timer_systemtime_get(&end);
 		seconds = _TIMER_SECS(end) - _TIMER_SECS(start);
 		useconds = _TIMER_MILS(end) - _TIMER_MILS(start);
 		now = (size_t)((seconds * 1000 + useconds / 1000.0) + 0.5);
 	}
 }
-
+*/

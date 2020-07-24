@@ -111,6 +111,9 @@
     <ClInclude Include="src\lib\ether_vbo.h">
       <Filter>lib</Filter>
     </ClInclude>
+    <ClInclude Include="src\lib\ether_simple_noise.h">
+      <Filter>lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lib\ether_allegro.c">
@@ -220,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="src\bin\opengl10.c">
       <Filter>bin</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\ether_simple_noise.c">
+      <Filter>lib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
