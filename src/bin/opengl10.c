@@ -17,7 +17,9 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void build_planet_mesh(EtherMesh* mesh, int resolution);
+void build_planet_mesh(EtherMesh* mesh, float radius, int resolution);
+
+void noise_settings_configure();
 
 // settings
 unsigned int SCR_WIDTH = 800;
@@ -32,9 +34,11 @@ EtherBool firstMouse = TRUE;
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
-
 int main()
 {
+	ether_simple_noise_init(0);
+	noise_settings_configure();
+
 	// glfw: initialize and configure
 	// ------------------------------
 	glfwInit();
@@ -86,21 +90,21 @@ int main()
 	}
 
 	ether_camera_gl_init(&camera);
-	ether_camera_gl_configure(&camera, 0.0f, 0.0f, 15.0f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
+	ether_camera_gl_configure(&camera, 0.0f, 0.0f, 7.5f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
 
 	EtherMesh cube;
 	ether_mesh_init(&cube);
-	build_planet_mesh(&cube, 8);
+	build_planet_mesh(&cube, 2.272f, 100);
 
 	EtherVbo vbo;
 	ether_vbo_init(&vbo, ETHER_VBO_TYPE_MESH, &cube);
-
 	ether_vbo_gpu_store(&vbo);
 
 	// uncomment this call to draw in wireframe polygons.
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+	ether_timer_init();
 
 	// render loop
 	// -----------
@@ -144,6 +148,8 @@ int main()
 		// -------------------------------------------------------------------------------
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		ether_timer_delay(10);
 	}
 
 	ether_vbo_relesase(&vbo);
@@ -214,7 +220,54 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	ether_camera_gl_process_mouse_scroll(&camera, (float)yoffset);
 }
 
-void build_planet_mesh(EtherMesh* mesh, int resolution)
+int   noiseSettings_numLayers = 1;
+float noiseSettings_strength  = 1;
+float noiseSettings_baseRoughness = 1;
+float noiseSettings_roughness = 2;
+float noiseSettings_persistence = 0.5f;
+float noiseSettings_minValue = 0;
+vec3  noiseSettings_centre = { 0, 0, 0 };
+
+void noise_settings_configure() {
+	noiseSettings_strength  = 0.24f;
+	noiseSettings_numLayers = 5;
+	noiseSettings_baseRoughness = 0.91f;
+	noiseSettings_roughness = 1.83f;
+	noiseSettings_persistence = 0.54f;
+
+	noiseSettings_centre[0] = 2.86f;
+	noiseSettings_centre[1] = 1.84f;
+	noiseSettings_centre[2] = 2.48f;
+
+	noiseSettings_minValue = 1.0f;
+}
+
+float noise_filter_evaluate(vec3 point)
+{
+	float noiseValue = 0;
+	float frequency = noiseSettings_baseRoughness;
+	float amplitude = 1;
+
+	vec3  vecAux = {0, 0, 0};
+
+	for (int i = 0; i < noiseSettings_numLayers; i++)
+	{
+		glm_vec3_scale(point, frequency, vecAux);
+		glm_vec3_add(vecAux, noiseSettings_centre, vecAux);
+
+		float v = ether_simple_noise_evaluate(vecAux);
+		noiseValue += (v + 1) * 0.5f * amplitude;
+		
+		frequency *= noiseSettings_roughness;
+		amplitude *= noiseSettings_persistence;
+	}
+
+	noiseValue =  max(0, (noiseValue - noiseSettings_minValue));
+
+	return noiseValue * noiseSettings_strength;
+}
+
+void build_planet_mesh(EtherMesh* mesh, float radius, int resolution)
 {
 	vec3 modelSide[] = {
 		VEC3_UP,
@@ -277,6 +330,13 @@ void build_planet_mesh(EtherMesh* mesh, int resolution)
 
 				glm_vec3_add(faceSide, pointOnUnitCube, pointOnUnitCube);
 				glm_vec3_normalize(pointOnUnitCube);
+				
+				/*noise elevation*/
+				float elevation = noise_filter_evaluate(pointOnUnitCube);
+				glm_vec3_scale(pointOnUnitCube, (elevation+1) * radius, pointOnUnitCube);
+
+				/* radius */
+				//glm_vec3_scale(pointOnUnitCube, radius, pointOnUnitCube);
 
 				glm_vec3_copy(pointOnUnitCube, mesh->vertices + ((size_t)i * 3));
 
