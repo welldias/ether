@@ -6,7 +6,7 @@ struct _Ether_Mesh
 	float* vertices;
 	unsigned int* indices;
 
-	unsigned int totalVestices;
+	unsigned int totalVertices;
 	unsigned int totalIndices;
 };
 

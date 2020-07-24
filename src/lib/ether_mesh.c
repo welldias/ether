@@ -32,7 +32,7 @@ unsigned int ether_mesh_vertices_size(EtherMesh* mesh)
 	if (mesh == NULL)
 		return 0;
 
-	return (unsigned int)(sizeof(float)* mesh->totalVestices * 3);
+	return (unsigned int)(sizeof(float)* mesh->totalVertices * 3);
 }
 
 unsigned int ether_mesh_indices_size(EtherMesh* mesh)
