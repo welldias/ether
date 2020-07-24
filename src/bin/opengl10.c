@@ -13,24 +13,11 @@
 #define VEC3_RIGHT    {1,  0,  0}
 #define VEC3_UP       {0,  1,  0}
 
-struct _Ether_Cube {
-	int totalVestices;
-	int totalTriangles;
-
-	float* vertices;
-	unsigned int* triangles;
-};
-
-typedef struct _Ether_Cube EtherCube;
-
-/* converting rgb color to opengl format */
-//float out = (1.0f / 255) * byte_in;
-
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void build_planet_mash(EtherCube* cube, int resolution);
+void build_planet_mesh(EtherMesh* mesh, int resolution);
 
 // settings
 unsigned int SCR_WIDTH = 800;
@@ -48,8 +35,6 @@ float lastFrame = 0.0f;
 
 int main()
 {
-	ether_camera_gl_configure(&camera, 0.0f, 0.0f, 15.0f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
-
 	// glfw: initialize and configure
 	// ------------------------------
 	glfwInit();
@@ -100,63 +85,17 @@ int main()
 		return -1;
 	}
 
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
-	size_t countVertices = 0;
-	size_t countIndices = 0;
-	size_t totalIndices = 0;
+	ether_camera_gl_init(&camera);
+	ether_camera_gl_configure(&camera, 0.0f, 0.0f, 15.0f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
 
-	EtherCube cube;
-	memset(&cube, 0, sizeof(EtherCube));
+	EtherMesh cube;
+	ether_mesh_init(&cube);
+	build_planet_mesh(&cube, 8);
 
-	build_planet_mash(&cube, 15);
+	EtherVbo vbo;
+	ether_vbo_init(&vbo, ETHER_VBO_TYPE_MESH, &cube);
 
-	countVertices = sizeof(float) * cube.totalVestices * 3;
-	countIndices = sizeof(int) * cube.totalTriangles;
-	totalIndices = cube.totalTriangles;
-
-	float* vertices = cube.vertices;
-	unsigned int* indices = cube.triangles;
-
-	vec3 spherePositions[] = {
-	{  0.0f,  0.0f,   0.0f },
-	{  2.0f,  5.0f, -15.0f },
-	{ -1.5f, -2.2f,  -2.5f },
-	{ -3.8f, -2.0f, -12.3f },
-	{  2.4f, -0.4f,  -3.5f },
-	{ -1.7f,  3.0f,  -7.5f },
-	{  1.3f, -2.0f,  -2.5f },
-	{  1.5f,  2.0f,  -2.5f },
-	{  1.5f,  0.2f,  -1.5f },
-	{ -1.3f,  1.0f,  -1.5f },
-	};
-
-	unsigned int VBO, VAO, EBO;
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, countVertices, vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, countIndices, indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-	glBindVertexArray(0);
+	ether_vbo_gpu_store(&vbo);
 
 	// uncomment this call to draw in wireframe polygons.
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -194,20 +133,12 @@ int main()
 		ether_camera_gl_view_matrix_get(&camera, view);
 		ether_shader_uniform_mat4(shaderId, "view", view);
 
-		glBindVertexArray(VAO);
-		for (unsigned int i = 0; i < 10; i++)
-		{
 			mat4 model = GLM_MAT4_IDENTITY_INIT;
-
-			glm_translate(model, spherePositions[i]);
-
-			float angle = 20.0f * i;
-			vec3 v1; v1[0] = 1.0f; v1[1] = 0.3f; v1[2] = 0.5f;
-			glm_rotate(model, glm_rad(angle), v1);
+			glm_translate(model, (vec3) { 0.0f, 0.0f, 0.0f });
+			glm_rotate(model, glm_rad(20.0f), (vec3){ 1.0f, 0.3f, 0.5f });
 			ether_shader_uniform_mat4(shaderId, "model", model);
 
-			glDrawElements(GL_TRIANGLES, (GLsizei)totalIndices, GL_UNSIGNED_INT, 0);
-		}
+			ether_vbo_draw(&vbo, shaderId);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
@@ -215,12 +146,7 @@ int main()
 		glfwPollEvents();
 	}
 
-	// optional: de-allocate all resources once they've outlived their purpose:
-	// ------------------------------------------------------------------------
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
-
+	ether_vbo_relesase(&vbo);
 	ether_shader_unload(shaderId);
 
 	// glfw: terminate, clearing all previously allocated GLFW resources.
@@ -288,7 +214,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	ether_camera_gl_process_mouse_scroll(&camera, (float)yoffset);
 }
 
-void build_planet_mash(EtherCube* cube, int resolution)
+void build_planet_mesh(EtherMesh* mesh, int resolution)
 {
 	vec3 modelSide[] = {
 		VEC3_UP,
@@ -299,21 +225,9 @@ void build_planet_mash(EtherCube* cube, int resolution)
 		VEC3_RIGHT,
 	};
 
-	cube->totalVestices  = 0;
-	cube->totalTriangles = 0;
-	
-	int z = 0;
-
-	for (z = 0; z < 6; z++) {
-		cube->totalVestices  += resolution * resolution;
-		cube->totalTriangles += (resolution - 1) * (resolution - 1) * 6;
-	}
-
-	cube->vertices  = (float*)malloc(sizeof(float) * cube->totalVestices * 3);
-	cube->triangles = (unsigned int*)malloc(sizeof(int) * cube->totalTriangles);
-
 	int i = 0;
 	int t = 0;
+	int z = 0;
 
 	vec3 axisA;
 	vec3 axisB;
@@ -321,6 +235,21 @@ void build_planet_mash(EtherCube* cube, int resolution)
 	vec2 percent;
 	vec3 aux;
 	vec3 pointOnUnitCube;
+
+	mesh->totalVertices  = 0;
+	mesh->totalIndices   = 0;
+	
+
+	for (z = 0; z < 6; z++) {
+		mesh->totalVertices  += resolution * resolution;
+		mesh->totalIndices += (resolution - 1) * (resolution - 1) * 6;
+	}
+
+	unsigned int ddd1 = sizeof(float) * mesh->totalVertices * 3;
+	unsigned int ddd2 = sizeof(int) * mesh->totalIndices;
+
+	mesh->vertices = (float*)malloc(ether_mesh_vertices_size(mesh));
+	mesh->indices  = (unsigned int*)malloc(ether_mesh_indices_size(mesh));
 
 	for (z = 0; z < 6; z++) {
 
@@ -349,17 +278,17 @@ void build_planet_mash(EtherCube* cube, int resolution)
 				glm_vec3_add(faceSide, pointOnUnitCube, pointOnUnitCube);
 				glm_vec3_normalize(pointOnUnitCube);
 
-				glm_vec3_copy(pointOnUnitCube, cube->vertices + ((size_t)i * 3));
+				glm_vec3_copy(pointOnUnitCube, mesh->vertices + ((size_t)i * 3));
 
 				if (x != resolution - 1 && y != resolution - 1)
 				{
-					cube->triangles[t] = i;
-					cube->triangles[t + 1] = i + resolution + 1;
-					cube->triangles[t + 2] = i + resolution;
+					mesh->indices[t] = i;
+					mesh->indices[t + 1] = i + resolution + 1;
+					mesh->indices[t + 2] = i + resolution;
 
-					cube->triangles[t + 3] = i;
-					cube->triangles[t + 4] = i + 1;
-					cube->triangles[t + 5] = i + resolution + 1;
+					mesh->indices[t + 3] = i;
+					mesh->indices[t + 4] = i + 1;
+					mesh->indices[t + 5] = i + resolution + 1;
 
 					t += 6;
 				}

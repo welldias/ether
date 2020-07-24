@@ -25,10 +25,6 @@ void ether_vbo_init(EtherVbo* vbo, EtherVboType type, void* buffer)
 {	 
 	if (vbo == NULL || buffer == NULL)
 		return;
-	if (vbo->data != NULL) {
-		/*TODO: return an error */
-		return;
-	}
 
 	glGenVertexArrays(1, &(vbo->vaoId));
 	glGenBuffers(1, &(vbo->verticesVboId));
@@ -38,7 +34,7 @@ void ether_vbo_init(EtherVbo* vbo, EtherVboType type, void* buffer)
 	vbo->data = buffer;
 }	 
 
-void ether_vbo_destroy(EtherVbo* vbo)
+void ether_vbo_relesase(EtherVbo* vbo)
 {
 	if (vbo == NULL)
 		return;
@@ -48,6 +44,19 @@ void ether_vbo_destroy(EtherVbo* vbo)
 	glDeleteBuffers(1, &(vbo->indicesVboId));
 	glDeleteVertexArrays(1, &(vbo->vaoId));
 	glBindVertexArray(0);
+
+	vbo->vaoId = 0;
+	vbo->verticesVboId = 0;
+	vbo->vaoId = 0;
+}
+
+void ether_vbo_destroy(EtherVbo* vbo)
+{
+	if (vbo == NULL)
+		return;
+
+	if (vbo->vaoId != 0)
+		ether_vbo_relesase(vbo);
 
 	switch (vbo->type) {
 	case ETHER_VBO_TYPE_ARRAY:
@@ -59,6 +68,7 @@ void ether_vbo_destroy(EtherVbo* vbo)
 		break;
 	}
 
+	free(vbo);
 }
 
 void ether_vbo_gpu_store(EtherVbo* vbo)
@@ -83,7 +93,7 @@ void ether_vbo_gpu_store(EtherVbo* vbo)
 	glBindVertexArray(0);
 }
 
-void ether_vbo_draw(EtherVbo* vbo)
+void ether_vbo_draw(EtherVbo* vbo, EtherShader shaderId)
 {
 	if (vbo == NULL || vbo->data == NULL)
 		return;
@@ -123,6 +133,11 @@ void _ether_vbo_gpu_store_mesh(EtherVbo* vbo)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, iSize, mesh->indices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 }
 
 void _ether_vbo_gpu_store_array(EtherVbo* vbo)
