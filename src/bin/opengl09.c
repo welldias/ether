@@ -1,6 +1,6 @@
 #include <glad/glad.h> 
 
-#include <GLFW\glfw3.h>
+#include <GLFW/glfw3.h>
 
 #include <Ether.h>
 #include <ether_glfw_driver.h>
@@ -12,8 +12,8 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+unsigned int SCR_WIDTH = 800;
+unsigned int SCR_HEIGHT = 600;
 
 EtherCamera camera;
 float lastX = 800 / 2.0f;
@@ -27,7 +27,8 @@ float lastFrame = 0.0f;
 int main()
 {
 
-    ether_camera_gl_configure(&camera, 0.0f, 0.0f, 3.0f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
+    //ether_camera_gl_configure(&camera, 0.0f, 0.0f, 3.0f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
+    ether_camera_gl_configure(&camera, 7.35f, -6.92f, 4.95f, 0.0f, 1.0f, 0.0f, -86.5f, 1.30f);
 
     // glfw: initialize and configure
     // ------------------------------
@@ -266,6 +267,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+    SCR_WIDTH = width;
+    SCR_HEIGHT = height;
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)

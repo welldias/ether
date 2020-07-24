@@ -84,11 +84,17 @@ typedef float EtherScalar;
 typedef float EtherAngle;
 typedef float EtherFactor;
 
+typedef int          EtherBool;
 typedef size_t       EtherTime;
 typedef unsigned int EtherColor;
 
 typedef unsigned int EtherShader;
 typedef unsigned int EtherTexture;
+
+typedef struct _Ether_Mesh         EtherMesh;
+typedef struct _Ether_Camera       EtherCamera;
+
+typedef struct _Ether_Vbo          EtherVbo;
 
 typedef struct _Ether_Shape        EtherShape;
 typedef struct _Ether_Surface_Map  EtherSurfaceMap;
@@ -98,7 +104,6 @@ typedef struct _Ether_Rep          EtherRep;
 typedef struct _Ether_Surface      EtherSurface;
 typedef struct _Ether_Object       EtherObject;
 typedef struct _Ether_Light        EtherLight;
-typedef struct _Ether_Camera       EtherCamera;
 typedef struct _Ether_Camera_Old   EtherCameraOld;
 typedef struct _Ether_World        EtherWorld;
 typedef struct _Ether_Statistics   EtherStatistics;
@@ -110,6 +115,11 @@ typedef struct _Ether_Outputfacet  EtherOutputfacet;
 #include <ether_timer.h>
 #include <ether_vector.h>
 #include <ether_matrix.h>
+#include <ether_mesh.h>
+#include <ether_camera.h>
+
+#include <ether_vbo.h>
+
 #include <ether_surface.h>
 #include <ether_palette.h>
 #include <ether_facet.h>
@@ -117,7 +127,6 @@ typedef struct _Ether_Outputfacet  EtherOutputfacet;
 #include <ether_shape.h>
 #include <ether_object.h>
 #include <ether_light.h> 
-#include <ether_camera.h>
 #include <ether_camera_old.h>
 #include <ether_world.h>
 #include <ether_primitives.h>
