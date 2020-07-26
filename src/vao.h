@@ -15,8 +15,9 @@ namespace ether {
 
 	private:
 		unsigned int id;
-		unsigned int attributeNumber;
-		std::vector<Vbo> vbos;
+		Vbo indices;
+		Vbo vertices;
+		Vbo texture;
 	};
 }
 

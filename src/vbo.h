@@ -14,15 +14,14 @@ namespace ether {
 			Normals,
 		};
 
-		Vbo(Vbo::Type type, unsigned int count, void* data);
+		Vbo();
+		Vbo(Vbo::Type type, unsigned int count, void* data, unsigned textureID=0);
 		~Vbo();
 
 		void Load(unsigned int attributeNumber);
-		void AllocData();
 		void ReleaseBuffer();
 		unsigned int UnitSize() const;
 		unsigned int Size() const;
-		unsigned int GlType() const;
 
 		unsigned int GetId() const { return id; };
 		const void* GetData() const { return data; };
@@ -36,6 +35,7 @@ namespace ether {
 
 	private:
 		unsigned int id;
+		unsigned int textureID;
 
 		void* data;
 		unsigned int count;

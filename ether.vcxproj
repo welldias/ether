@@ -16,9 +16,11 @@
     <ClCompile Include="src\engine.cpp" />
     <ClCompile Include="src\exception.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\matrix4.cpp" />
     <ClCompile Include="src\render.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\shader_program.cpp" />
+    <ClCompile Include="src\texture_loader.cpp" />
     <ClCompile Include="src\vao.cpp" />
     <ClCompile Include="src\vbo.cpp" />
     <ClCompile Include="src\vector3.cpp" />
@@ -28,10 +30,12 @@
     <ClInclude Include="src\engine.h" />
     <ClInclude Include="src\ether.h" />
     <ClInclude Include="src\exception.h" />
+    <ClInclude Include="src\matrix4.h" />
     <ClInclude Include="src\property.h" />
     <ClInclude Include="src\render.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\shader_program.h" />
+    <ClInclude Include="src\texture_loader.h" />
     <ClInclude Include="src\vao.h" />
     <ClInclude Include="src\vbo.h" />
     <ClInclude Include="src\vector3.h" />

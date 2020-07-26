@@ -20,65 +20,65 @@ namespace ether {
 		Vector3(float x, float y, float z);
 		Vector3(const Vector3& v1);
 
-		float& operator[](int i) {
+		inline float& operator[](int i) {
 			if (i > 2) {
-				throw MathError("Index Out Of Bounds: Index: "+ std::to_string(i) +" Size: 2");
+				throw MathError("Index out of bounds: Index: "+ std::to_string(i) +" Size: 2");
 			}
 			return v[i];
 		}
 
-		Vector3 operator+ (const Vector3& v1) {
+		inline Vector3 operator+ (const Vector3& v1) {
 			return Vector3(v[0] + v1.v[0], v[1] + v1.v[1], v[2] + v1.v[2]);
 		}
 
-		Vector3& operator+=(const Vector3& v1) {
+		inline Vector3& operator+=(const Vector3& v1) {
 			v[0] += v1.v[0];
 			v[1] += v1.v[1];
 			v[2] += v1.v[2];
 			return *this;
 		}
 
-		Vector3  operator- (const Vector3& v1) {
+		inline Vector3 operator- (const Vector3& v1) {
 			return Vector3(v[0] - v1.v[0], v[1] - v1.v[1], v[2] - v1.v[2]);
 		}
 
-		Vector3& operator-=(const Vector3& v1) {
+		inline Vector3& operator-=(const Vector3& v1) {
 			v[0] -= v1.v[0];
 			v[1] -= v1.v[1];
 			v[2] -= v1.v[2];
 			return *this;
 		}
 
-		Vector3  operator* (float value) {
+		inline Vector3  operator* (float value) {
 			return Vector3(v[0] * value, v[1] * value, v[2] * value);
 		}
 
-		Vector3& operator*=(float value) {
+		inline Vector3& operator*=(float value) {
 			v[0] *= value;
 			v[1] *= value;
 			v[2] *= value;
 			return *this;
 		}
 
-		Vector3  operator* (const Vector3& v1) {
+		inline Vector3  operator* (const Vector3& v1) {
 			return Vector3(v[0] * v1.v[0], v[1] * v1.v[1], v[2] * v1.v[2]);
 		}
 
-		Vector3& operator*=(const Vector3& v1) {
+		inline Vector3& operator*=(const Vector3& v1) {
 			v[0] *= v1.v[0];
 			v[1] *= v1.v[1];
 			v[2] *= v1.v[2];
 			return *this;
 		}
 
-		Vector3  operator/ (float value) {
+		inline Vector3  operator/ (float value) {
 			if (value == 0) {
 				throw MathError("Divid by zero");
 			}
 			return Vector3(v[0] / value, v[1] / value, v[2] / value);
 		}
 
-		Vector3& operator/=(float value) {
+		inline Vector3& operator/=(float value) {
 			if (value == 0) {
 				throw MathError("Divid by zero");
 			}
@@ -89,7 +89,7 @@ namespace ether {
 			return *this;
 		}
 
-		Vector3& operator= (const Vector3& v1) {
+		inline Vector3& operator= (const Vector3& v1) {
 			v[0] = v1.v[0];
 			v[1] = v1.v[1];
 			v[2] = v1.v[2];
@@ -146,7 +146,7 @@ namespace ether {
 			return *this;
 		}
 
-		Vector3 Rescale(float value) {
+		inline Vector3 Rescale(float value) {
 			Normalize();
 			return Scale(value);
 		}
@@ -154,5 +154,3 @@ namespace ether {
 }
 
 #endif // __ETHER_VECTOR3_H__
-
-

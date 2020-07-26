@@ -1,19 +1,28 @@
 #include "ether.h"
 
+#include <cglm\cglm.h>
+
 using namespace ether;
 
 int main(int argc, char* argv[]) {
 
-    float vertices[] = {
-		-0.5f, 0.5f, 0.0f,//v0
-		-0.5f, -0.5f, 0.0f,//v1
-		0.5f, -0.5f, 0.0f,//v2
-		0.5f, 0.5f, 0.0f,//v3
+	float vertices[] = {
+		-0.5f,  0.5f, 0.0f,
+		-0.5f, -0.5f, 0.0f,
+		 0.5f, -0.5f, 0.0f,
+		 0.5f,  0.5f, 0.0f,
     };
 
+	float textureCoords[] = {
+		0, 0,
+		0, 1,
+		1, 1,
+		1, 0
+	};
+
 	int indices[] = {
-		0,1,3,//top left triangle (v0, v1, v3)
-		3,1,2//bottom right triangle (v3, v1, v2)
+		0, 1, 3,
+		3, 1, 2
 	};
 
 	auto engine = Engine::getInstance();
@@ -30,11 +39,16 @@ int main(int argc, char* argv[]) {
 	engine.ShaderProgram.Add(vertexShader);
 	engine.ShaderProgram.Add(fragmentShader);
 	engine.ShaderProgram.BindAttibute(0, "position");
+	engine.ShaderProgram.BindAttibute(1, "textureCoords");
 
+
+	TextureLoader textureLoader;
+	textureLoader.Load("resources/terrain.jpg");
 
 	Vao vao;
-	vao.Add(Vbo(Vbo::Type::Indices, 6, indices));
-	vao.Add(Vbo(Vbo::Type::Vertices, 12, vertices));
+	vao.Add(Vbo(Vbo::Type::Indices, sizeof(indices) / sizeof(indices[0]), indices));
+	vao.Add(Vbo(Vbo::Type::Vertices, sizeof(vertices) / sizeof(vertices[0]), vertices));
+	vao.Add(Vbo(Vbo::Type::Texture, sizeof(textureCoords) / sizeof(textureCoords[0]), textureCoords, textureLoader.GetId()));
 	vao.Load();
 
 	engine.Vaos.push_back(vao);

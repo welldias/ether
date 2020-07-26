@@ -13,7 +13,9 @@
 
 #include "exception.h"
 #include "property.h"
+#include "texture_loader.h"
 #include "vector3.h"
+#include "matrix4.h"
 #include "vbo.h"
 #include "vao.h"
 #include "shader.h"
