@@ -1,231 +1,36 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="lib">
-      <UniqueIdentifier>{41a9c949-bdd4-44ad-ab56-8a5290504023}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="bin">
-      <UniqueIdentifier>{84c963a5-c0c0-4c10-a235-0f4420317537}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\display.cpp" />
+    <ClCompile Include="src\engine.cpp" />
+    <ClCompile Include="src\exception.cpp" />
+    <ClCompile Include="external\glad\src\glad.c">
+      <Filter>glad</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vector3.cpp" />
+    <ClCompile Include="src\vao.cpp" />
+    <ClCompile Include="src\render.cpp" />
+    <ClCompile Include="src\vbo.cpp" />
+    <ClCompile Include="src\shader.cpp" />
+    <ClCompile Include="src\shader_program.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\lib\Ether.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_allegro.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_application.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_display.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_drivers.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_facet.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_fig.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_light.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_math.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_matrix.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_object.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_palette.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_plg.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_primitives.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_private.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_raster.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_render.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_rep.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_shape.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_statistics.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_surface.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_system.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_task.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_timer.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_vector.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_wld.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_world.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_glfw_driver.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_shader.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_texture.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_camera_old.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_camera.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_mesh.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_vbo.h">
-      <Filter>lib</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lib\ether_simple_noise.h">
-      <Filter>lib</Filter>
-    </ClInclude>
+    <ClInclude Include="src\ether.h" />
+    <ClInclude Include="src\display.h" />
+    <ClInclude Include="src\engine.h" />
+    <ClInclude Include="src\exception.h" />
+    <ClInclude Include="src\vector3.h" />
+    <ClInclude Include="src\property.h" />
+    <ClInclude Include="src\vao.h" />
+    <ClInclude Include="src\render.h" />
+    <ClInclude Include="src\vbo.h" />
+    <ClInclude Include="src\shader.h" />
+    <ClInclude Include="src\shader_program.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\lib\ether_allegro.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_application.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_display.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_drivers.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_facet.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_fig.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_light.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_math.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_matrix.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_memory.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_object.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_palette.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_plg.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_primitives.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_raster.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_render.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_rep.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_shape.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_statistics.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_surface.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_system.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_task.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_timer.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_transform.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_vector.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_wld.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_world.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\external\glad\src\glad.c">
-      <Filter>bin</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_glfw_driver.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_shader.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_texture.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_camera_old.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_camera.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_mesh.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_vbo.c">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="src\bin\opengl10.c">
-      <Filter>bin</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lib\ether_simple_noise.c">
-      <Filter>lib</Filter>
-    </ClCompile>
+    <Filter Include="glad">
+      <UniqueIdentifier>{a81aa083-6b35-4aa1-85b1-4ea4bfc27714}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
