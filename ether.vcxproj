@@ -19,6 +19,8 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\math_util.cpp" />
     <ClCompile Include="src\matrix4.cpp" />
+    <ClCompile Include="src\mesh.cpp" />
+    <ClCompile Include="src\noise.cpp" />
     <ClCompile Include="src\render.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\shader_program.cpp" />
@@ -35,6 +37,8 @@
     <ClInclude Include="src\exception.h" />
     <ClInclude Include="src\math_util.h" />
     <ClInclude Include="src\matrix4.h" />
+    <ClInclude Include="src\mesh.h" />
+    <ClInclude Include="src\noise.h" />
     <ClInclude Include="src\property.h" />
     <ClInclude Include="src\render.h" />
     <ClInclude Include="src\shader.h" />

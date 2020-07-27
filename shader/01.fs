@@ -9,6 +9,7 @@ uniform sampler2D textureSampler;
 
 void main(void){
 
+	//out_Color = vec4(1.0,1.0,1.0,1.0);
 	out_Color = texture(textureSampler, pass_textureCoords);
 
 }

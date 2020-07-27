@@ -4,6 +4,8 @@
 #include <glad/glad.h> 
 #include <GLFW\glfw3.h>
 
+#include <cglm\cglm.h>
+
 #include <string>
 #include <iostream>
 #include <iterator>
@@ -13,10 +15,12 @@
 #include <cmath>
 
 #include "exception.h"
+#include "noise.h"
 #include "property.h"
 #include "texture_loader.h"
 #include "vector3.h"
 #include "matrix4.h"
+#include "mesh.h"
 #include "math_util.h"
 #include "camera.h"
 #include "vbo.h"

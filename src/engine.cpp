@@ -40,6 +40,8 @@ namespace ether {
 
 		InputsConfigure();
 
+		Camera.Configure(0.0f, 0.0f, 3.5f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
+
 		// tell GLFW to capture our mouse
 		glfwSetInputMode(Display.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -52,6 +54,11 @@ namespace ether {
 	}
 
 	void Engine::Run() {
+
+		// uncomment this call to draw in wireframe polygons.
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		while (!Display.ShouldClose()) {
 
@@ -75,11 +82,11 @@ namespace ether {
 			ShaderProgram.Uniform("view", view);
 
 			Matrix4 model;
-			Vector3 vecA( 0.0f, 0.0f, 0.0f);
-			Vector3 vecB( 1.0f, 0.3f, 0.5f );
+			//Vector3 vecA(0.0f, 0.0f, 0.0f);
+			//Vector3 vecB(1.0f, 0.3f, 0.5f);
 			model.Identity();
-			model.Translate(vecA);
-			model.Rotate(MathUtil::Radian(20.0f), vecB);
+			//model.Translate(vecA);
+			//model.Rotate(MathUtil::Radian(20.0f), vecB);
 			ShaderProgram.Uniform("model", model);
 
 			for (auto it = Vaos.begin(); it != Vaos.end(); it++) {
