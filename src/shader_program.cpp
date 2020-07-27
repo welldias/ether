@@ -34,6 +34,14 @@ namespace ether {
         shaders.push_back(shader);
     }
 
+    void ShaderProgram::Use() {
+        glUseProgram(id);
+    }
+
+    void ShaderProgram::DontUse() {
+        glUseProgram(0);
+    }
+
 	void ShaderProgram::CheckError() {
 
         int success = 0;
@@ -49,12 +57,8 @@ namespace ether {
         }
     }
 
-    void ShaderProgram::Use() {
-        glUseProgram(id);
-    }
-
-    void ShaderProgram::DontUse() {
-        glUseProgram(0);
+    int ShaderProgram::UniformLocation(const std::string& name) {
+        return glGetUniformLocation(id, name.c_str());
     }
 
     void ShaderProgram::Uniform(const std::string& name, bool value) {
@@ -67,6 +71,14 @@ namespace ether {
 
     void ShaderProgram::Uniform(const std::string& name, float value) {
         glUniform1f(glGetUniformLocation(id, name.c_str()), value);
+    }
+
+    void ShaderProgram::Uniform(const std::string& name, Vector3& value) {
+        glUniform3fv(glGetUniformLocation(id, name.c_str()), 1, (float*)value);
+    }
+
+    void ShaderProgram::Uniform(const std::string& name, Matrix4& value) {
+        glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, (float*)value);
     }
 
     void ShaderProgram::BindAttibute(int index, const std::string& name) {

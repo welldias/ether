@@ -1,7 +1,17 @@
 #include "ether.h"
 #include <functional>
 
+#include <cglm\cglm.h>
+
 namespace ether {
+
+	// timing
+	float deltaTime = 0.0f;	// time between current frame and last frame
+	float lastFrame = 0.0f;
+	float lastX = 800 / 2.0f;
+	float lastY = 600 / 2.0f;
+	bool firstMouse = true;
+
 
 	void engine_input_mouse_callback(GLFWwindow* window, double xpos, double ypos);
 	void engine_input_scroll_callback(GLFWwindow * window, double xoffset, double yoffset);
@@ -30,7 +40,8 @@ namespace ether {
 
 		InputsConfigure();
 
-		//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		// tell GLFW to capture our mouse
+		glfwSetInputMode(Display.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		// glad: load all OpenGL function pointers
 		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -38,12 +49,15 @@ namespace ether {
 		}
 
 		ShaderProgram.Init();
-
 	}
 
 	void Engine::Run() {
 
 		while (!Display.ShouldClose()) {
+
+			float currentFrame = (float)glfwGetTime();
+			deltaTime = currentFrame - lastFrame;
+			lastFrame = currentFrame;
 
 			ProcessInput();
 
@@ -51,6 +65,22 @@ namespace ether {
 			Render.Prepare();
 
 			ShaderProgram.Use();
+
+			Matrix4 projection;
+			Camera.Perspective((float)Display.Width / (float)Display.Height, 0.1f, 100.0f, projection);
+			ShaderProgram.Uniform("projection", projection);
+
+			Matrix4 view;
+			Camera.ViewMatrix(view);
+			ShaderProgram.Uniform("view", view);
+
+			Matrix4 model;
+			Vector3 vecA( 0.0f, 0.0f, 0.0f);
+			Vector3 vecB( 1.0f, 0.3f, 0.5f );
+			model.Identity();
+			model.Translate(vecA);
+			model.Rotate(MathUtil::Radian(20.0f), vecB);
+			ShaderProgram.Uniform("model", model);
 
 			for (auto it = Vaos.begin(); it != Vaos.end(); it++) {
 				Render.Execute(*(it));
@@ -72,16 +102,16 @@ namespace ether {
 			Display.Close();
 
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-			//ether_camera_gl_process_keyboard(&camera, ETHER_CAMERA_MOVMENT_FORWARD, deltaTime);
+			Camera.MoveForward((float)2.5 * deltaTime);
 		}
 		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-			//ether_camera_gl_process_keyboard(&camera, ETHER_CAMERA_MOVMENT_BACKWARD, deltaTime);
+			Camera.MoveBackward((float)2.5 * deltaTime);
 		}
 		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-			//ether_camera_gl_process_keyboard(&camera, ETHER_CAMERA_MOVMENT_LEFT, deltaTime);
+			Camera.MoveLeft((float)2.5 * deltaTime);
 		}
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-			//ether_camera_gl_process_keyboard(&camera, ETHER_CAMERA_MOVMENT_RIGHT, deltaTime);
+			Camera.MoveRight((float)2.5 * deltaTime);
 		}
 	}
 
@@ -93,11 +123,24 @@ namespace ether {
 	}
 
 	void Engine::inputMouseCallback(GLFWwindow* window, double xpos, double ypos) {
+		if (firstMouse)
+		{
+			lastX = (float)xpos;
+			lastY = (float)ypos;
+			firstMouse = false;
+		}
 
+		float xoffset = (float)xpos - lastX;
+		float yoffset = lastY - (float)ypos;  // reversed since y-coordinates go from bottom to top
+
+		lastX = (float)xpos;
+		lastY = (float)ypos;
+
+		Camera.PointTo(xoffset, yoffset, true);
 	}
 
 	void Engine::inputScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
-
+		Camera.Zoom((float)yoffset);
 	}
 
 	void Engine::inputFramebufferSizeCallback(GLFWwindow* window, int width, int height) {

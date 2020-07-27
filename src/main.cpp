@@ -26,9 +26,7 @@ int main(int argc, char* argv[]) {
 	};
 
 	auto engine = Engine::getInstance();
-
 	engine.Display.BackGroundColor.Set(0.2f, 0.3f, 0.3f);
-
 	engine.Init();
 
 	Shader vertexShader("shader/01.vs", Shader::Type::Vertex);
@@ -39,8 +37,7 @@ int main(int argc, char* argv[]) {
 	engine.ShaderProgram.Add(vertexShader);
 	engine.ShaderProgram.Add(fragmentShader);
 	engine.ShaderProgram.BindAttibute(0, "position");
-	engine.ShaderProgram.BindAttibute(1, "textureCoords");
-
+	engine.ShaderProgram.BindAttibute(1, "textureCoordinates");
 
 	TextureLoader textureLoader;
 	textureLoader.Load("resources/terrain.jpg");

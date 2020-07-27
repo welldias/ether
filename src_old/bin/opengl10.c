@@ -137,12 +137,12 @@ int main()
 		ether_camera_gl_view_matrix_get(&camera, view);
 		ether_shader_uniform_mat4(shaderId, "view", view);
 
-			mat4 model = GLM_MAT4_IDENTITY_INIT;
-			glm_translate(model, (vec3) { 0.0f, 0.0f, 0.0f });
-			glm_rotate(model, glm_rad(20.0f), (vec3){ 1.0f, 0.3f, 0.5f });
-			ether_shader_uniform_mat4(shaderId, "model", model);
+		mat4 model = GLM_MAT4_IDENTITY_INIT;
+		glm_translate(model, (vec3) { 0.0f, 0.0f, 0.0f });
+		glm_rotate(model, glm_rad(20.0f), (vec3){ 1.0f, 0.3f, 0.5f });
+		ether_shader_uniform_mat4(shaderId, "model", model);
 
-			ether_vbo_draw(&vbo, shaderId);
+		ether_vbo_draw(&vbo, shaderId);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------

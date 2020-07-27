@@ -6,11 +6,11 @@ namespace ether {
 	const unsigned int HEIGHT = 600;
 
 	Display::Display() 
-		: width(WIDTH), height(HEIGHT) {
+		: Width(WIDTH), Height(HEIGHT) {
 
 		this->TitleWindow = "Ether";
 		this->window = NULL;
-		this->mode = Mode::Windows;
+		this->Mode = Mode::Windows;
 	}
 
 	Display::~Display() {
@@ -22,7 +22,7 @@ namespace ether {
 		if (window != NULL)
 			return; 
 
-		window = glfwCreateWindow(width, height, TitleWindow.c_str(), NULL, NULL);
+		window = glfwCreateWindow(Width, Height, TitleWindow.c_str(), NULL, NULL);
 		if (window == NULL)
 		{
 			glfwTerminate();

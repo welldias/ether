@@ -98,6 +98,11 @@ namespace ether {
 
 		inline void  Set(float x, float y, float z) { v[0] = x; v[1] = y;  v[2] = z; };
 		inline void  Zero() { v[0] = v[1] = v[2] = 0; };
+		inline void  SetXup() { v[0] = 1.0f; v[1] = 0.0f;  v[2] = 0.0f; };
+		inline void  SetYup() { v[0] = 0.0f; v[1] = 1.0f;  v[2] = 0.0f; };
+		inline void  SetZup() { v[0] = 0.0f; v[1] = 0.0f;  v[2] = 1.0f; };
+		inline void  SetForward() { v[0] = 0.0f; v[1] = 0.0f;  v[2] = -1.0f; };
+
 		
 		inline Vector3  Negative() { 
 			v[0] -= v[0]; 
@@ -125,11 +130,14 @@ namespace ether {
 		inline Vector3 Normalize() {
 			float f = Magnitude();
 			if (f == 0) {
-				Zero();
+				v[0] = v[1] = v[2] = 0.0f;
 				return *this;
 			}
 
-			*this /= f;
+			v[0] *= (1.0f / f);
+			v[1] *= (1.0f / f);
+			v[2] *= (1.0f / f);
+
 			return *this;
 		}
 
@@ -144,6 +152,14 @@ namespace ether {
 			v[2] *= value;
 
 			return *this;
+		}
+
+		inline Vector3 Scale(float value, Vector3& dest) {
+			dest[0] *= value;
+			dest[1] *= value;
+			dest[2] *= value;
+
+			return dest;
 		}
 
 		inline Vector3 Rescale(float value) {

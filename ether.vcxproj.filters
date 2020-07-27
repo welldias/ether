@@ -16,6 +16,8 @@
     <ClCompile Include="src\shader_program.cpp" />
     <ClCompile Include="src\matrix4.cpp" />
     <ClCompile Include="src\texture_loader.cpp" />
+    <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\math_util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ether.h" />
@@ -31,6 +33,8 @@
     <ClInclude Include="src\shader_program.h" />
     <ClInclude Include="src\matrix4.h" />
     <ClInclude Include="src\texture_loader.h" />
+    <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\math_util.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="glad">

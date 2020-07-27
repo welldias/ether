@@ -79,97 +79,31 @@ namespace ether {
 			memcpy(m, result.m, sizeof(m));
 			return *this;
 		}
-#if 0
-		Matrix4  operator/ (float value) {
-			if (value == 0) {
-				throw MathError("Divid by zero");
-			}
-			return Matrix4(m[0] / value, m[1] / value, m[2] / value);
+
+		Matrix4  operator* (Vector3& v1) {
+			Matrix4 result(*this);
+			return result.Scale(v1);
 		}
 
-		Matrix4& operator/=(float value) {
-			if (value == 0) {
-				throw MathError("Divid by zero");
-			}
-
-			m[0] /= value;
-			m[1] /= value;
-			m[2] /= value;
+		Matrix4& operator*=(Vector3& v1) {
+			Scale(v1);
 			return *this;
 		}
-
-
-
-		inline Matrix4  Negative() { 
-			m[0] -= m[0]; 
-			m[1] -= m[1];  
-			m[2] -= m[2]; 
-			return *this;
-		};
-
-		inline float Dotproduct(const Matrix4& m1) {
-			return m[0] * m1.m[0] + m1.m[1] * m[1] + m1.m[2] * m[2];
-		}
-
-		inline Matrix4 Crossproduct(const Matrix4& m1) {
-			float xf = m[1] * m1.m[2] - m[2] * m1.m[1];
-			float yf = m[2] * m1.m[0] - m[0] * m1.m[2];
-			float zf = m[0] * m1.m[1] - m[1] * m1.m[0];
-			return Matrix4(xf, yf, zf);
-		}
-
-		inline float Magnitude() {
-			float f = m[0] * m[0] + m[1] * m[1] + m[2] * m[2];
-			return sqrt(f);
-		}
-
-		inline Matrix4 Normalize() {
-			float f = Magnitude();
-			if (f == 0) {
-				Zero();
-				return *this;
-			}
-
-			*this /= f;
-			return *this;
-		}
-
-		inline float Distance(Matrix4& m1) {
-			Matrix4 v2 = *this - m1;
-			return v2.Magnitude();
-		}
-
-		inline Matrix4 Scale(float value) {
-			m[0] *= value;
-			m[1] *= value;
-			m[2] *= value;
-
-			return *this;
-		}
-
-		Matrix4 Rescale(float value) {
-			Normalize();
-			return Scale(value);
-		}
-#endif
 
 		inline Matrix4& operator= (const Matrix4& m1) {
 			memcpy(m, m1.m, sizeof(m));
 			return *this;
 		}
 
-		void  Identity();
-		inline void  Zero() { memset(m, 0, sizeof(m)); };
+		Matrix4& Translate(Vector3& v);
+		Matrix4& Rotate(float angle, Vector3& axis);
+		Matrix4& Scale(Vector3& v);
+
+		void Identity();
+		inline void Zero() { memset(m, 0, sizeof(m)); };
 
 	private:
-		inline void Mult(const Matrix4& m1, const Matrix4& m2) {
-			for (int i = 0; i < 4; ++i)
-				for (int j = 0; j < 4; ++j)
-					m[i][j] = m1.m[i][0] * m2.m[0][j] 
-						+ m1.m[i][1] * m2.m[1][j] 
-						+ m1.m[i][2] * m2.m[2][j]
-						+ m1.m[i][3] * m2.m[3][j];
-		}
+		void Mult(const Matrix4& m1, const Matrix4& m2);
 
 	};
 }

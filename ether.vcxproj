@@ -12,10 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="external\glad\src\glad.c" />
+    <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\display.cpp" />
     <ClCompile Include="src\engine.cpp" />
     <ClCompile Include="src\exception.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\math_util.cpp" />
     <ClCompile Include="src\matrix4.cpp" />
     <ClCompile Include="src\render.cpp" />
     <ClCompile Include="src\shader.cpp" />
@@ -26,10 +28,12 @@
     <ClCompile Include="src\vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\camera.h" />
     <ClInclude Include="src\display.h" />
     <ClInclude Include="src\engine.h" />
     <ClInclude Include="src\ether.h" />
     <ClInclude Include="src\exception.h" />
+    <ClInclude Include="src\math_util.h" />
     <ClInclude Include="src\matrix4.h" />
     <ClInclude Include="src\property.h" />
     <ClInclude Include="src\render.h" />

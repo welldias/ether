@@ -9,9 +9,9 @@ namespace ether {
             Windows,
         };
 
-        Mode mode;
-        unsigned int width;
-        unsigned int height;
+        Mode Mode;
+        unsigned int Width;
+        unsigned int Height;
         std::string TitleWindow;
         Vector3 BackGroundColor;
 

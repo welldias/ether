@@ -10,12 +10,15 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <cmath>
 
 #include "exception.h"
 #include "property.h"
 #include "texture_loader.h"
 #include "vector3.h"
 #include "matrix4.h"
+#include "math_util.h"
+#include "camera.h"
 #include "vbo.h"
 #include "vao.h"
 #include "shader.h"
