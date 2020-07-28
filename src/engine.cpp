@@ -57,8 +57,8 @@ namespace ether {
 
 		// uncomment this call to draw in wireframe polygons.
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		while (!Display.ShouldClose()) {
 

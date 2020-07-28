@@ -6,10 +6,10 @@ namespace ether {
 	class TextureLoader
 	{
 	public:
-		TextureLoader();
+		TextureLoader(const std::string& filePath);
 		~TextureLoader();
 
-		void Load(const std::string& filePath);
+		void Load();
 
 		inline int GetId() const { return id;  }
 		inline int GetWidth() const { return width; }
@@ -17,6 +17,7 @@ namespace ether {
 
 	private:
 		unsigned int id;
+		std::string path;
 		int width;
 		int height;
 		int channels;

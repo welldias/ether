@@ -13,7 +13,7 @@ namespace ether {
 
 		operator float*() const { return (float*)m; }
 
-		Matrix4() {};
+		Matrix4() : m{{0}} {};
 		Matrix4(const Matrix4& m1);
 
 		inline float& operator() (unsigned i, unsigned j) {

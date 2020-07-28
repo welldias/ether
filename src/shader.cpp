@@ -20,7 +20,7 @@ namespace ether {
 
 		if (!file) {
 			content = {};
-			return;
+			throw EngineError("File "+ path +" not found or empty");
 		}
 		
 		content = std::string{

@@ -7,6 +7,8 @@ namespace ether {
 	{
 	public:
 		static const float PI;
+		static const double SQRT3;
+		static const double SQRT5;
 
 	public:
 		static void Transformation(Vector3 translation, Vector3 rotation, float scale, Matrix4& result);

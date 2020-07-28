@@ -5,21 +5,22 @@
 
 namespace ether {
 
-	TextureLoader::TextureLoader() {
+	TextureLoader::TextureLoader(const std::string& filePath) {
 		this->id = 0;
 		this->width = 0;
 		this->height = 0;
 		this->channels = 0;
+		this->path = filePath;
 	}
 
 	TextureLoader::~TextureLoader() {
 	}
 
-	void TextureLoader::Load(const std::string& filePath)
+	void TextureLoader::Load()
 	{
-		void* content = stbi_load(filePath.c_str(), &width, &height, &channels, 0);
+		void* content = stbi_load(path.c_str(), &width, &height, &channels, 0);
 		if (content == NULL) {
-			throw EngineError("Texture file ("+ filePath +") not found");
+			throw EngineError("Texture file ("+ path +") not found");
 		}
 
 		glGenTextures(1, &id);

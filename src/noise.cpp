@@ -8,7 +8,7 @@ namespace ether {
 
     */
 
-    static int _permutationTable[] = {
+    const int SimpleNoise::permutationTable[] = {
         151, 160, 137,  91,  90,  15, 131, 13, 201,   95,  96,  53, 194, 233,   7, 225, 140,  36, 103,  30,  69, 142,
           8,  99,  37, 240,  21,  10,  23, 190,  6,  148, 247, 120, 234,  75,   0,  26, 197,  62,  94, 252, 219, 203,
         117,  35,  11,  32,  57, 177,  33,  88, 237, 149,  56,  87, 174, 20,  125, 136, 171, 168,  68, 175,  74, 165,
@@ -23,65 +23,44 @@ namespace ether {
          67,  29,  24,  72, 243, 141, 128, 195,  78,  66, 215,  61, 156, 180
     };
 
-    static int _etherNoiseGrad3[12][3] = {
+    int SimpleNoise::noiseGrad3[12][3] = {
         { 1,  1,  0}, {-1, 1,  0}, { 1, -1, 0},
         {-1, -1,  0}, { 1, 0,  1}, {-1,  0, 1},
         { 1,  0, -1}, {-1, 0, -1}, { 0,  1, 1},
         { 0, -1,  1}, { 0, 1, -1}, { 0, -1, -1}
     };
 
-    static const int RANDOM_SIZE = 256;
-    static const double SQRT3 = 1.7320508075688772935;
-    static const double SQRT5 = 2.2360679774997896964;
+    const int SimpleNoise::randomSize = 256;
 
-    int* randomTable = NULL;
+    SimpleNoise::SimpleNoise(int seed) {
+        F2 = 0.5 * (MathUtil::SQRT3 - 1.0);
 
-    double F2;
-
-    double G2;
-    double G22;
-
-    double F3;
-    double G3;
-
-    double F4;
-    double G4;
-    double G42;
-    double G43;
-    double G44;
-
-    void   _ether_simple_noise_randomize(int seed);
-    double _ether_simple_noise_dot2(int g[], double x, double y);
-    double _ether_simple_noise_dot3(int g[], double x, double y, double z);
-    double _ether_simple_noise_dot4(int g[], double x, double y, double z, double t);
-    int    _ether_simple_noise_fast_floor(double x);
-    void   _ether_simple_noise_fast_unpack_little_uint32(int value, char* buffer, int sizeBuffer);
-
-    void ether_simple_noise_init(int seed)
-    {
-        F2 = 0.5 * (SQRT3 - 1.0);
-
-        G2 = (3.0 - SQRT3) / 6.0;
+        G2 = (3.0 - MathUtil::SQRT3) / 6.0;
         G22 = G2 * 2.0 - 1;
 
         F3 = 1.0 / 3.0;
         G3 = 1.0 / 6.0;
 
-        F4 = (SQRT5 - 1.0) / 4.0;
-        G4 = (5.0 - SQRT5) / 20.0;
+        F4 = (MathUtil::SQRT5 - 1.0) / 4.0;
+        G4 = (5.0 - MathUtil::SQRT5) / 20.0;
         G42 = G4 * 2.0;
         G43 = G4 * 3.0;
         G44 = G4 * 4.0 - 1.0;
 
-        randomTable = (int*)calloc(((size_t)RANDOM_SIZE * 2), sizeof(int));
+        randomTable = (int*)calloc(((size_t)randomSize * 2), sizeof(int));
         if (randomTable == NULL)
             return;
 
-        _ether_simple_noise_randomize(seed);
+        Randomize(seed);
     }
 
-    float ether_simple_noise_evaluate(vec3 point)
-    {
+    SimpleNoise::~SimpleNoise() {
+        if (randomTable != NULL)
+            free(randomTable);
+    }
+
+    float SimpleNoise::Evaluate(const Vector3& point) {
+
         double x = point[0];
         double y = point[1];
         double z = point[2];
@@ -92,9 +71,9 @@ namespace ether {
         double s = (x + y + z) * F3;
 
         // for 3D
-        int i = _ether_simple_noise_fast_floor(x + s);
-        int j = _ether_simple_noise_fast_floor(y + s);
-        int k = _ether_simple_noise_fast_floor(z + s);
+        int i = FastFloor(x + s);
+        int j = FastFloor(y + s);
+        int k = FastFloor(z + s);
 
         int total = (i + j + k);
         double t = total * G3;
@@ -212,7 +191,7 @@ namespace ether {
         {
             t0 *= t0;
             int gi0 = randomTable[ii + randomTable[jj + randomTable[kk]]] % 12;
-            n0 = t0 * t0 * _ether_simple_noise_dot3(_etherNoiseGrad3[gi0], x0, y0, z0);
+            n0 = t0 * t0 * Dot3(noiseGrad3[gi0], x0, y0, z0);
         }
 
         double t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1;
@@ -220,7 +199,7 @@ namespace ether {
         {
             t1 *= t1;
             int gi1 = randomTable[ii + i1 + randomTable[jj + j1 + randomTable[kk + k1]]] % 12;
-            n1 = t1 * t1 * _ether_simple_noise_dot3(_etherNoiseGrad3[gi1], x1, y1, z1);
+            n1 = t1 * t1 * Dot3(noiseGrad3[gi1], x1, y1, z1);
         }
 
         double t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2;
@@ -228,7 +207,7 @@ namespace ether {
         {
             t2 *= t2;
             int gi2 = randomTable[ii + i2 + randomTable[jj + j2 + randomTable[kk + k2]]] % 12;
-            n2 = t2 * t2 * _ether_simple_noise_dot3(_etherNoiseGrad3[gi2], x2, y2, z2);
+            n2 = t2 * t2 * Dot3(noiseGrad3[gi2], x2, y2, z2);
         }
 
         double t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3;
@@ -236,7 +215,7 @@ namespace ether {
         {
             t3 *= t3;
             int gi3 = randomTable[ii + 1 + randomTable[jj + 1 + randomTable[kk + 1]]] % 12;
-            n3 = t3 * t3 * _ether_simple_noise_dot3(_etherNoiseGrad3[gi3], x3, y3, z3);
+            n3 = t3 * t3 * Dot3(noiseGrad3[gi3], x3, y3, z3);
         }
 
         // Add contributions from each corner to get the final noise value.
@@ -244,56 +223,50 @@ namespace ether {
         return (float)(n0 + n1 + n2 + n3) * 32;
     }
 
-
-    void _ether_simple_noise_randomize(int seed)
-    {
+    void SimpleNoise::Randomize(int seed) {
 
         if (seed == 0)
         {
-            for (int i = 0; i < RANDOM_SIZE; i++)
-                randomTable[i + RANDOM_SIZE] = randomTable[i] = _permutationTable[i];
+            for (int i = 0; i < randomSize; i++)
+                randomTable[i + randomSize] = randomTable[i] = permutationTable[i];
         }
         else
         {
             char F[4];
-            _ether_simple_noise_fast_unpack_little_uint32(seed, F, 4);
+            FastUnpackLittleUint32(seed, F, 4);
 
-            int tableSize = sizeof(_permutationTable) / sizeof(_permutationTable[0]);
+            int tableSize = sizeof(permutationTable) / sizeof(permutationTable[0]);
             for (int i = 0; i < tableSize; i++)
             {
-                randomTable[i] = _permutationTable[i] ^ F[0];
+                randomTable[i] = permutationTable[i] ^ F[0];
                 randomTable[i] ^= F[1];
                 randomTable[i] ^= F[2];
                 randomTable[i] ^= F[3];
 
-                randomTable[i + RANDOM_SIZE] = randomTable[i];
+                randomTable[i + randomSize] = randomTable[i];
             }
 
         }
     }
 
-    double _ether_simple_noise_dot4(int g[], double x, double y, double z, double t)
-    {
-        return g[0] * x + g[1] * y + g[2] * z + g[3] * t;
-    }
-
-    double _ether_simple_noise_dot3(int g[], double x, double y, double z)
-    {
-        return g[0] * x + g[1] * y + g[2] * z;
-    }
-
-    double _ether_simple_noise_dot2(int g[], double x, double y)
-    {
+    double SimpleNoise::Dot2(int g[], double x, double y) {
         return g[0] * x + g[1] * y;
     }
 
-    int _ether_simple_noise_fast_floor(double x)
-    {
+    double SimpleNoise::Dot3(int g[], double x, double y, double z) {
+        return g[0] * x + g[1] * y + g[2] * z;
+    }
+
+    double SimpleNoise::Dot4(int g[], double x, double y, double z, double t) {
+        return g[0] * x + g[1] * y + g[2] * z + g[3] * t;
+    }
+
+    int SimpleNoise::FastFloor(double x) {
         return x >= 0 ? (int)x : (int)x - 1;
     }
 
-    void _ether_simple_noise_fast_unpack_little_uint32(int value, char* buffer, int sizeBuffer)
-    {
+    void SimpleNoise::FastUnpackLittleUint32(int value, char* buffer, int sizeBuffer) {
+
         buffer[0] = (char)(value & 0x00ff);
         buffer[1] = (char)((value & 0xff00) >> 8);
         buffer[2] = (char)((value & 0x00ff0000) >> 16);

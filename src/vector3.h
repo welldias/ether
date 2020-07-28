@@ -22,7 +22,7 @@ namespace ether {
 
 		inline float& operator[](int i) {
 			if (i > 2) {
-				throw MathError("Index out of bounds: Index: "+ std::to_string(i) +" Size: 2");
+				throw MathError("Index out of bounds: Index: "+ std::to_string(i) +" Size: 3");
 			}
 			return v[i];
 		}
@@ -90,6 +90,7 @@ namespace ether {
 		}
 
 		inline Vector3& operator= (const Vector3& v1) {
+
 			v[0] = v1.v[0];
 			v[1] = v1.v[1];
 			v[2] = v1.v[2];
@@ -111,23 +112,32 @@ namespace ether {
 			return *this;
 		};
 
-		inline float Dotproduct(const Vector3& v1) {
-			return v[0] * v1.v[0] + v1.v[1] * v[1] + v1.v[2] * v[2];
+		inline float Dotproduct(Vector3& v1) {
+			return glm_vec3_dot(v, v1.v);
+			//return v[0] * v1.v[0] + v1.v[1] * v[1] + v1.v[2] * v[2];
 		}
 
-		inline Vector3 Crossproduct(const Vector3& v1) {
+		inline Vector3 Crossproduct(Vector3& v1) {
+			Vector3 result;
+
+			glm_vec3_cross(v, v1.v, result.v);
+			/*
 			float xf = v[1] * v1.v[2] - v[2] * v1.v[1];
 			float yf = v[2] * v1.v[0] - v[0] * v1.v[2];
 			float zf = v[0] * v1.v[1] - v[1] * v1.v[0];
 			return Vector3(xf, yf, zf);
+			*/
+			return result;
 		}
 
 		inline float Magnitude() {
-			float f = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
-			return sqrt(f);
+			return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 		}
 
 		inline Vector3 Normalize() {
+			glm_vec3_normalize(v);
+
+			/*
 			float f = Magnitude();
 			if (f == 0) {
 				v[0] = v[1] = v[2] = 0.0f;
@@ -137,16 +147,21 @@ namespace ether {
 			v[0] *= (1.0f / f);
 			v[1] *= (1.0f / f);
 			v[2] *= (1.0f / f);
+			*/
 
 			return *this;
 		}
 
 		inline float Distance(Vector3& v1) {
+			return glm_vec3_distance(v, v1.v);
+			/*
 			Vector3 v2 = *this - v1;
 			return v2.Magnitude();
+			*/
 		}
 
 		inline Vector3 Scale(float value) {
+
 			v[0] *= value;
 			v[1] *= value;
 			v[2] *= value;
@@ -155,9 +170,10 @@ namespace ether {
 		}
 
 		inline Vector3 Scale(float value, Vector3& dest) {
-			dest[0] *= value;
-			dest[1] *= value;
-			dest[2] *= value;
+
+			dest[0] = v[0] * value;
+			dest[1] = v[1] * value;
+			dest[2] = v[2] * value;
 
 			return dest;
 		}

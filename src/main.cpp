@@ -28,13 +28,19 @@ int main(int argc, char* argv[]) {
 		3, 1, 2
 	};
 
-	ether_simple_noise_init(0);
-	noise_settings_configure();
-
 	//Mesh cube;
 	//build_planet_mesh(cube, 2.272f, 10);
 
+	ObjFile objFile("resources/build.obj");
+	objFile.Load();
+	
+	int*  bufferIndices = objFile.BufferIndices();
+	float* bufferVertices = objFile.BufferVertices();
+	//float* bufferNormals = objFile.BufferNormals();
+	//float* bufferTextures = objFile.BufferTextures();
+
 	auto engine = Engine::getInstance();
+
 	engine.Display.BackGroundColor.Set(0.2f, 0.3f, 0.3f);
 	engine.Init();
 
@@ -48,14 +54,24 @@ int main(int argc, char* argv[]) {
 	engine.ShaderProgram.BindAttibute(0, "position");
 	engine.ShaderProgram.BindAttibute(1, "textureCoordinates");
 
-	TextureLoader textureLoader;
-	textureLoader.Load("resources/terrain.jpg");
+	TextureLoader textureLoader("resources/terrain.jpg");
+	textureLoader.Load();
 
 	Vao vao;
-	//vao.Add(Vbo(Vbo::Type::Indices, cube.IndicesSize(), cube.indices));
-	//vao.Add(Vbo(Vbo::Type::Vertices, cube.VerticesSize(), cube.vertices));
-	vao.Add(Vbo(Vbo::Type::Indices, sizeof(indices) / sizeof(indices[0]), indices));
-	vao.Add(Vbo(Vbo::Type::Vertices, sizeof(vertices) / sizeof(vertices[0]), vertices));
+	
+	unsigned int ddd = objFile.TotalIndices();
+	ddd = objFile.TotalVertices();
+	//Cube
+	//vao.Add(Vbo(Vbo::Type::Indices, cube.totalIndices, cube.indices));
+	//vao.Add(Vbo(Vbo::Type::Vertices, cube.totalVertices, cube.vertices));
+
+	//ObjFile
+	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalIndices() , bufferIndices));
+	vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertices() , bufferVertices));
+
+	//Static square
+	//vao.Add(Vbo(Vbo::Type::Indices, sizeof(indices) / sizeof(indices[0]), indices));
+	//vao.Add(Vbo(Vbo::Type::Vertices, sizeof(vertices) / sizeof(vertices[0]), vertices));
 	vao.Add(Vbo(Vbo::Type::Texture, sizeof(textureCoords) / sizeof(textureCoords[0]), textureCoords, textureLoader.GetId()));
 	vao.Load();
 
@@ -81,7 +97,7 @@ float noiseSettings_baseRoughness = 1;
 float noiseSettings_roughness = 2;
 float noiseSettings_persistence = 0.5f;
 float noiseSettings_minValue = 0;
-vec3  noiseSettings_centre = { 0, 0, 0 };
+Vector3  noiseSettings_centre;
 
 void noise_settings_configure() {
 	noiseSettings_strength = 0.24f;
@@ -97,20 +113,22 @@ void noise_settings_configure() {
 	noiseSettings_minValue = 1.0f;
 }
 
-float noise_filter_evaluate(vec3 point)
+float noise_filter_evaluate(SimpleNoise& noise, vec3 vv)
 {
 	float noiseValue = 0;
 	float frequency = noiseSettings_baseRoughness;
 	float amplitude = 1;
 
-	vec3  vecAux = { 0, 0, 0 };
+	Vector3 point(vv[0], vv[1], vv[2] );
+	Vector3  vecAux;
 
 	for (int i = 0; i < noiseSettings_numLayers; i++)
 	{
-		glm_vec3_scale(point, frequency, vecAux);
-		glm_vec3_add(vecAux, noiseSettings_centre, vecAux);
+		vecAux = point.Scale(frequency, vecAux) + noiseSettings_centre;
+		//glm_vec3_scale(point, frequency, vecAux);
+		//glm_vec3_add(vecAux, noiseSettings_centre, vecAux);
 
-		float v = ether_simple_noise_evaluate(vecAux);
+		float v = noise.Evaluate(vecAux);
 		noiseValue += (v + 1) * 0.5f * amplitude;
 
 		frequency *= noiseSettings_roughness;
@@ -148,13 +166,13 @@ void build_planet_mesh(Mesh& mesh, float radius, int resolution)
 	mesh.totalVertices = 0;
 	mesh.totalIndices = 0;
 
+	SimpleNoise noise;
+	noise_settings_configure();
+
 	for (z = 0; z < 6; z++) {
 		mesh.totalVertices += resolution * resolution;
 		mesh.totalIndices += (resolution - 1) * (resolution - 1) * 6;
 	}
-
-	unsigned int ddd1 = sizeof(float) * mesh.totalVertices * 3;
-	unsigned int ddd2 = sizeof(int) * mesh.totalIndices;
 
 	mesh.vertices = (float*)malloc(mesh.VerticesSize());
 	mesh.indices = (unsigned int*)malloc(mesh.IndicesSize());
@@ -187,7 +205,7 @@ void build_planet_mesh(Mesh& mesh, float radius, int resolution)
 				glm_vec3_normalize(pointOnUnitCube);
 
 				/*noise elevation*/
-				float elevation = noise_filter_evaluate(pointOnUnitCube);
+				float elevation = noise_filter_evaluate(noise, pointOnUnitCube);
 				glm_vec3_scale(pointOnUnitCube, (elevation + 1) * radius, pointOnUnitCube);
 
 				/* radius */
