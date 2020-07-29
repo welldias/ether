@@ -23,8 +23,8 @@ namespace ether {
 		return (unsigned int)(sizeof(int) * totalIndices);
 	}
 
-	unsigned int Mesh::Size() {
-		return IndicesSize() + VerticesSize();
-	}
+	//unsigned int Mesh::Size() {
+	//	return IndicesSize() + VerticesSize();
+	//}
 
 }

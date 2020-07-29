@@ -20,7 +20,6 @@ namespace ether {
 
 		void Load(unsigned int attributeNumber);
 		void ReleaseBuffer();
-		unsigned int UnitSize() const;
 		unsigned int Size() const;
 
 		unsigned int GetId() const { return id; };

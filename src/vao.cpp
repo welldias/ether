@@ -52,46 +52,22 @@ namespace ether {
 
 		if (id == 0)
 			return;
-
-#if 0
-		unsigned int indicesCount = 0;
-		for (auto it = vbos.begin(); it != vbos.end(); it++) {
-			if ((*it).GetType() == Vbo::Type::Indices) {
-				indicesCount = (*it).GetCount();
-				break;
-			}
-		}
-
-		glBindVertexArray(id);
-		glEnableVertexAttribArray(0);
-
-		for (auto it = vbos.begin(); it != vbos.end(); it++) {
-			if ((*it).GetId() != 0) {
-				glDrawArrays(GL_TRIANGLES, 0, (*it).GetVertexCount());
-			}
-		}
-		glDisableVertexAttribArray(0);
-		glBindVertexArray(0);
-#else
-		
+	
 		if (indices.GetCount() == 0)
 			return;
 
-
 		glBindVertexArray(id);
 		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
+		//glEnableVertexAttribArray(1);
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture.GetId());
+		//glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_2D, texture.GetId());
 
-		glDrawElements(GL_TRIANGLES, indices.GetCount(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, (GLsizei)indices.GetCount(), GL_UNSIGNED_INT, 0);
 
+		//glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
 		glBindVertexArray(0);
-
-#endif
 		
 	}
 }

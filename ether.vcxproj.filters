@@ -20,8 +20,8 @@
     <ClCompile Include="src\math_util.cpp" />
     <ClCompile Include="src\mesh.cpp" />
     <ClCompile Include="src\noise.cpp" />
-    <ClCompile Include="src\obj_file.cpp" />
     <ClCompile Include="src\vector2.cpp" />
+    <ClCompile Include="src\obj_file.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ether.h" />
@@ -41,8 +41,8 @@
     <ClInclude Include="src\math_util.h" />
     <ClInclude Include="src\mesh.h" />
     <ClInclude Include="src\noise.h" />
-    <ClInclude Include="src\obj_file.h" />
     <ClInclude Include="src\vector2.h" />
+    <ClInclude Include="src\obj_file.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="glad">

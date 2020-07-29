@@ -11,7 +11,11 @@ namespace ether {
 
 		unsigned int VerticesSize();
 		unsigned int IndicesSize();
-		unsigned int Size();
+		//unsigned int Size();
+		unsigned int VerticesUnitfCount() const { return totalVertices * 3; };
+		unsigned int IndicessUnitfCount() const { return totalIndices; };
+		unsigned int TotalVertices() const { return totalVertices; };
+		unsigned int TotalIndices() const { return totalIndices;  }
 
 		float* vertices;
 		unsigned int* indices;

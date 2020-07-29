@@ -20,7 +20,11 @@ namespace ether {
         //const char* what() const noexcept { return m_message.c_str(); }
     };
 
-    
+    class SystemError : public Exception {
+    public:
+        SystemError(const std::string& msg) : Exception(0, msg) {}
+    };
+
     class MathError : public Exception {
         public:
             MathError(const std::string& msg) : Exception(0, msg) {}

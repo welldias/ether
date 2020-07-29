@@ -40,8 +40,6 @@ namespace ether {
 
 		InputsConfigure();
 
-		Camera.Configure(0.0f, 0.0f, 3.5f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
-
 		// tell GLFW to capture our mouse
 		glfwSetInputMode(Display.getWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -50,7 +48,13 @@ namespace ether {
 			throw EngineError("Failed to initialize GLAD");
 		}
 
+		// configure global opengl state
+		// -----------------------------
+		glEnable(GL_DEPTH_TEST);
+
 		ShaderProgram.Init();
+
+		Camera.Configure(0.0f, 0.0f, 7.5f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
 	}
 
 	void Engine::Run() {
@@ -83,10 +87,10 @@ namespace ether {
 
 			Matrix4 model;
 			//Vector3 vecA(0.0f, 0.0f, 0.0f);
-			//Vector3 vecB(1.0f, 0.3f, 0.5f);
+			Vector3 vecB(0.0f, -0.05f, 0.0f);
 			model.Identity();
 			//model.Translate(vecA);
-			//model.Rotate(MathUtil::Radian(20.0f), vecB);
+			model.Rotate(MathUtil::Radian(10.0f * glfwGetTime()), vecB);
 			ShaderProgram.Uniform("model", model);
 
 			for (auto it = Vaos.begin(); it != Vaos.end(); it++) {

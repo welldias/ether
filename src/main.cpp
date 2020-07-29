@@ -28,14 +28,14 @@ int main(int argc, char* argv[]) {
 		3, 1, 2
 	};
 
-	//Mesh cube;
-	//build_planet_mesh(cube, 2.272f, 10);
+	Mesh mesh;
+	build_planet_mesh(mesh, 2.272f, 20);
 
-	ObjFile objFile("resources/build.obj");
+	ObjFile objFile("resources/tree_02.obj");
 	objFile.Load();
 	
-	int*  bufferIndices = objFile.BufferIndices();
-	float* bufferVertices = objFile.BufferVertices();
+	//int*  bufferIndices = objFile.BufferIndices();
+	//float* bufferVertices = objFile.BufferVertices();
 	//float* bufferNormals = objFile.BufferNormals();
 	//float* bufferTextures = objFile.BufferTextures();
 
@@ -54,25 +54,23 @@ int main(int argc, char* argv[]) {
 	engine.ShaderProgram.BindAttibute(0, "position");
 	engine.ShaderProgram.BindAttibute(1, "textureCoordinates");
 
-	TextureLoader textureLoader("resources/terrain.jpg");
-	textureLoader.Load();
+	//TextureLoader textureLoader("resources/terrain.jpg");
+	//textureLoader.Load();
 
 	Vao vao;
 	
-	unsigned int ddd = objFile.TotalIndices();
-	ddd = objFile.TotalVertices();
 	//Cube
-	//vao.Add(Vbo(Vbo::Type::Indices, cube.totalIndices, cube.indices));
-	//vao.Add(Vbo(Vbo::Type::Vertices, cube.totalVertices, cube.vertices));
+	vao.Add(Vbo(Vbo::Type::Indices, mesh.IndicessUnitfCount() , mesh.indices));
+	vao.Add(Vbo(Vbo::Type::Vertices, mesh.VerticesUnitfCount(), mesh.vertices));
 
 	//ObjFile
-	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalIndices() , bufferIndices));
-	vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertices() , bufferVertices));
+	//vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalIndices() , bufferIndices));
+	//vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertices() , bufferVertices));
 
 	//Static square
 	//vao.Add(Vbo(Vbo::Type::Indices, sizeof(indices) / sizeof(indices[0]), indices));
 	//vao.Add(Vbo(Vbo::Type::Vertices, sizeof(vertices) / sizeof(vertices[0]), vertices));
-	vao.Add(Vbo(Vbo::Type::Texture, sizeof(textureCoords) / sizeof(textureCoords[0]), textureCoords, textureLoader.GetId()));
+	//vao.Add(Vbo(Vbo::Type::Texture, sizeof(textureCoords) / sizeof(textureCoords[0]), textureCoords, textureLoader.GetId()));
 	vao.Load();
 
 	engine.Vaos.push_back(vao);

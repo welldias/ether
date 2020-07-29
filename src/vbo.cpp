@@ -54,33 +54,15 @@ namespace ether {
 		}
 	}
 
-	unsigned int Vbo::UnitSize() const {
-		switch (this->type)
-		{
-		case Vbo::Type::Vertices:
-			return sizeof(float) * 3;
-		case Vbo::Type::Indices:
-			return sizeof(int) * 3;
-		case Vbo::Type::Texture:
-			return sizeof(float) * 2;
-		case Vbo::Type::Normals:
-		case Vbo::Type::Colours:
-		default:
-			break;
-		}
-
-		throw EngineError("Databuffer type unsupported");
-	}
-
 	unsigned int Vbo::Size() const {
 		switch (this->type)
 		{
 		case Vbo::Type::Vertices:
 		case Vbo::Type::Texture:
+		case Vbo::Type::Normals:
 			return sizeof(float) * count;
 		case Vbo::Type::Indices:
 			return sizeof(int) * count;
-		case Vbo::Type::Normals:
 		case Vbo::Type::Colours:
 		default:
 			break;
@@ -96,6 +78,7 @@ namespace ether {
 		switch (this->type)
 		{
 		case Vbo::Type::Vertices:
+		case Vbo::Type::Normals:
 			glUnitSize = 3;
 			glType = GL_FLOAT;
 			break;
@@ -103,7 +86,6 @@ namespace ether {
 			glUnitSize = 2;
 			glType = GL_FLOAT;
 			break;
-		case Vbo::Type::Normals:
 		case Vbo::Type::Colours:
 		case Vbo::Type::Indices:
 		default:
@@ -113,7 +95,6 @@ namespace ether {
 		glGenBuffers(1, &id);
 		glBindBuffer(GL_ARRAY_BUFFER, id);
 		glBufferData(GL_ARRAY_BUFFER, Size(), data, GL_STATIC_DRAW);
-		//glVertexAttribPointer(attributeNumber, glUnitSize, glType, GL_FALSE, UnitSize(), 0);
 		glVertexAttribPointer(attributeNumber, glUnitSize, glType, GL_FALSE, 0, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
