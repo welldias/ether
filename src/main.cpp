@@ -9,29 +9,10 @@ void noise_settings_configure();
 
 int main(int argc, char* argv[]) {
 
-	float vertices[] = {
-		-0.5f,  0.5f, 0.0f,
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.5f,  0.5f, 0.0f,
-    };
-
-	float textureCoords[] = {
-		0, 0,
-		0, 1,
-		1, 1,
-		1, 0
-	};
-
-	int indices[] = {
-		0, 1, 3,
-		3, 1, 2
-	};
-
 	Mesh mesh;
 	build_planet_mesh(mesh, 2.272f, 20);
 
-	ObjFile objFile("resources/tree_02.obj");
+	ObjFile objFile("resources\\cube.obj");
 	objFile.Load();
 	
 	//int*  bufferIndices = objFile.BufferIndices();
@@ -44,8 +25,8 @@ int main(int argc, char* argv[]) {
 	engine.Display.BackGroundColor.Set(0.2f, 0.3f, 0.3f);
 	engine.Init();
 
-	Shader vertexShader("shader/01.vs", Shader::Type::Vertex);
-	Shader fragmentShader("shader/01.fs", Shader::Type::Fragment);
+	Shader vertexShader("shader\\texture.vs", Shader::Type::Vertex);
+	Shader fragmentShader("shader\\texture.fs", Shader::Type::Fragment);
 	vertexShader.Load();
 	fragmentShader.Load();
 
@@ -54,18 +35,19 @@ int main(int argc, char* argv[]) {
 	engine.ShaderProgram.BindAttibute(0, "position");
 	engine.ShaderProgram.BindAttibute(1, "textureCoordinates");
 
-	//TextureLoader textureLoader("resources/terrain.jpg");
-	//textureLoader.Load();
+	TextureLoader textureLoader("resources\\terrain.jpg");
+	textureLoader.Load();
 
 	Vao vao;
 	
 	//Cube
-	vao.Add(Vbo(Vbo::Type::Indices, mesh.IndicessUnitfCount() , mesh.indices));
-	vao.Add(Vbo(Vbo::Type::Vertices, mesh.VerticesUnitfCount(), mesh.vertices));
+	//vao.Add(Vbo(Vbo::Type::Indices, mesh.IndicessUnitfCount() , mesh.indices));
+	//vao.Add(Vbo(Vbo::Type::Vertices, mesh.VerticesUnitfCount(), mesh.vertices));
 
 	//ObjFile
-	//vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalIndices() , bufferIndices));
-	//vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertices() , bufferVertices));
+	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalFaces() * 3, objFile.VerticeIndices()));
+	vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertex() * 3, objFile.Vertices()));
+	vao.Add(Vbo(Vbo::Type::Texture, objFile.TotalTextcoord() * 2, objFile.Texcoords(), textureLoader.GetId()));
 
 	//Static square
 	//vao.Add(Vbo(Vbo::Type::Indices, sizeof(indices) / sizeof(indices[0]), indices));

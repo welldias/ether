@@ -11,18 +11,8 @@
 
 namespace ether {
 
-	/* Max supported power when parsing float */
-	#define MAX_POWER 20
-	/* Size of buffer to read into */
-	#define BUFFER_SIZE 65536
-
-#ifdef _WIN32
-	const char ObjFile::pathSeparator  = '\\';
-	const char ObjFile::otherSep       = '/';
-#else
-	const char ObjFile::pathSeparator = '/';
-	const char ObjFile::otherSep = '\\';
-#endif
+/* Max supported power when parsing float */
+#define MAX_POWER 20
 
 	const double  ObjFile::power10Pos[] = {
 		1.0e0,  1.0e1,  1.0e2,  1.0e3,  1.0e4,  1.0e5,  1.0e6,  1.0e7,  1.0e8,  1.0e9,
@@ -33,6 +23,440 @@ namespace ether {
 		1.0e0,   1.0e-1,  1.0e-2,  1.0e-3,  1.0e-4,  1.0e-5,  1.0e-6,  1.0e-7,  1.0e-8,  1.0e-9,
 		1.0e-10, 1.0e-11, 1.0e-12, 1.0e-13, 1.0e-14, 1.0e-15, 1.0e-16, 1.0e-17, 1.0e-18, 1.0e-19,
 	};
+
+	ObjFile::ObjFile(const std::string& filePath) {
+		this->filePath = filePath;
+
+		this->vertexCount = 0;
+		this->textcoordCount = 0;
+		this->normalCount = 0;
+		this->faceCount = 0;
+
+		this->vertexIdx = 0;
+		this->textcoordIdx = 0;
+		this->normalIdx = 0;
+		this->faceIdx = 0;
+
+		this->vertices = 0;
+		this->texcoords = 0;
+		this->normals = 0;
+		this->faces = 0;
+		
+		this->lineNumber = 0;
+	}
+
+	ObjFile::~ObjFile() {
+		delete[] vertices;
+		delete[] texcoords;
+		delete[] normals;
+		delete[] faces;
+		delete[] verticeIndices;
+		delete[] textcoordIndices;
+		delete[] normalIndices;
+	}
+
+	void ObjFile::Load() {
+
+		PreProcess();
+
+		std::ifstream file{ filePath };
+
+		if (!file) {
+			throw EngineError("File " + filePath + " not found or empty");
+		}
+
+		if (vertexCount > 0) {
+			vertices = new ObjFileVertice[vertexCount];
+		}
+
+		if (textcoordCount > 0) {
+			texcoords = new ObjFileVeTextcoord[textcoordCount];
+		}
+
+		if (normalCount > 0) {
+			normals = new ObjFileNormal[normalCount];
+		}
+
+		if (faceCount > 0) {
+			faces = new ObjFileFace[faceCount];
+			verticeIndices = new ObjFileIndice[faceCount];
+			textcoordIndices = new ObjFileIndice[faceCount];
+			normalIndices = new ObjFileIndice[faceCount];
+		}
+
+		lineNumber = 0;
+		std::string line;
+		while (std::getline(file, line)) {
+
+			lineNumber++;
+			/* Process buffer */
+			ParseLine(line);
+		}
+	}
+
+	void ObjFile::PreProcess() {
+
+		const char* p   = NULL;
+		std::ifstream file{ filePath };
+
+		if (!file) {
+			throw EngineError("File " + filePath + " not found or empty");
+		}
+
+
+		std::string line;
+		while (std::getline(file, line)) {
+			p = SkipWhitespace(line.c_str());
+
+			switch (*p) {
+			case 'v':
+				p++;
+				switch (*p++) {
+				case ' ':
+				case '\t':
+					vertexCount++;
+					break;
+				case 't':
+					textcoordCount++;
+					break;
+				case 'n':
+					normalCount++;
+					break;
+				}
+				break;
+			case 'f':
+				p++;
+				switch (*p++) {
+				case ' ':
+				case '\t':
+					faceCount++;
+					break;
+				}
+				break;
+			case 'g':
+				p++;
+				switch (*p++) {
+				case ' ':
+				case '\t':
+					break;
+				}
+				break;
+			case 'm':
+			case 'u':
+			case '#':
+			default:
+				break;
+			}
+		}
+	}
+
+	void ObjFile::ParseLine(std::string& line){
+
+		const char* p = SkipWhitespace(line.c_str());
+
+		switch (*p) {
+		case 'v':
+			p++;
+			switch (*p++) {
+			case ' ':
+			case '\t':
+				p = ParseVertex(p);
+				break;
+			case 't':
+				p = ParseTexcoord(p);
+				break;
+			case 'n':
+				p = ParseNormal(p);
+				break;
+			default:
+				p--; /* roll p++ back in case *p was a newline */
+			}
+			break;
+		case 'f':
+			p++;
+			switch (*p++) {
+			case ' ':
+			case '\t':
+				p = ParseFace(p);
+				break;
+			default:
+				p--; /* roll p++ back in case *p was a newline */
+			}
+			break;
+		case 'g':
+			p++;
+			switch (*p++) {
+			case ' ':
+			case '\t':
+				p = ParseGroup(p);
+				break;
+			default:
+				p--; /* roll p++ back in case *p was a newline */
+			}
+			break;
+		case 'm':
+			p++;
+			if (p[0] == 't' &&
+				p[1] == 'l' &&
+				p[2] == 'l' &&
+				p[3] == 'i' &&
+				p[4] == 'b' &&
+				IsWhitespace(p[5]))
+				p = ParseMtllib(p + 5);
+			break;
+		case 'u':
+			p++;
+			if (p[0] == 's' &&
+				p[1] == 'e' &&
+				p[2] == 'm' &&
+				p[3] == 't' &&
+				p[4] == 'l' &&
+				IsWhitespace(p[5]))
+				p = ParseUsemtl(p + 5);
+			break;
+		case '#':
+			break;
+		}
+	}
+
+	const char* ObjFile::ParseVertex(const char* ptr) {
+		unsigned int ii;
+		float        v;
+
+		for (ii = 0; ii < 3; ii++) {
+			ptr = ParseFloat(ptr, &v);
+			vertices[vertexIdx][ii] = v;
+		}
+
+		vertexIdx++;
+		return ptr;
+	}
+
+	const char* ObjFile::ParseTexcoord(const char* ptr) {
+		unsigned int ii;
+		float        v;
+
+		for (ii = 0; ii < 2; ii++) {
+			ptr = ParseFloat(ptr, &v);
+			texcoords[textcoordIdx][ii] = v;
+		}
+
+		textcoordIdx++;
+		return ptr;
+	}
+
+	const char* ObjFile::ParseNormal(const char* ptr) {
+		unsigned int ii;
+		float        v;
+
+		for (ii = 0; ii < 3; ii++) {
+			ptr = ParseFloat(ptr, &v);
+			normals[normalIdx][ii] = v;
+		}
+
+		normalIdx++;
+		return ptr;
+	}
+
+	const char* ObjFile::ParseFace(const char* ptr) {
+		unsigned int count;
+		int p, t, n;
+
+		ptr = SkipWhitespace(ptr);
+
+		count = 0;
+		while (!IsNewline(*ptr)) {
+			p = 0;
+			t = 0;
+			n = 0;
+
+			if (count > 2) {
+				throw EngineError("Polygonal face (more than three vertices) not supported. Line " + std::to_string(lineNumber));
+			}
+
+			ptr = ParseInt(ptr, &p);
+			if (*ptr == '/') {
+				ptr++;
+				if (*ptr != '/')
+					ptr = ParseInt(ptr, &t);
+
+				if (*ptr == '/') {
+					ptr++;
+					ptr = ParseInt(ptr, &n);
+				}
+			}
+
+			p--; t--; n--;
+
+			faces[faceIdx][count].p = p;
+			faces[faceIdx][count].t = t;
+			faces[faceIdx][count].n = n;
+
+			verticeIndices[faceIdx][count]   = p;
+			textcoordIndices[faceIdx][count] = t;
+			normalIndices[faceIdx][count]    = n;
+
+			count++;
+
+			ptr = SkipWhitespace(ptr);
+		}
+
+		faceIdx++;
+
+		return ptr;
+	}
+
+	const char* ObjFile::ParseGroup(const char* ptr) {
+		const char* s;
+		const char* e;
+
+		ptr = SkipWhitespace(ptr);
+
+		s = ptr;
+		while (!IsEndOfName(*ptr))
+			ptr++;
+
+		e = ptr;
+
+		/* TODO */
+
+		return ptr;
+	}
+
+	const char* ObjFile::ParseMtllib(const char* ptr) {
+		const char* s;
+
+		ptr = SkipWhitespace(ptr);
+
+		s = ptr;
+		while (!IsEndOfName(*ptr))
+			ptr++;
+
+		/* TODO */
+
+		return ptr;
+	}
+
+	const char* ObjFile::ParseUsemtl(const char* ptr) {
+		const char* s;
+
+		ptr = SkipWhitespace(ptr);
+
+		/* Parse the material name */
+		s = ptr;
+		while (!IsEndOfName(*ptr))
+			ptr++;
+
+		/* TODO */
+
+		return ptr;
+	}
+
+	const char* ObjFile::ParseFloat(const char* ptr, float* val) {
+		double        sign;
+		double        num;
+		double        fra;
+		double        div;
+		int           eval;
+		const double* powers;
+
+
+		ptr = SkipWhitespace(ptr);
+
+		switch (*ptr) {
+		case '+':
+			sign = 1.0;
+			ptr++;
+			break;
+		case '-':
+			sign = -1.0;
+			ptr++;
+			break;
+		default:
+			sign = 1.0;
+			break;
+		}
+
+		num = 0.0;
+		while (IsDigit(*ptr))
+			num = 10.0 * num + (double)(*ptr++ - (size_t)'0');
+
+		if (*ptr == '.')
+			ptr++;
+
+		fra = 0.0;
+		div = 1.0;
+
+		while (IsDigit(*ptr)) {
+			fra = 10.0 * fra + (double)(*ptr++ - (size_t)'0');
+			div *= 10.0;
+		}
+
+		num += fra / div;
+
+		if (IsExponent(*ptr)) {
+			ptr++;
+
+			switch (*ptr)
+			{
+			case '+':
+				powers = power10Pos;
+				ptr++;
+				break;
+			case '-':
+				powers = power10Neg;
+				ptr++;
+				break;
+			default:
+				powers = power10Pos;
+				break;
+			}
+
+			eval = 0;
+			while (IsDigit(*ptr))
+				eval = 10 * eval + (*ptr++ - '0');
+
+			num *= (eval >= MAX_POWER) ? 0.0 : powers[eval];
+		}
+
+		*val = (float)(sign * num);
+
+		return ptr;
+	}
+
+	const char* ObjFile::ParseInt(const char* ptr, int* val) {
+		int sign;
+		int num;
+
+		if (*ptr == '-') {
+			sign = -1;
+			ptr++;
+		}
+		else {
+			sign = +1;
+		}
+
+		num = 0;
+		while (IsDigit(*ptr))
+			num = 10 * num + (*ptr++ - '0');
+
+		*val = sign * num;
+
+		return ptr;
+	}
+
+#if 0
+/* Size of buffer to read into */
+#define BUFFER_SIZE 65536
+
+#ifdef _WIN32
+	const char ObjFile::pathSeparator = '\\';
+	const char ObjFile::otherSep = '/';
+#else
+	const char ObjFile::pathSeparator = '/';
+	const char ObjFile::otherSep = '\\';
+#endif
+
 
 #define array_clean(_arr)       ((_arr) ? free(_array_header(_arr)), 0 : 0)
 #define array_push(_arr, _val)  (_array_mgrow(_arr, 1) ? ((_arr)[_array_size(_arr)++] = (_val), _array_size(_arr) - 1) : 0)
@@ -46,35 +470,6 @@ namespace ether {
 #define _array_ngrow(_arr, _n)  ((_arr) == 0 || (_array_size(_arr) + (_n) >= _array_capacity(_arr)))
 #define _array_mgrow(_arr, _n)  (_array_ngrow(_arr, _n) ? (_array_grow(_arr, _n) != 0) : 1)
 #define _array_grow(_arr, _n)   (*((void**)&(_arr)) = ArrayRealloc(_arr, _n, sizeof(*(_arr))))
-
-
-	ObjFile::ObjFile(const std::string& filePath) {
-		this->filePath = filePath;
-
-		this->positions = 0;
-		this->texcoords = 0;
-		this->normals = 0;
-		this->face_vertices = 0;
-		this->face_materials = 0;
-		this->indices = 0;
-	}
-
-	ObjFile::~ObjFile() {
-		for (auto it = groups.begin(); it != groups.end(); ++it) {
-			delete *(it);
-		}
-
-		for (auto it = materials.begin(); it != materials.end(); ++it) {
-			delete* (it);
-		}
-
-		free(positions);
-		free(texcoords);
-		free(normals);
-		free(face_vertices);
-		free(face_materials);
-		free(indices);
-	}
 
 	void ObjFile::Load() {
 
@@ -112,7 +507,6 @@ namespace ether {
 		GroupDefault(data.group);
 		data.material = 0;
 		data.line = 1;
-		data.base = 0;
 
 		/* Find base path for materials/textures */
 		if (StringFindLast(filePath.c_str(), ObjFile::pathSeparator, &sep))
@@ -175,7 +569,6 @@ namespace ether {
 
 		/* Clean up */
 		free(buffer);
-		free(data.base);
 
 		fclose(file);
 	}
@@ -410,7 +803,7 @@ namespace ether {
 
 		e = ptr;
 
-		lib = StringConcat(data.base, s, e);
+		lib = StringConcat(data.base.c_str(), s, e);
 		if (lib) {
 			StringFixSeparators(lib);
 
@@ -463,97 +856,6 @@ namespace ether {
 		return ptr;
 	}
 
-	const char* ObjFile::ParseFloat(const char* ptr, float* val) {
-		double        sign;
-		double        num;
-		double        fra;
-		double        div;
-		int           eval;
-		const double* powers;
-
-
-		ptr = SkipWhitespace(ptr);
-
-		switch (*ptr) {
-		case '+':
-			sign = 1.0;
-			ptr++;
-			break;
-		case '-':
-			sign = -1.0;
-			ptr++;
-			break;
-		default:
-			sign = 1.0;
-			break;
-		}
-
-		num = 0.0;
-		while (IsDigit(*ptr))
-			num = 10.0 * num + (double)(*ptr++ - (size_t)'0');
-
-		if (*ptr == '.')
-			ptr++;
-
-		fra = 0.0;
-		div = 1.0;
-
-		while (IsDigit(*ptr)) {
-			fra = 10.0 * fra + (double)(*ptr++ - (size_t)'0');
-			div *= 10.0;
-		}
-
-		num += fra / div;
-
-		if (IsExponent(*ptr)) {
-			ptr++;
-
-			switch (*ptr)
-			{
-			case '+':
-				powers = power10Pos;
-				ptr++;
-				break;
-			case '-':
-				powers = power10Neg;
-				ptr++;
-				break;
-			default:
-				powers = power10Pos;
-				break;
-			}
-
-			eval = 0;
-			while (IsDigit(*ptr))
-				eval = 10 * eval + (*ptr++ - '0');
-
-			num *= (eval >= MAX_POWER) ? 0.0 : powers[eval];
-		}
-
-		*val = (float)(sign * num);
-
-		return ptr;
-	}
-
-	const char* ObjFile::ParseInt(const char* ptr, int* val) {
-		int sign;
-		int num;
-
-		if (*ptr == '-') {
-			sign = -1;
-			ptr++;
-		} else {
-			sign = +1;
-		}
-
-		num = 0;
-		while (IsDigit(*ptr))
-			num = 10 * num + (*ptr++ - '0');
-
-		*val = sign * num;
-
-		return ptr;
-	}
 
 	void* ObjFile::ArrayRealloc(void* ptr, ObjFileUnit n, ObjFileUnit b) {
 		ObjFileUnit sz = array_size(ptr);
@@ -722,7 +1024,7 @@ namespace ether {
 
 		name = StringCopy(s, e);
 
-		path = StringConcat(data.base, s, e);
+		path = StringConcat(data.base.c_str(), s, e);
 		StringFixSeparators(path);
 
 		map.name = name;
@@ -909,4 +1211,6 @@ namespace ether {
 
 		return 1;
 	}
+#endif
+
 }
