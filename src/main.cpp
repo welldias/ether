@@ -25,8 +25,8 @@ int main(int argc, char* argv[]) {
 	engine.Display.BackGroundColor.Set(0.2f, 0.3f, 0.3f);
 	engine.Init();
 
-	Shader vertexShader("shader\\texture.vs", Shader::Type::Vertex);
-	Shader fragmentShader("shader\\texture.fs", Shader::Type::Fragment);
+	Shader vertexShader("shader\\simple.vs", Shader::Type::Vertex);
+	Shader fragmentShader("shader\\simple.fs", Shader::Type::Fragment);
 	vertexShader.Load();
 	fragmentShader.Load();
 
