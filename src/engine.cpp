@@ -1,7 +1,7 @@
-#include "ether.h"
 #include <functional>
+#include <chrono>
 
-#include <cglm\cglm.h>
+#include "ether.h"
 
 namespace ether {
 
@@ -55,25 +55,32 @@ namespace ether {
 		ShaderProgram.Init();
 
 		Camera.Configure(0.0f, 0.0f, 7.5f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
+
+		Render.Init();
 	}
 
 	void Engine::Run() {
 
-		// uncomment this call to draw in wireframe polygons.
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		int frames = 0;
+		double frameCounter = 0;
+		bool render = false;
+
+		float startTime = 0;
+		float lastTime = (float)glfwGetTime();
+		float unprocessedTime = 0;
+		float passedTime = 0;
 
 		while (!Display.ShouldClose()) {
 
-			float currentFrame = (float)glfwGetTime();
-			deltaTime = currentFrame - lastFrame;
-			lastFrame = currentFrame;
+			startTime = glfwGetTime();
+			passedTime = startTime - lastTime;
+
+			unprocessedTime++;
+			frameCounter++;
 
 			ProcessInput();
 
 			Display.Clear();
-			Render.Prepare();
 
 			ShaderProgram.Use();
 
@@ -123,6 +130,12 @@ namespace ether {
 		}
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 			Camera.MoveRight((float)2.5 * deltaTime);
+		}
+		if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS ) {
+			int mode = static_cast<int>(Render.GetMode()) + 1;
+			mode = mode % 3;
+
+			Render.SetMode(static_cast<Render::Mode>(mode));
 		}
 	}
 

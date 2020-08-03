@@ -58,14 +58,14 @@ namespace ether {
 
 		glBindVertexArray(id);
 		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
+		//glEnableVertexAttribArray(1);
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture.GetId());
+		//glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_2D, texture.GetId());
 
 		glDrawElements(GL_TRIANGLES, (GLsizei)indices.GetCount(), GL_UNSIGNED_INT, 0);
 
-		glDisableVertexAttribArray(1);
+		//glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);
 		

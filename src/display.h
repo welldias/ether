@@ -13,7 +13,7 @@ namespace ether {
         unsigned int Width;
         unsigned int Height;
         std::string TitleWindow;
-        Vector3 BackGroundColor;
+        Rgba BackGroundColor;
 
     private:
         GLFWwindow* window;

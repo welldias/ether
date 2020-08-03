@@ -9,10 +9,13 @@ void noise_settings_configure();
 
 int main(int argc, char* argv[]) {
 
+	Rgba c1(0xb0cac7ff);
+	Rgba c2("#b0cac7ff");
+
 	Mesh mesh;
 	build_planet_mesh(mesh, 2.272f, 20);
 
-	ObjFile objFile("resources\\cube.obj");
+	ObjFile objFile("resources\\tree_01.obj");
 	objFile.Load();
 	
 	//int*  bufferIndices = objFile.BufferIndices();
@@ -22,7 +25,7 @@ int main(int argc, char* argv[]) {
 
 	auto engine = Engine::getInstance();
 
-	engine.Display.BackGroundColor.Set(0.2f, 0.3f, 0.3f);
+	engine.Display.BackGroundColor = "#c7b198ff";
 	engine.Init();
 
 	Shader vertexShader("shader\\simple.vs", Shader::Type::Vertex);
@@ -35,8 +38,8 @@ int main(int argc, char* argv[]) {
 	engine.ShaderProgram.BindAttibute(0, "position");
 	engine.ShaderProgram.BindAttibute(1, "textureCoordinates");
 
-	TextureLoader textureLoader("resources\\terrain.jpg");
-	textureLoader.Load();
+	//TextureLoader textureLoader("resources\\terrain.jpg");
+	//textureLoader.Load();
 
 	Vao vao;
 	
@@ -47,7 +50,7 @@ int main(int argc, char* argv[]) {
 	//ObjFile
 	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalFaces() * 3, objFile.VerticeIndices()));
 	vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertex() * 3, objFile.Vertices()));
-	vao.Add(Vbo(Vbo::Type::Texture, objFile.TotalTextcoord() * 2, objFile.Texcoords(), textureLoader.GetId()));
+	//vao.Add(Vbo(Vbo::Type::Texture, objFile.TotalTextcoord() * 2, objFile.Texcoords(), textureLoader.GetId()));
 
 	//Static square
 	//vao.Add(Vbo(Vbo::Type::Indices, sizeof(indices) / sizeof(indices[0]), indices));

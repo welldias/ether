@@ -20,6 +20,7 @@
 #include "vector2.h"
 #include "vector3.h"
 #include "matrix4.h"
+#include "rgba.h"
 #include "obj_file.h"
 #include "texture_loader.h"
 #include "noise.h"

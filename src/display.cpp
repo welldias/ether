@@ -36,7 +36,7 @@ namespace ether {
 			static_cast<GLfloat>(BackGroundColor.r),
 			static_cast<GLfloat>(BackGroundColor.g),
 			static_cast<GLfloat>(BackGroundColor.b),
-			1.0f);
+			static_cast<GLfloat>(BackGroundColor.a));
 	}
 
 	bool Display::ShouldClose() {

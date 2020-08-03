@@ -166,13 +166,6 @@ namespace ether {
 		inline const char* ReadMtlInt(const char* p, int* v) { return ParseInt(p, v); }
 		inline const char* ReadMtlSingle(const char* p, float* v) { return ParseFloat(p, v); }
 
-		char* StringCopy(const char* s, const char* e);
-		char* StringSubstr(const char* s, size_t a, size_t b);
-		char* StringConcat(const char* a, const char* s, const char* e);
-		int StringEqual(const char* a, const char* s, const char* e);
-		int StringFindLast(const char* s, char c, size_t* p);
-		void StringFixSeparators(char* s);
-
 	private:
 		static const char pathSeparator;
 		static const char otherSep;

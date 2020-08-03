@@ -30,6 +30,11 @@ namespace ether {
             MathError(const std::string& msg) : Exception(0, msg) {}
     };
 
+    class ConversionError : public Exception {
+    public:
+        ConversionError(const std::string& msg) : Exception(0, msg) {}
+    };
+
     class EngineError : public Exception {
     public:
         EngineError(const std::string& msg) : Exception(0, msg) {}

@@ -23,9 +23,11 @@
     <ClCompile Include="src\noise.cpp" />
     <ClCompile Include="src\obj_file.cpp" />
     <ClCompile Include="src\render.cpp" />
+    <ClCompile Include="src\rgba.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\shader_program.cpp" />
     <ClCompile Include="src\texture_loader.cpp" />
+    <ClCompile Include="src\time.cpp" />
     <ClCompile Include="src\vao.cpp" />
     <ClCompile Include="src\vbo.cpp" />
     <ClCompile Include="src\vector2.cpp" />
@@ -44,9 +46,11 @@
     <ClInclude Include="src\obj_file.h" />
     <ClInclude Include="src\property.h" />
     <ClInclude Include="src\render.h" />
+    <ClInclude Include="src\rgba.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\shader_program.h" />
     <ClInclude Include="src\texture_loader.h" />
+    <ClInclude Include="src\time.h" />
     <ClInclude Include="src\vao.h" />
     <ClInclude Include="src\vbo.h" />
     <ClInclude Include="src\vector2.h" />

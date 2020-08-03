@@ -12,9 +12,6 @@ namespace ether {
 		Property<float> x;
 		Property<float> y;
 		Property<float> z;
-		Property<float> r;
-		Property<float> g;
-		Property<float> b;
 
 		Vector3();
 		Vector3(float x, float y, float z);

@@ -22,6 +22,8 @@
     <ClCompile Include="src\noise.cpp" />
     <ClCompile Include="src\vector2.cpp" />
     <ClCompile Include="src\obj_file.cpp" />
+    <ClCompile Include="src\time.cpp" />
+    <ClCompile Include="src\rgba.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ether.h" />
@@ -43,6 +45,8 @@
     <ClInclude Include="src\noise.h" />
     <ClInclude Include="src\vector2.h" />
     <ClInclude Include="src\obj_file.h" />
+    <ClInclude Include="src\time.h" />
+    <ClInclude Include="src\rgba.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="glad">
