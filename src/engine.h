@@ -4,16 +4,23 @@
 namespace ether {
     class Engine {
     public:
-        static Engine& getInstance() {
-            static Engine instance;
+        static Engine* getInstance() {
+            if (instance == NULL) {
+                instance = new Engine();
+            }
+
             return instance;
         }
+
         //Engine(Engine const&) = delete;
         void operator=(Engine const&) = delete;
 
         ~Engine();
         void Init();
         void Run();
+
+    private:
+        Engine();
 
     public:
         unsigned int OpenglMajorVersion;
@@ -25,7 +32,6 @@ namespace ether {
 
         std::vector<Vao> Vaos;
 
-        Engine();
         void InputsConfigure();
         void ProcessInput();
 
@@ -33,6 +39,15 @@ namespace ether {
         void inputMouseCallback(GLFWwindow* window, double xpos, double ypos);
         void inputScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
         void inputFramebufferSizeCallback(GLFWwindow* window, int width, int height);
+
+    private:
+        static Engine* instance;
+
+        static float deltaTime;
+        static float lastFrame;
+        static float lastX;
+        static float lastY;
+        static bool firstMouse;
     };
 
 }

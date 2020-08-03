@@ -5,7 +5,8 @@ namespace ether {
 	Vbo::Vbo() {
 
 		this->id = 0;
-		this->type = Vbo::Type::Vertices;
+		this->attributeNumber = 0;
+		this->type = Vbo::Type::Undefined;
 		this->count = 0;
 		this->data = NULL;
 		this->textureID = 0;
@@ -42,13 +43,13 @@ namespace ether {
 		{
 		case Vbo::Type::Vertices:
 		case Vbo::Type::Texture:
+		case Vbo::Type::Colours:
 			BindArrayByffer(attributeNumber);
 			break;
 		case Vbo::Type::Indices:
 			BindElementArrayByffer();
 			break;
 		case Vbo::Type::Normals:
-		case Vbo::Type::Colours:
 			throw EngineError("Databuffer type unsupported");
 			break;
 		}
@@ -60,10 +61,10 @@ namespace ether {
 		case Vbo::Type::Vertices:
 		case Vbo::Type::Texture:
 		case Vbo::Type::Normals:
+		case Vbo::Type::Colours:
 			return sizeof(float) * count;
 		case Vbo::Type::Indices:
 			return sizeof(int) * count;
-		case Vbo::Type::Colours:
 		default:
 			break;
 		}
@@ -82,15 +83,20 @@ namespace ether {
 			glUnitSize = 3;
 			glType = GL_FLOAT;
 			break;
+		case Vbo::Type::Colours:
+			glUnitSize = 3;
+			glType = GL_FLOAT;
+			break;
 		case Vbo::Type::Texture:
 			glUnitSize = 2;
 			glType = GL_FLOAT;
 			break;
-		case Vbo::Type::Colours:
 		case Vbo::Type::Indices:
 		default:
 			throw EngineError("Databuffer type unsupported");
 		}
+
+		this->attributeNumber = attributeNumber;
 
 		glGenBuffers(1, &id);
 		glBindBuffer(GL_ARRAY_BUFFER, id);
@@ -104,5 +110,26 @@ namespace ether {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Size(), data, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	void Vbo::EnableAttributeArray() const {
+		if (id == 0)
+			return;
+		if (this->type == Vbo::Type::Indices)
+			return;
+		glEnableVertexAttribArray(attributeNumber);
+
+		if (this->type == Vbo::Type::Texture) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, id);
+		}
+	}
+
+	void Vbo::DisableAttributeArray() const {
+		if (id == 0)
+			return;
+		if (this->type == Vbo::Type::Indices)
+			return;
+		glDisableVertexAttribArray(attributeNumber);
 	}
 }

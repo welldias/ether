@@ -9,58 +9,53 @@ void noise_settings_configure();
 
 int main(int argc, char* argv[]) {
 
-	Rgba c1(0xb0cac7ff);
-	Rgba c2("#b0cac7ff");
-
-	Mesh mesh;
-	build_planet_mesh(mesh, 2.272f, 20);
-
-	ObjFile objFile("resources\\tree_01.obj");
-	objFile.Load();
-	
-	//int*  bufferIndices = objFile.BufferIndices();
-	//float* bufferVertices = objFile.BufferVertices();
-	//float* bufferNormals = objFile.BufferNormals();
-	//float* bufferTextures = objFile.BufferTextures();
-
 	auto engine = Engine::getInstance();
 
-	engine.Display.BackGroundColor = "#c7b198ff";
-	engine.Init();
+	engine->Display.BackGroundColor = "#c7b198ff";
+	engine->Init();
 
 	Shader vertexShader("shader\\simple.vs", Shader::Type::Vertex);
 	Shader fragmentShader("shader\\simple.fs", Shader::Type::Fragment);
 	vertexShader.Load();
 	fragmentShader.Load();
 
-	engine.ShaderProgram.Add(vertexShader);
-	engine.ShaderProgram.Add(fragmentShader);
-	engine.ShaderProgram.BindAttibute(0, "position");
-	engine.ShaderProgram.BindAttibute(1, "textureCoordinates");
+	engine->ShaderProgram.Add(vertexShader);
+	engine->ShaderProgram.Add(fragmentShader);
+	engine->ShaderProgram.BindAttibute(0, "position");
+	engine->ShaderProgram.BindAttibute(1, "textureCoordinates");
 
 	//TextureLoader textureLoader("resources\\terrain.jpg");
 	//textureLoader.Load();
 
+	//LoadMesh();
+	//Mesh
+	Mesh mesh;
+	build_planet_mesh(mesh, 2.272f, 20);
 	Vao vao;
-	
-	//Cube
-	//vao.Add(Vbo(Vbo::Type::Indices, mesh.IndicessUnitfCount() , mesh.indices));
-	//vao.Add(Vbo(Vbo::Type::Vertices, mesh.VerticesUnitfCount(), mesh.vertices));
+	vao.Add(Vbo(Vbo::Type::Indices, mesh.IndicessUnitfCount() , mesh.indices));
+	vao.Add(Vbo(Vbo::Type::Vertices, mesh.VerticesUnitfCount(), mesh.vertices));
+	vao.Load();
+	engine->Vaos.push_back(vao);
 
 	//ObjFile
-	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalFaces() * 3, objFile.VerticeIndices()));
-	vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertex() * 3, objFile.Vertices()));
-	//vao.Add(Vbo(Vbo::Type::Texture, objFile.TotalTextcoord() * 2, objFile.Texcoords(), textureLoader.GetId()));
+	//ObjFile objFile("resources\\tree_01.obj");
+	//objFile.Load();
+	//Vao vao;
+	//vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalFaces() * 3, objFile.VerticeIndices()));
+	//vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertex() * 3, objFile.Vertices()));
+	////vao.Add(Vbo(Vbo::Type::Texture, objFile.TotalTextcoord() * 2, objFile.Texcoords(), textureLoader.GetId()));
+	//vao.Load();
+	//engine.Vaos.push_back(vao);
 
 	//Static square
+	//Vao vao3;
 	//vao.Add(Vbo(Vbo::Type::Indices, sizeof(indices) / sizeof(indices[0]), indices));
 	//vao.Add(Vbo(Vbo::Type::Vertices, sizeof(vertices) / sizeof(vertices[0]), vertices));
 	//vao.Add(Vbo(Vbo::Type::Texture, sizeof(textureCoords) / sizeof(textureCoords[0]), textureCoords, textureLoader.GetId()));
-	vao.Load();
+	//vao3.Load();
+	//engine.Vaos.push_back(vao3);
 
-	engine.Vaos.push_back(vao);
-
-	engine.Run();
+	engine->Run();
 
 }
 

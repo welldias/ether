@@ -2,6 +2,8 @@
 
 namespace ether {
 
+	unsigned int Vao::vertexIndiceCount = 0;
+
 	Vao::Vao() {
 		glGenVertexArrays(1, &id);
 	}
@@ -31,7 +33,11 @@ namespace ether {
 			this->texture = vbo;
 			break;
 		case Vbo::Type::Normals:
+			this->normals = vbo;
+			break;
 		case Vbo::Type::Colours:
+			this->colours = vbo;
+			break;
 		default:
 			throw EngineError("Databuffer type unsupported");
 		}
@@ -42,8 +48,10 @@ namespace ether {
 		glBindVertexArray(id);
 
 		indices.Load(0);
-		vertices.Load(0);
-		texture.Load(1);
+		vertices.Load(NextIdx());
+		texture.Load(NextIdx());
+		normals.Load(NextIdx());
+		colours.Load(NextIdx());
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
@@ -57,17 +65,15 @@ namespace ether {
 			return;
 
 		glBindVertexArray(id);
-		glEnableVertexAttribArray(0);
-		//glEnableVertexAttribArray(1);
 
-		//glActiveTexture(GL_TEXTURE0);
-		//glBindTexture(GL_TEXTURE_2D, texture.GetId());
+		vertices.EnableAttributeArray();
+		texture.EnableAttributeArray();
 
 		glDrawElements(GL_TRIANGLES, (GLsizei)indices.GetCount(), GL_UNSIGNED_INT, 0);
 
-		//glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(0);
+		texture.DisableAttributeArray();
+		vertices.DisableAttributeArray();
+
 		glBindVertexArray(0);
-		
 	}
 }

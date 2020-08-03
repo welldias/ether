@@ -7,7 +7,8 @@ namespace ether {
 	{
 	public:
 		enum class Type {
-			Vertices = 0,
+			Undefined,
+			Vertices,
 			Indices,
 			Colours,
 			Texture,
@@ -22,18 +23,23 @@ namespace ether {
 		void ReleaseBuffer();
 		unsigned int Size() const;
 
-		unsigned int GetId() const { return id; };
-		const void* GetData() const { return data; };
-		unsigned int GetCount() const { return count; };
-		unsigned int GetVertexCount() const { return count/3; };
-		Type GetType() const { return type; };
-	
+		void EnableAttributeArray() const;
+		void DisableAttributeArray() const;
+
+		inline unsigned int GetId() const { return id; };
+		inline const void* GetData() const { return data; };
+		inline unsigned int GetCount() const { return count; };
+		inline unsigned int GetVertexCount() const { return count/3; };
+		inline Type GetType() const { return type; };
+		inline unsigned int GetAttributeNumber() const { return attributeNumber; };
+
 	private:
 		void BindArrayByffer(unsigned int attributeNumber);
 		void BindElementArrayByffer();
 
 	private:
 		unsigned int id;
+		unsigned int attributeNumber;
 		unsigned int textureID;
 
 		void* data;

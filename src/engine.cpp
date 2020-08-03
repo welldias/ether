@@ -5,13 +5,14 @@
 
 namespace ether {
 
-	// timing
-	float deltaTime = 0.0f;	// time between current frame and last frame
-	float lastFrame = 0.0f;
-	float lastX = 800 / 2.0f;
-	float lastY = 600 / 2.0f;
-	bool firstMouse = true;
+	Engine* Engine::instance = NULL;
 
+	// timing
+	float Engine::deltaTime = 0.0f;	// time between current frame and last frame
+	float Engine::lastFrame = 0.0f;
+	float Engine::lastX = 800 / 2.0f;
+	float Engine::lastY = 600 / 2.0f;
+	bool  Engine::firstMouse = true;
 
 	void engine_input_mouse_callback(GLFWwindow* window, double xpos, double ypos);
 	void engine_input_scroll_callback(GLFWwindow * window, double xoffset, double yoffset);
@@ -37,6 +38,9 @@ namespace ether {
 #endif
 		Display.Init();
 		glfwMakeContextCurrent(Display.getWindowHandle());
+
+		lastX = Display.Width / 2.0f;
+		lastY = Display.Height / 2.0f;
 
 		InputsConfigure();
 
@@ -73,7 +77,8 @@ namespace ether {
 		while (!Display.ShouldClose()) {
 
 			startTime = glfwGetTime();
-			passedTime = startTime - lastTime;
+			deltaTime = passedTime = startTime - lastTime;
+			lastTime = startTime;
 
 			unprocessedTime++;
 			frameCounter++;
@@ -131,12 +136,12 @@ namespace ether {
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 			Camera.MoveRight((float)2.5 * deltaTime);
 		}
-		if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS ) {
-			int mode = static_cast<int>(Render.GetMode()) + 1;
-			mode = mode % 3;
-
-			Render.SetMode(static_cast<Render::Mode>(mode));
-		}
+		//if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS ) {
+		//	int mode = static_cast<int>(Render.GetMode()) + 1;
+		//	mode = mode % 3;
+		//
+		//	Render.SetMode(static_cast<Render::Mode>(mode));
+		//}
 	}
 
 	void Engine::InputsConfigure() {
@@ -147,8 +152,7 @@ namespace ether {
 	}
 
 	void Engine::inputMouseCallback(GLFWwindow* window, double xpos, double ypos) {
-		if (firstMouse)
-		{
+		if (firstMouse) {
 			lastX = (float)xpos;
 			lastY = (float)ypos;
 			firstMouse = false;
@@ -172,14 +176,14 @@ namespace ether {
 	}
 
 	void engine_input_mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-		Engine::getInstance().inputMouseCallback(window, xpos, ypos);
+		Engine::getInstance()->inputMouseCallback(window, xpos, ypos);
 	}
 
 	void engine_input_scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-		Engine::getInstance().inputScrollCallback(window, xoffset, yoffset);
+		Engine::getInstance()->inputScrollCallback(window, xoffset, yoffset);
 	}
 
 	void engine_input_framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-		Engine::getInstance().inputFramebufferSizeCallback(window, width, height);
+		Engine::getInstance()->inputFramebufferSizeCallback(window, width, height);
 	}
 }

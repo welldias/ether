@@ -114,7 +114,6 @@ namespace ether {
 			ParseLine(line);
 		}
 
-
 		auto empty = std::string();
 		FlushObject(empty);
 	}
