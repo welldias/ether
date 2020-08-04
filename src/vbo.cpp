@@ -44,12 +44,13 @@ namespace ether {
 		case Vbo::Type::Vertices:
 		case Vbo::Type::Texture:
 		case Vbo::Type::Colours:
+		case Vbo::Type::Normals:
 			BindArrayByffer(attributeNumber);
 			break;
 		case Vbo::Type::Indices:
 			BindElementArrayByffer();
 			break;
-		case Vbo::Type::Normals:
+		default:
 			throw EngineError("Databuffer type unsupported");
 			break;
 		}

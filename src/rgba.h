@@ -42,8 +42,8 @@ namespace ether {
 			return *this;
 		}
 
-		inline Rgba& operator= (const std::string& htmlColor) {
-			Set(htmlColor);
+		inline Rgba& operator= (const std::string& webColor) {
+			Set(webColor);
 			return *this;
 		}
 
@@ -51,7 +51,7 @@ namespace ether {
 		inline void  Set(float r, float g, float b, float a = 1) { c[0] = r; c[1] = g;  c[2] = b; c[3] = a; };
 		void  Set(const Rgba& c1);
 		void  Set(int hexColor);
-		void  Set(const std::string& htmlColor);
+		void  Set(const std::string& webColor);
 	};
 }
 

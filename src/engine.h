@@ -25,6 +25,7 @@ namespace ether {
     public:
         unsigned int OpenglMajorVersion;
         unsigned int OpenglMinorVersion;
+        Light Light;
         Camera Camera;
         Display Display;
         Render Render;

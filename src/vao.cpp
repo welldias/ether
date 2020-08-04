@@ -2,8 +2,6 @@
 
 namespace ether {
 
-	unsigned int Vao::vertexIndiceCount = 0;
-
 	Vao::Vao() {
 		glGenVertexArrays(1, &id);
 	}
@@ -14,6 +12,8 @@ namespace ether {
 		indices.ReleaseBuffer();
 		vertices.ReleaseBuffer();
 		texture.ReleaseBuffer();
+		normals.ReleaseBuffer();
+		colours.ReleaseBuffer();
 
 		glDeleteVertexArrays(1, &id);
 		glBindVertexArray(0);
@@ -48,10 +48,10 @@ namespace ether {
 		glBindVertexArray(id);
 
 		indices.Load(0);
-		vertices.Load(NextIdx());
-		texture.Load(NextIdx());
-		normals.Load(NextIdx());
-		colours.Load(NextIdx());
+		vertices.Load(0);
+		texture.Load(1);
+		normals.Load(2);
+		colours.Load(3);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
@@ -68,9 +68,11 @@ namespace ether {
 
 		vertices.EnableAttributeArray();
 		texture.EnableAttributeArray();
+		normals.EnableAttributeArray();
 
 		glDrawElements(GL_TRIANGLES, (GLsizei)indices.GetCount(), GL_UNSIGNED_INT, 0);
 
+		normals.DisableAttributeArray();
 		texture.DisableAttributeArray();
 		vertices.DisableAttributeArray();
 

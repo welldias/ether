@@ -14,8 +14,8 @@ int main(int argc, char* argv[]) {
 	engine->Display.BackGroundColor = "#c7b198ff";
 	engine->Init();
 
-	Shader vertexShader("shader\\simple.vs", Shader::Type::Vertex);
-	Shader fragmentShader("shader\\simple.fs", Shader::Type::Fragment);
+	Shader vertexShader("shader\\texture.vs", Shader::Type::Vertex);
+	Shader fragmentShader("shader\\texture.fs", Shader::Type::Fragment);
 	vertexShader.Load();
 	fragmentShader.Load();
 
@@ -23,29 +23,30 @@ int main(int argc, char* argv[]) {
 	engine->ShaderProgram.Add(fragmentShader);
 	engine->ShaderProgram.BindAttibute(0, "position");
 	engine->ShaderProgram.BindAttibute(1, "textureCoordinates");
-
-	//TextureLoader textureLoader("resources\\terrain.jpg");
-	//textureLoader.Load();
+	//engine->ShaderProgram.BindAttibute(2, "normal");
 
 	//LoadMesh();
 	//Mesh
-	Mesh mesh;
-	build_planet_mesh(mesh, 2.272f, 20);
-	Vao vao;
-	vao.Add(Vbo(Vbo::Type::Indices, mesh.IndicessUnitfCount() , mesh.indices));
-	vao.Add(Vbo(Vbo::Type::Vertices, mesh.VerticesUnitfCount(), mesh.vertices));
-	vao.Load();
-	engine->Vaos.push_back(vao);
+	//Mesh mesh;
+	//build_planet_mesh(mesh, 2.272f, 20);
+	//Vao vao;
+	//vao.Add(Vbo(Vbo::Type::Indices, mesh.IndicessUnitfCount() , mesh.indices));
+	//vao.Add(Vbo(Vbo::Type::Vertices, mesh.VerticesUnitfCount(), mesh.vertices));
+	//vao.Load();
+	//engine->Vaos.push_back(vao);
 
 	//ObjFile
-	//ObjFile objFile("resources\\tree_01.obj");
-	//objFile.Load();
-	//Vao vao;
-	//vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalFaces() * 3, objFile.VerticeIndices()));
-	//vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertex() * 3, objFile.Vertices()));
-	////vao.Add(Vbo(Vbo::Type::Texture, objFile.TotalTextcoord() * 2, objFile.Texcoords(), textureLoader.GetId()));
-	//vao.Load();
-	//engine.Vaos.push_back(vao);
+	TextureLoader textureLoader("resources\\green.jpg");
+	textureLoader.Load();
+	ObjFile objFile("resources\\cube.obj");
+	objFile.Load();
+	Vao vao;
+	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalFaces() * 3, objFile.VerticeIndices()));
+	vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertex() * 3, objFile.Vertices()));
+	vao.Add(Vbo(Vbo::Type::Texture, objFile.TotalFaces() * 2, objFile.TextcoordIndices(), textureLoader.GetId()));
+	//vao.Add(Vbo(Vbo::Type::Normals, objFile.TotalFaces() * 3, objFile.NormalIndices()));
+	vao.Load();
+	engine->Vaos.push_back(vao);
 
 	//Static square
 	//Vao vao3;

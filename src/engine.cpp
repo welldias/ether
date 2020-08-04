@@ -36,6 +36,10 @@ namespace ether {
 #ifdef __APPLE__
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
+
+		Light.Position.Set(0, 0, -20);
+		Light.Color.Set(1, 1, 1);
+
 		Display.Init();
 		glfwMakeContextCurrent(Display.getWindowHandle());
 
@@ -58,7 +62,7 @@ namespace ether {
 
 		ShaderProgram.Init();
 
-		Camera.Configure(0.0f, 0.0f, 7.5f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
+		Camera.Configure(0.0f, 0.0f, 15.0f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
 
 		Render.Init();
 	}
@@ -89,6 +93,9 @@ namespace ether {
 
 			ShaderProgram.Use();
 
+			ShaderProgram.Uniform("lightPosition", Light.Position);
+			ShaderProgram.Uniform("lightColour", Light.Color);
+
 			Matrix4 projection;
 			Camera.Perspective((float)Display.Width / (float)Display.Height, 0.1f, 100.0f, projection);
 			ShaderProgram.Uniform("projection", projection);
@@ -104,6 +111,7 @@ namespace ether {
 			//model.Translate(vecA);
 			model.Rotate(MathUtil::Radian(10.0f * glfwGetTime()), vecB);
 			ShaderProgram.Uniform("model", model);
+
 
 			for (auto it = Vaos.begin(); it != Vaos.end(); it++) {
 				Render.Execute(*(it));
@@ -136,12 +144,12 @@ namespace ether {
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 			Camera.MoveRight((float)2.5 * deltaTime);
 		}
-		//if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS ) {
-		//	int mode = static_cast<int>(Render.GetMode()) + 1;
-		//	mode = mode % 3;
-		//
-		//	Render.SetMode(static_cast<Render::Mode>(mode));
-		//}
+		if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS ) {
+			int mode = static_cast<int>(Render.GetMode()) + 1;
+			mode = mode % 3;
+		
+			Render.SetMode(static_cast<Render::Mode>(mode));
+		}
 	}
 
 	void Engine::InputsConfigure() {

@@ -24,6 +24,7 @@
     <ClCompile Include="src\obj_file.cpp" />
     <ClCompile Include="src\time.cpp" />
     <ClCompile Include="src\rgba.cpp" />
+    <ClCompile Include="src\light.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ether.h" />
@@ -47,6 +48,7 @@
     <ClInclude Include="src\obj_file.h" />
     <ClInclude Include="src\time.h" />
     <ClInclude Include="src\rgba.h" />
+    <ClInclude Include="src\light.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="glad">

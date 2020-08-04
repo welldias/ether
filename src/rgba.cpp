@@ -33,9 +33,9 @@ namespace ether {
 		Set(hexColor);
 	}
 
-	Rgba::Rgba(const std::string& htmlColor)
+	Rgba::Rgba(const std::string& webColor)
 		: r(c), g(c + 1), b(c + 2), a(c + 3) {
-		Set(htmlColor);
+		Set(webColor);
 	}
 
 	void Rgba::Set(int hexColor) {
@@ -58,14 +58,14 @@ namespace ether {
 		c[3] = COLOR_I2F(a);
 	}
 
-	void Rgba::Set(const std::string& htmlColor) {
-		if (htmlColor.empty())
+	void Rgba::Set(const std::string& webColor) {
+		if (webColor.empty())
 			Zero();
 		
-		std::string strColor = htmlColor.at(0) == '#' ? htmlColor.substr(1) : htmlColor;
+		std::string strColor = webColor.at(0) == '#' ? webColor.substr(1) : webColor;
 
 		if(strColor.length() != 8)
-			throw ConversionError("Invalid htmlColor value");
+			throw ConversionError("Invalid webColor value");
 
 		int hexColor = 0;
 		int x = 0;

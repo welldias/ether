@@ -4,7 +4,7 @@ namespace ether {
 
 
 	Render::Render() {
-		this->mode = Mode::Line;
+		this->mode = Mode::Fill;
 	}
 
 	void Render::Init() {

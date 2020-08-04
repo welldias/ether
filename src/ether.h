@@ -26,6 +26,7 @@
 #include "noise.h"
 #include "mesh.h"
 #include "math_util.h"
+#include "light.h"
 #include "camera.h"
 #include "vbo.h"
 #include "vao.h"
