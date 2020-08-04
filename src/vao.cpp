@@ -67,13 +67,13 @@ namespace ether {
 		glBindVertexArray(id);
 
 		vertices.EnableAttributeArray();
-		texture.EnableAttributeArray();
 		normals.EnableAttributeArray();
+		texture.EnableAttributeArray();
 
 		glDrawElements(GL_TRIANGLES, (GLsizei)indices.GetCount(), GL_UNSIGNED_INT, 0);
 
-		normals.DisableAttributeArray();
 		texture.DisableAttributeArray();
+		normals.DisableAttributeArray();
 		vertices.DisableAttributeArray();
 
 		glBindVertexArray(0);

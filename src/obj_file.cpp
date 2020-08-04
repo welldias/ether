@@ -38,17 +38,17 @@ namespace ether {
 		this->vertexCount = 0;
 		this->textcoordCount = 0;
 		this->normalCount = 0;
-		this->faceCount = 0;
+		this->indexCount = 0;
 
 		this->vertexIdx = 0;
 		this->textcoordIdx = 0;
 		this->normalIdx = 0;
-		this->faceIdx = 0;
+		this->indexIdx = 0;
 
 		this->vertices = 0;
 		this->texcoords = 0;
 		this->normals = 0;
-		this->faces = 0;
+		//this->faces = 0;
 		
 		this->lineNumber = 0;
 	}
@@ -57,10 +57,10 @@ namespace ether {
 		delete[] vertices;
 		delete[] texcoords;
 		delete[] normals;
-		delete[] faces;
-		delete[] verticeIndices;
-		delete[] textcoordIndices;
-		delete[] normalIndices;
+		//delete[] faces;
+		delete[] indices;
+		delete[] indexedTextcoord;
+		delete[] indexedNormal;
 
 		for (auto it = materials.begin(); it != materials.end(); ++it) {
 			delete* (it);
@@ -83,21 +83,27 @@ namespace ether {
 
 		if (vertexCount > 0) {
 			vertices = new ObjFileVertice[vertexCount];
+			indexedTextcoord = new ObjFileVeTextcoord[vertexCount];
+			indexedNormal = new ObjFileNormal[vertexCount];
+			memset(vertices, 0, vertexCount * sizeof(ObjFileVertice));
+			memset(indexedTextcoord, 0, vertexCount * sizeof(ObjFileVeTextcoord));
+			memset(indexedNormal, 0, vertexCount * sizeof(ObjFileNormal));
 		}
 
 		if (textcoordCount > 0) {
 			texcoords = new ObjFileVeTextcoord[textcoordCount];
+			memset(texcoords, 0, textcoordCount * sizeof(ObjFileVeTextcoord));
 		}
 
 		if (normalCount > 0) {
 			normals = new ObjFileNormal[normalCount];
+			memset(normals, 0, normalCount * sizeof(ObjFileNormal));
 		}
 
-		if (faceCount > 0) {
-			faces = new ObjFileFace[faceCount];
-			verticeIndices = new ObjFileIndice[faceCount];
-			textcoordIndices = new ObjFileIndice[faceCount];
-			normalIndices = new ObjFileIndice[faceCount];
+		if (indexCount > 0) {
+			//faces = new ObjFileFace[faceCount];
+			indices = new ObjFileIndice[indexCount];
+			memset(indices, 0, indexCount * sizeof(ObjFileIndice));
 		}
 
 		/* Find base path for materials/textures */
@@ -152,7 +158,7 @@ namespace ether {
 				switch (*p++) {
 				case ' ':
 				case '\t':
-					faceCount++;
+					indexCount++;
 					break;
 				}
 				break;
@@ -278,9 +284,7 @@ namespace ether {
 
 		count = 0;
 		while (!IsNewline(*ptr)) {
-			p = 0;
-			t = 0;
-			n = 0;
+			p = t = n = 0;
 
 			if (count > 2) {
 				throw EngineError("Polygonal face (more than three vertices) not supported. Line " + std::to_string(lineNumber));
@@ -300,20 +304,29 @@ namespace ether {
 
 			p--; t--; n--;
 
-			faces[faceIdx][count].p = p;
-			faces[faceIdx][count].t = t;
-			faces[faceIdx][count].n = n;
+			//faces[faceIdx][count].p = p;
+			//faces[faceIdx][count].t = t;
+			//faces[faceIdx][count].n = n;
 
-			verticeIndices[faceIdx][count]   = p;
-			textcoordIndices[faceIdx][count] = t;
-			normalIndices[faceIdx][count]    = n;
+			indices[indexIdx][count] = p;
+			
+			if (t >= 0 && t < static_cast<int>(textcoordCount)) {
+				indexedTextcoord[p][0] = texcoords[t][0];
+				indexedTextcoord[p][1] = texcoords[t][1];
+			}
+
+			if (n >= 0 && n < static_cast<int>(normalCount)) {
+				indexedNormal[p][0] = normals[n][0];
+				indexedNormal[p][1] = normals[n][1];
+				indexedNormal[p][2] = normals[n][2];
+			}
 
 			count++;
 
 			ptr = SkipWhitespace(ptr);
 		}
 
-		faceIdx++;
+		indexIdx++;
 
 		return ptr;
 	}
@@ -341,13 +354,13 @@ namespace ether {
 
 		if (!objects.empty()) {
 			lastObject  = objects.back();
-			lastObject->faceCount = faceIdx - lastObject->faceIdx;
+			lastObject->faceCount = indexIdx - lastObject->faceIdx;
 		}
 		
 		if (!name.empty()) {
 			ObjFileGroup* obj = new ObjFileGroup();
 			obj->name = name;
-			obj->faceIdx = faceIdx;
+			obj->faceIdx = indexIdx;
 			obj->faceCount = 0;
 
 			objects.push_back(obj);

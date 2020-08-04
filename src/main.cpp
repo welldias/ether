@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 
 	auto engine = Engine::getInstance();
 
-	engine->Display.BackGroundColor = "#c7b198ff";
+	engine->Display.BackGroundColor = "#e3dfc8";
 	engine->Init();
 
 	Shader vertexShader("shader\\texture.vs", Shader::Type::Vertex);
@@ -19,13 +19,13 @@ int main(int argc, char* argv[]) {
 	vertexShader.Load();
 	fragmentShader.Load();
 
-	engine->ShaderProgram.Add(vertexShader);
-	engine->ShaderProgram.Add(fragmentShader);
 	engine->ShaderProgram.BindAttibute(0, "position");
 	engine->ShaderProgram.BindAttibute(1, "textureCoordinates");
-	//engine->ShaderProgram.BindAttibute(2, "normal");
+	engine->ShaderProgram.BindAttibute(2, "normal");
 
-	//LoadMesh();
+	engine->ShaderProgram.Add(vertexShader);
+	engine->ShaderProgram.Add(fragmentShader);
+
 	//Mesh
 	//Mesh mesh;
 	//build_planet_mesh(mesh, 2.272f, 20);
@@ -36,15 +36,15 @@ int main(int argc, char* argv[]) {
 	//engine->Vaos.push_back(vao);
 
 	//ObjFile
-	TextureLoader textureLoader("resources\\green.jpg");
+	TextureLoader textureLoader("resources\\cube.png");
 	textureLoader.Load();
 	ObjFile objFile("resources\\cube.obj");
 	objFile.Load();
 	Vao vao;
-	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalFaces() * 3, objFile.VerticeIndices()));
+	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalIndices() * 3, objFile.Indices()));
 	vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertex() * 3, objFile.Vertices()));
-	vao.Add(Vbo(Vbo::Type::Texture, objFile.TotalFaces() * 2, objFile.TextcoordIndices(), textureLoader.GetId()));
-	//vao.Add(Vbo(Vbo::Type::Normals, objFile.TotalFaces() * 3, objFile.NormalIndices()));
+	vao.Add(Vbo(Vbo::Type::Texture, objFile.TotalTextcoords() * 2, objFile.Textcoords(), textureLoader.GetId()));
+	vao.Add(Vbo(Vbo::Type::Normals, objFile.TotalNormals() * 3, objFile.Normals()));
 	vao.Load();
 	engine->Vaos.push_back(vao);
 

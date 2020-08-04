@@ -62,7 +62,7 @@ namespace ether {
 
 		ShaderProgram.Init();
 
-		Camera.Configure(0.0f, 0.0f, 15.0f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
+		Camera.Configure(0.0f, 0.0f, 7.0f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
 
 		Render.Init();
 	}

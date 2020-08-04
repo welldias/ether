@@ -3,11 +3,11 @@
 
 namespace ether {
 
+
+
 	struct Rgba
 	{
 		float c[4];
-
-		operator float*() const { return (float*)c; }
 
 		Property<float> r;
 		Property<float> g;
@@ -20,6 +20,8 @@ namespace ether {
 		Rgba(const float* c1);
 		Rgba(int hexColor);
 		Rgba(const std::string& c1);
+
+		operator float* () const { return (float*)c; }
 
 		inline float& operator[](int i) {
 			if (i > 3) {
@@ -47,7 +49,7 @@ namespace ether {
 			return *this;
 		}
 
-		inline void  Zero() { c[0] = c[1] = c[2] = c[3] = 0; };
+		inline void  Zero() { c[0] = c[1] = c[2] = 0; c[3] = 1; };
 		inline void  Set(float r, float g, float b, float a = 1) { c[0] = r; c[1] = g;  c[2] = b; c[3] = a; };
 		void  Set(const Rgba& c1);
 		void  Set(int hexColor);

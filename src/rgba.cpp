@@ -64,12 +64,14 @@ namespace ether {
 		
 		std::string strColor = webColor.at(0) == '#' ? webColor.substr(1) : webColor;
 
-		if(strColor.length() != 8)
+		if(strColor.length() != 8 && strColor.length() != 6)
 			throw ConversionError("Invalid webColor value");
+
+		this->a = 1;
 
 		int hexColor = 0;
 		int x = 0;
-		for (int i = 0; i < 8; i = i + 2) {
+		for (int i = 0; i < strColor.length(); i = i + 2) {
 			std::istringstream(strColor.substr(i, 2)) >> std::hex >> hexColor;
 			c[x++] = COLOR_I2F(hexColor);
 		}

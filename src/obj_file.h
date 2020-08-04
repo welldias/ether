@@ -83,7 +83,8 @@ namespace ether {
 	using ObjFileVertice = float[3];
 	using ObjFileVeTextcoord = float[2];
 	using ObjFileNormal = float[3];
-	using ObjFileFace = ObjFileIndex[3];
+	//using ObjFileFace = ObjFileIndex[3];
+	
 	using ObjFileIndice = int[3];
 
 	using ObjFileObjectList = std::vector<ObjFileGroup*>;
@@ -98,22 +99,27 @@ namespace ether {
 		void ParseLine(std::string& line);
 
 		unsigned int TotalVertex() const { return vertexCount;  }
-		unsigned int TotalTextcoord() const { return textcoordCount;  }
-		unsigned int TotalNormal() const { return normalCount; } 
-		unsigned int TotalFaces() const { return faceCount;  }
+		unsigned int TotalIndices() const { return indexCount;  }
+		unsigned int TotalTextcoords() const { return vertexCount; }
+		unsigned int TotalNormals() const { return vertexCount; }
 
 		ObjFileVertice* Vertices() { return vertices; }
-		ObjFileVeTextcoord* Texcoords() { return texcoords; }
-		ObjFileNormal* Mormals() { return normals; }
-		ObjFileFace* Faces() { return faces; }
-		ObjFileIndice* VerticeIndices() { return verticeIndices; }
-		ObjFileIndice* TextcoordIndices() { return textcoordIndices; }
-		ObjFileIndice* NormalIndices() { return normalIndices; }
+		ObjFileIndice* Indices() { return indices; }
+		ObjFileVeTextcoord* Textcoords() { return indexedTextcoord; }
+		ObjFileNormal* Normals() { return indexedNormal; }
 
 	private:
 		unsigned int vertexCount;
 		unsigned int vertexIdx;
 		ObjFileVertice* vertices;
+		ObjFileVeTextcoord* indexedTextcoord;
+		ObjFileNormal* indexedNormal;
+
+		unsigned int indexCount;
+		unsigned int indexIdx;
+		//ObjFileFace* faces;
+		ObjFileIndice* indices;
+
 
 		unsigned int textcoordCount;
 		unsigned int textcoordIdx;
@@ -122,13 +128,6 @@ namespace ether {
 		unsigned int normalCount;
 		unsigned int normalIdx;
 		ObjFileNormal* normals;
-
-		unsigned int faceCount;
-		unsigned int faceIdx;
-		ObjFileFace* faces;
-		ObjFileIndice* verticeIndices;
-		ObjFileIndice* textcoordIndices;
-		ObjFileIndice* normalIndices;
 
 		std::string filePath;
 		std::string baseDir;

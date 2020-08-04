@@ -7,8 +7,6 @@ namespace ether {
 	{
 		float v[3];
 
-		operator float*() const { return (float*)v; }
-
 		Property<float> x;
 		Property<float> y;
 		Property<float> z;
@@ -16,6 +14,8 @@ namespace ether {
 		Vector3();
 		Vector3(float x, float y, float z);
 		Vector3(const Vector3& v1);
+
+		operator float* () const { return (float*)v; }
 
 		inline float& operator[](int i) {
 			if (i > 2) {
