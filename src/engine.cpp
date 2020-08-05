@@ -83,7 +83,7 @@ namespace ether {
 
 		while (!Display.ShouldClose()) {
 
-			startTime = glfwGetTime();
+			startTime = static_cast<float>(glfwGetTime());
 			deltaTime = passedTime = startTime - lastTime;
 			lastTime = startTime;
 
@@ -112,7 +112,7 @@ namespace ether {
 			Vector3 vecB(0.0f, -0.05f, 0.0f);
 			model.Identity();
 			//model.Translate(vecA);
-			model.Rotate(MathUtil::Radian(10.0f * glfwGetTime()), vecB);
+			model.Rotate(MathUtil::Radian(10.0f * static_cast<float>(glfwGetTime())), vecB);
 			ShaderProgram.Uniform("model", model);
 
 

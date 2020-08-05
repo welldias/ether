@@ -95,8 +95,6 @@ namespace ether {
 		ObjFile(const std::string& filePath);
 		~ObjFile();
 		void Load();
-		void PreProcess();
-		void ParseLine(std::string& line);
 
 		unsigned int TotalVertex() const { return vertexCount;  }
 		unsigned int TotalIndices() const { return indexCount;  }
@@ -141,6 +139,10 @@ namespace ether {
 		ObjFileObjectList objects;
 
 	private:
+		char* LoadFileContent();
+		void PreProcess(const char* ptr, const char* end);
+		void Process(const char* ptr, const char* end);
+
 		const char* ParseVertex(const char* ptr);
 		const char* ParseTexcoord(const char* ptr);
 		const char* ParseNormal(const char* ptr);

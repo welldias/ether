@@ -71,15 +71,54 @@ namespace ether {
 		}
 	}
 
-	void ObjFile::Load() {
+	char* ObjFile::LoadFileContent() {
+		FILE* f;
 
-		PreProcess();
-
-		std::ifstream file{ filePath };
-
-		if (!file) {
-			throw EngineError("File " + filePath + " not found or empty");
+		f = fopen(filePath.c_str(), "rb");
+		if (!f) {
+			throw SystemError("Error while opening file " + filePath);
 		}
+
+		long p = ftell(f);
+		fseek(f, 0, SEEK_END);
+		long n = ftell(f);
+		fseek(f, p, SEEK_SET);
+		if (n == 0)
+			return NULL;
+
+		char* content = new char[n + (size_t)1];
+
+		size_t i = fread(content, 1, n, f);
+		content[i] = '\n';
+		return content;
+	}
+
+	void ObjFile::Load() {
+		
+		auto file = fopen(filePath.c_str(), "rb");
+		if (!file) {
+			throw SystemError("Error while opening file " + filePath);
+		}
+
+		auto p = ftell(file);
+		fseek(file, 0, SEEK_END);
+		auto n = ftell(file);
+		fseek(file, p, SEEK_SET);
+		if (n == 0)
+			return;
+
+		std::unique_ptr<char> content(new char[n + (size_t)1]);
+		auto buffer = content.get();
+		auto read = fread(buffer, 1, n, file);
+		fclose(file);
+		if (read != n) {
+			return;
+		}
+
+		buffer[read] = '\0';
+		auto end = buffer + read;
+
+		PreProcess(buffer, end);
 
 		if (vertexCount > 0) {
 			vertices = new ObjFileVertice[vertexCount];
@@ -111,31 +150,20 @@ namespace ether {
 		if (sep != std::string::npos)
 			baseDir = filePath.substr(0, sep + 1);
 
-		lineNumber = 0;
-		std::string line;
-		while (std::getline(file, line)) {
-
-			lineNumber++;
-			/* Process buffer */
-			ParseLine(line);
-		}
+		Process(buffer, end);
 
 		auto empty = std::string();
 		FlushObject(empty);
 	}
 
-	void ObjFile::PreProcess() {
+	void ObjFile::PreProcess(const char* ptr, const char* end) {
 
-		const char* p   = NULL;
-		std::ifstream file{ filePath };
+		if (ptr == NULL || end == NULL)
+			return;
 
-		if (!file) {
-			throw EngineError("File " + filePath + " not found or empty");
-		}
-
-		std::string line;
-		while (std::getline(file, line)) {
-			p = SkipWhitespace(line.c_str());
+		const char* p   = ptr;
+		while (p != end) {
+			p = SkipWhitespace(p);
 
 			switch (*p) {
 			case 'v':
@@ -165,75 +193,88 @@ namespace ether {
 			default:
 				break;
 			}
+
+			p = SkipLine(p);
 		}
 	}
 
-	void ObjFile::ParseLine(std::string& line){
+	void ObjFile::Process(const char* ptr, const char* end){
 
-		const char* p = SkipWhitespace(line.c_str());
+		if (ptr == NULL || end == NULL)
+			return;
 
-		switch (*p) {
-		case 'v':
-			p++;
-			switch (*p++) {
-			case ' ':
-			case '\t':
-				p = ParseVertex(p);
+		lineNumber = 0;
+		const char* p = ptr;
+		while (p != end) {
+
+			p = SkipWhitespace(p);
+
+			switch (*p) {
+			case 'v':
+				p++;
+				switch (*p++) {
+				case ' ':
+				case '\t':
+					p = ParseVertex(p);
+					break;
+				case 't':
+					p = ParseTexcoord(p);
+					break;
+				case 'n':
+					p = ParseNormal(p);
+					break;
+				default:
+					p--; /* roll p++ back in case *p was a newline */
+				}
 				break;
-			case 't':
-				p = ParseTexcoord(p);
+			case 'f':
+				p++;
+				switch (*p++) {
+				case ' ':
+				case '\t':
+					p = ParseFace(p);
+					break;
+				default:
+					p--; /* roll p++ back in case *p was a newline */
+				}
 				break;
-			case 'n':
-				p = ParseNormal(p);
+			case 'o':
+				p++;
+				switch (*p++) {
+				case ' ':
+				case '\t':
+					p = ParseObject(p);
+					break;
+				default:
+					p--; /* roll p++ back in case *p was a newline */
+				}
 				break;
-			default:
-				p--; /* roll p++ back in case *p was a newline */
+			case 'm':
+				p++;
+				if (p[0] == 't' &&
+					p[1] == 'l' &&
+					p[2] == 'l' &&
+					p[3] == 'i' &&
+					p[4] == 'b' &&
+					IsWhitespace(p[5]))
+					p = ParseMtllib(p + 5);
+				break;
+			case 'u':
+				p++;
+				if (p[0] == 's' &&
+					p[1] == 'e' &&
+					p[2] == 'm' &&
+					p[3] == 't' &&
+					p[4] == 'l' &&
+					IsWhitespace(p[5]))
+					p = ParseUsemtl(p + 5);
+				break;
+			case '#':
+				break;
 			}
-			break;
-		case 'f':
-			p++;
-			switch (*p++) {
-			case ' ':
-			case '\t':
-				p = ParseFace(p);
-				break;
-			default:
-				p--; /* roll p++ back in case *p was a newline */
-			}
-			break;
-		case 'o':
-			p++;
-			switch (*p++) {
-			case ' ':
-			case '\t':
-				p = ParseObject(p);
-				break;
-			default:
-				p--; /* roll p++ back in case *p was a newline */
-			}
-			break;
-		case 'm':
-			p++;
-			if (p[0] == 't' &&
-				p[1] == 'l' &&
-				p[2] == 'l' &&
-				p[3] == 'i' &&
-				p[4] == 'b' &&
-				IsWhitespace(p[5]))
-				p = ParseMtllib(p + 5);
-			break;
-		case 'u':
-			p++;
-			if (p[0] == 's' &&
-				p[1] == 'e' &&
-				p[2] == 'm' &&
-				p[3] == 't' &&
-				p[4] == 'l' &&
-				IsWhitespace(p[5]))
-				p = ParseUsemtl(p + 5);
-			break;
-		case '#':
-			break;
+
+			p = SkipLine(p);
+			lineNumber++;
 		}
 	}
 
@@ -373,13 +414,14 @@ namespace ether {
 		const char* e;
 		int found_d;
 
-		ptr = SkipWhitespace(ptr);
+		s = ptr = SkipWhitespace(ptr);
+		while (!IsEndOfName(*ptr))
+			ptr++;
 
-		std::string libPath = baseDir + ptr;
+		std::string libPath = baseDir + std::string(s, (ptr - s));
 		std::replace(libPath.begin(), libPath.end(), otherSep, pathSeparator);
 
 		std::ifstream file{ libPath };
-
 		if (!file) {
 			throw EngineError("File " + filePath + " not found or empty");
 		}

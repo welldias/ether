@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 	//ObjFile
 	TextureLoader textureLoader("resources\\white.jpg");
 	textureLoader.Load();
-	ObjFile objFile("resources\\dragon.obj");
+	ObjFile objFile("resources\\tree_01.obj");
 	objFile.Load();
 	Vao vao;
 	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalIndices() * 3, objFile.Indices()));
