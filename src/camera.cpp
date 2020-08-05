@@ -1,5 +1,3 @@
-#include <cglm\cglm.h>
-
 #include "ether.h"
 
 namespace ether {

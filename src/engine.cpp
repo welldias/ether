@@ -5,7 +5,7 @@
 
 namespace ether {
 
-	Engine* Engine::instance = NULL;
+	Engine* Engine::instance = new Engine();
 
 	// timing
 	float Engine::deltaTime = 0.0f;	// time between current frame and last frame
@@ -37,7 +37,7 @@ namespace ether {
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-		Light.Position.Set(0, 0, -20);
+		Light.Position.Set(0, 0, 10);
 		Light.Color.Set(1, 1, 1);
 
 		Display.Init();
@@ -78,9 +78,6 @@ namespace ether {
 		float unprocessedTime = 0;
 		float passedTime = 0;
 
-		Vector3 position(0, 0, 20);
-		Vector3 color(1, 1, 1);
-
 		while (!Display.ShouldClose()) {
 
 			startTime = static_cast<float>(glfwGetTime());
@@ -96,8 +93,8 @@ namespace ether {
 
 			ShaderProgram.Use();
 
-			ShaderProgram.Uniform("lightPosition", position);
-			ShaderProgram.Uniform("lightColour", color);
+			ShaderProgram.Uniform("lightPosition", Light.Position);
+			ShaderProgram.Uniform("lightColour", Light.Color);
 
 			Matrix4 projection;
 			Camera.Perspective((float)Display.Width / (float)Display.Height, 0.1f, 100.0f, projection);
@@ -109,10 +106,10 @@ namespace ether {
 
 			Matrix4 model;
 			//Vector3 vecA(0.0f, 0.0f, 0.0f);
-			Vector3 vecB(0.0f, -0.05f, 0.0f);
+			//Vector3 vecB(0.0f, -0.05f, 0.0f);
 			model.Identity();
 			//model.Translate(vecA);
-			model.Rotate(MathUtil::Radian(10.0f * static_cast<float>(glfwGetTime())), vecB);
+			//model.Rotate(MathUtil::Radian(10.0f * static_cast<float>(glfwGetTime())), vecB);
 			ShaderProgram.Uniform("model", model);
 
 

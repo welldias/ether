@@ -1,6 +1,6 @@
 #version 400 core
 
-in vec2 pass_textureCoordinates;
+in vec3 pass_Color;
 in vec3 surfaceNormal;
 in vec3 toLightVector;
 
@@ -18,5 +18,6 @@ void main(void){
 	float brightness = max(nDotl, 0.2);
 	vec4 diffuse = brightness * lightColour;
 	
-	out_Color = diffuse * texture(modelTexture, pass_textureCoordinates);
+	out_Color = diffuse * vec4(pass_Color, 1.0);
+	//out_Color = vec4(0.8, 0.8, 0.8, 1.0) * vec4(pass_Color, 1.0);
 }

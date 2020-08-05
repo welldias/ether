@@ -83,6 +83,7 @@ namespace ether {
 	using ObjFileVertice = float[3];
 	using ObjFileVeTextcoord = float[2];
 	using ObjFileNormal = float[3];
+	using ObjFileColor = float[3];
 	//using ObjFileFace = ObjFileIndex[3];
 	
 	using ObjFileIndice = int[3];
@@ -99,44 +100,14 @@ namespace ether {
 		unsigned int TotalVertex() const { return vertexCount;  }
 		unsigned int TotalIndices() const { return indexCount;  }
 		unsigned int TotalTextcoords() const { return vertexCount; }
+		unsigned int TotalColors() const { return vertexCount; }
 		unsigned int TotalNormals() const { return vertexCount; }
 
 		ObjFileVertice* Vertices() { return vertices; }
 		ObjFileIndice* Indices() { return indices; }
 		ObjFileVeTextcoord* Textcoords() { return indexedTextcoord; }
+		ObjFileColor* Colors() { return indexedColours; }
 		ObjFileNormal* Normals() { return indexedNormal; }
-
-	private:
-		unsigned int vertexCount;
-		unsigned int vertexIdx;
-		ObjFileVertice* vertices;
-		ObjFileVeTextcoord* indexedTextcoord;
-		ObjFileNormal* indexedNormal;
-
-		unsigned int indexCount;
-		unsigned int indexIdx;
-		//ObjFileFace* faces;
-		ObjFileIndice* indices;
-
-
-		unsigned int textcoordCount;
-		unsigned int textcoordIdx;
-		ObjFileVeTextcoord* texcoords;
-
-		unsigned int normalCount;
-		unsigned int normalIdx;
-		ObjFileNormal* normals;
-
-		std::string filePath;
-		std::string baseDir;
-
-		unsigned int lineNumber;
-
-		/* Materials */
-		ObjFileMaterialList materials;
-
-		/* Object list */
-		ObjFileObjectList objects;
 
 	private:
 		char* LoadFileContent();
@@ -166,6 +137,39 @@ namespace ether {
 		inline const char* SkipLine(const char* ptr) { while (!IsNewline(*ptr++)); return ptr; }
 		inline const char* ReadMtlInt(const char* p, int* v) { return ParseInt(p, v); }
 		inline const char* ReadMtlSingle(const char* p, float* v) { return ParseFloat(p, v); }
+
+	private:
+		unsigned int vertexCount;
+		unsigned int vertexIdx;
+		ObjFileVertice* vertices;
+		ObjFileVeTextcoord* indexedTextcoord;
+		ObjFileColor* indexedColours;
+		ObjFileNormal* indexedNormal;
+
+		unsigned int indexCount;
+		unsigned int indexIdx;
+		//ObjFileFace* faces;
+		ObjFileIndice* indices;
+
+		unsigned int textcoordCount;
+		unsigned int textcoordIdx;
+		ObjFileVeTextcoord* texcoords;
+
+		unsigned int normalCount;
+		unsigned int normalIdx;
+		ObjFileNormal* normals;
+
+		std::string filePath;
+		std::string baseDir;
+
+		unsigned int lineNumber;
+		bool useTextureCoords;
+
+		/* Materials */
+		ObjFileMaterialList materials;
+
+		/* Object list */
+		ObjFileObjectList objects;
 
 	private:
 		static const char pathSeparator;

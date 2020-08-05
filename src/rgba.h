@@ -3,8 +3,6 @@
 
 namespace ether {
 
-
-
 	struct Rgba
 	{
 		float c[4];

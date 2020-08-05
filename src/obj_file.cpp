@@ -51,6 +51,7 @@ namespace ether {
 		//this->faces = 0;
 		
 		this->lineNumber = 0;
+		this->useTextureCoords = false;
 	}
 
 	ObjFile::~ObjFile() {
@@ -123,9 +124,11 @@ namespace ether {
 		if (vertexCount > 0) {
 			vertices = new ObjFileVertice[vertexCount];
 			indexedTextcoord = new ObjFileVeTextcoord[vertexCount];
+			indexedColours = new ObjFileColor[vertexCount];
 			indexedNormal = new ObjFileNormal[vertexCount];
 			memset(vertices, 0, vertexCount * sizeof(ObjFileVertice));
 			memset(indexedTextcoord, 0, vertexCount * sizeof(ObjFileVeTextcoord));
+			memset(indexedColours, 0, vertexCount * sizeof(indexedColours));
 			memset(indexedNormal, 0, vertexCount * sizeof(ObjFileNormal));
 		}
 
@@ -354,6 +357,11 @@ namespace ether {
 			if (t >= 0 && t < static_cast<int>(textcoordCount)) {
 				indexedTextcoord[p][0] = texcoords[t][0];
 				indexedTextcoord[p][1] = texcoords[t][1];
+			} else if (!objects.empty() && objects.back()->material != NULL) {
+				auto material = objects.back()->material;
+				indexedColours[p][0] = material->Kd[0];
+				indexedColours[p][1] = material->Kd[1];
+				indexedColours[p][2] = material->Kd[2];
 			}
 
 			if (n >= 0 && n < static_cast<int>(normalCount)) {

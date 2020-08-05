@@ -8,7 +8,6 @@ namespace ether {
             if (instance == NULL) {
                 instance = new Engine();
             }
-
             return instance;
         }
 

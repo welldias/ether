@@ -11,10 +11,10 @@ namespace ether {
 	}
 
 	float MathUtil::Radian(float d) {
-		return (d * (float)PI / 180.0f);
+		return (d * PI / 180.0f);
 	}
 
 	float MathUtil::Degree(float r) {
-		return (r * 180.0f / (float)PI);
+		return (r * 180.0f / PI);
 	}
 }

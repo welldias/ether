@@ -3,7 +3,7 @@
 
 namespace ether {
 
-	// Why shouldn’t Matrix look like an array - of - array ?
+	// Why shouldn’t Matrix4 look like an array-of-array?
 	// There is a good reason for this at the following link:
 	// https://isocpp.org/wiki/faq/operator-overloading
 
@@ -17,7 +17,7 @@ namespace ether {
 		Matrix4(const Matrix4& m1);
 
 		inline float& operator() (unsigned i, unsigned j) {
-			if (i >= 4 || j >= 4)
+			if (i > 3 || j > 3)
 				throw MathError("Index out of bounds: Index: row:" + std::to_string(i) + " col:" + std::to_string(j));
 			return m[i][j];
 		}

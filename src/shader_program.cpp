@@ -57,6 +57,10 @@ namespace ether {
         }
     }
 
+    void ShaderProgram::BindAttibute(int index, const std::string& name) {
+        glBindAttribLocation(id, index, name.c_str());
+    }
+
     int ShaderProgram::UniformLocation(const std::string& name) {
         return glGetUniformLocation(id, name.c_str());
     }
@@ -81,7 +85,7 @@ namespace ether {
         glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, (float*)value);
     }
 
-    void ShaderProgram::BindAttibute(int index, const std::string& name) {
-        glBindAttribLocation(id, index, name.c_str());
+    void ShaderProgram::Uniform(const std::string& name, Rgba& value) {
+        glUniform4fv(glGetUniformLocation(id, name.c_str()), 1, (float*)value);
     }
 }

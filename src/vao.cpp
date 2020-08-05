@@ -49,9 +49,9 @@ namespace ether {
 
 		indices.Load(0);
 		vertices.Load(0);
-		texture.Load(1);
+		//texture.Load(1);
+		colours.Load(1);
 		normals.Load(2);
-		colours.Load(3);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
@@ -69,9 +69,11 @@ namespace ether {
 		vertices.EnableAttributeArray();
 		normals.EnableAttributeArray();
 		texture.EnableAttributeArray();
+		colours.EnableAttributeArray();
 
 		glDrawElements(GL_TRIANGLES, (GLsizei)indices.GetCount(), GL_UNSIGNED_INT, 0);
 
+		colours.DisableAttributeArray();
 		texture.DisableAttributeArray();
 		normals.DisableAttributeArray();
 		vertices.DisableAttributeArray();

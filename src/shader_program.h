@@ -20,6 +20,7 @@ namespace ether {
 		void Uniform(const std::string& name, float value);
 		void Uniform(const std::string& name, Vector3& value);
 		void Uniform(const std::string& name, Matrix4& value);
+		void Uniform(const std::string& name, Rgba& value);
 
 		void BindAttibute(int index, const std::string& name);
 
