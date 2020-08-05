@@ -78,6 +78,9 @@ namespace ether {
 		float unprocessedTime = 0;
 		float passedTime = 0;
 
+		Vector3 position(0, 0, 20);
+		Vector3 color(1, 1, 1);
+
 		while (!Display.ShouldClose()) {
 
 			startTime = glfwGetTime();
@@ -93,8 +96,8 @@ namespace ether {
 
 			ShaderProgram.Use();
 
-			ShaderProgram.Uniform("lightPosition", Light.Position);
-			ShaderProgram.Uniform("lightColour", Light.Color);
+			ShaderProgram.Uniform("lightPosition", position);
+			ShaderProgram.Uniform("lightColour", color);
 
 			Matrix4 projection;
 			Camera.Perspective((float)Display.Width / (float)Display.Height, 0.1f, 100.0f, projection);

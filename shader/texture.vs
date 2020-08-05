@@ -1,4 +1,4 @@
-#version 330 core
+#version 400 core
 
 in vec3 position;
 in vec2 textureCoordinates;
@@ -15,12 +15,12 @@ uniform vec3 lightPosition;
 
 void main(void){
 	
-	vec4 worldPosiotn = model * vec4(position,1.0);
+	vec4 worldPosition = model * vec4(position,1.0);
 	
-	gl_Position = projection * view * worldPosiotn;
+	gl_Position = projection * view * worldPosition;
 	
 	pass_textureCoordinates = textureCoordinates;
 	
 	surfaceNormal = (model * vec4(normal , 0.0)).xyz;
-	toLightVector = lightPosition - worldPosiotn.xyz;
+	toLightVector = lightPosition - worldPosition.xyz;
 }

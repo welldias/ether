@@ -36,9 +36,9 @@ int main(int argc, char* argv[]) {
 	//engine->Vaos.push_back(vao);
 
 	//ObjFile
-	TextureLoader textureLoader("resources\\cube.png");
+	TextureLoader textureLoader("resources\\white.jpg");
 	textureLoader.Load();
-	ObjFile objFile("resources\\cube.obj");
+	ObjFile objFile("resources\\dragon.obj");
 	objFile.Load();
 	Vao vao;
 	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalIndices() * 3, objFile.Indices()));
