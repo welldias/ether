@@ -18,22 +18,28 @@ namespace ether {
         void Init();
         void Run();
 
+        void InputsConfigure();
+        void ProcessInput();
+
     private:
         Engine();
 
+        void StartFrame();
+        void RenderFrame();
+        static void SetMessage(const std::string& msg, const std::string& title, const std::string& log);
+
+        void ShowBenchmarkWindow(unsigned long time_passed);
+        void ShowHelpMarker(std::string desc);
+        bool ShowMenu();
+        void ShowMessageBox(std::string title, std::string msg, std::string log);
+
     public:
-        unsigned int OpenglMajorVersion;
-        unsigned int OpenglMinorVersion;
         Light Light;
         Camera Camera;
         Display Display;
         Render Render;
         ShaderProgram ShaderProgram;
-
         std::vector<Vao> Vaos;
-
-        void InputsConfigure();
-        void ProcessInput();
 
     public:
         void inputMouseCallback(GLFWwindow* window, double xpos, double ypos);
@@ -48,6 +54,19 @@ namespace ether {
         static float lastX;
         static float lastY;
         static bool firstMouse;
+
+        static std::string messageUiMsg;
+        static std::string messageUiTitle;
+        static std::string messageUiLog;
+
+        bool uiBenchmarkShown;
+        int uiBenchmarkWheight;
+        
+        struct WindowSize { int width; int height; };
+        std::vector<WindowSize> supported_sizes;
+        std::vector<std::string> supported_exts;
+        imgui_addons::ImGuiFileBrowser file_dialog;
+
     };
 
 }

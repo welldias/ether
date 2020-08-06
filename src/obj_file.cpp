@@ -61,6 +61,7 @@ namespace ether {
 		//delete[] faces;
 		delete[] indices;
 		delete[] indexedTextcoord;
+		delete[] indexedColours;
 		delete[] indexedNormal;
 
 		for (auto it = materials.begin(); it != materials.end(); ++it) {
@@ -357,7 +358,9 @@ namespace ether {
 			if (t >= 0 && t < static_cast<int>(textcoordCount)) {
 				indexedTextcoord[p][0] = texcoords[t][0];
 				indexedTextcoord[p][1] = texcoords[t][1];
-			} else if (!objects.empty() && objects.back()->material != NULL) {
+			} 
+			
+			if (!objects.empty() && objects.back()->material != NULL) {
 				auto material = objects.back()->material;
 				indexedColours[p][0] = material->Kd[0];
 				indexedColours[p][1] = material->Kd[1];
@@ -381,15 +384,13 @@ namespace ether {
 	}
 
 	const char* ObjFile::ParseObject(const char* ptr) {
-		const char* s;
-		const char* e;
 
 		ptr = SkipWhitespace(ptr);
 
-		s = ptr;
+		auto s = ptr;
 		while (!IsEndOfName(*ptr))
 			ptr++;
-		e = ptr;
+		auto e = ptr;
 
 		auto name = std::string(s, (e - s));
 		FlushObject(name);
@@ -399,15 +400,13 @@ namespace ether {
 
 	void ObjFile::FlushObject(std::string& name) {
 
-		ObjFileGroup* lastObject = NULL;
-
 		if (!objects.empty()) {
-			lastObject  = objects.back();
+			auto lastObject  = objects.back();
 			lastObject->faceCount = indexIdx - lastObject->faceIdx;
 		}
 		
 		if (!name.empty()) {
-			ObjFileGroup* obj = new ObjFileGroup();
+			auto obj = new ObjFileGroup();
 			obj->name = name;
 			obj->faceIdx = indexIdx;
 			obj->faceCount = 0;
@@ -417,12 +416,11 @@ namespace ether {
 	}
 	
 	const char* ObjFile::ParseMtllib(const char* ptr) {
-		const char* s;
 		const char* p;
 		const char* e;
 		int found_d;
 
-		s = ptr = SkipWhitespace(ptr);
+		auto s = ptr = SkipWhitespace(ptr);
 		while (!IsEndOfName(*ptr))
 			ptr++;
 
@@ -591,8 +589,6 @@ namespace ether {
 	}
 
 	const char* ObjFile::ReadMap(const char* ptr, ObjFileTexture& map) {
-		const char* s;
-		const char* e;
 
 		ptr = SkipWhitespace(ptr);
 
@@ -601,10 +597,10 @@ namespace ether {
 			return ptr;
 
 		/* Read name */
-		s = ptr;
+		auto s = ptr;
 		while (!IsEndOfName(*ptr))
 			ptr++;
-		e = ptr;
+		auto e = ptr;
 
 		map.name = std::string(s, (e - s));
 		map.path = baseDir +  std::string(s, (e - s));
@@ -614,17 +610,14 @@ namespace ether {
 	}
 
 	const char* ObjFile::ParseUsemtl(const char* ptr) {
-		const char* s;
-		const char* e;
 
-		ptr = SkipWhitespace(ptr);
 
 		/* Parse the material name */
-		s = ptr;
+		auto s = ptr = SkipWhitespace(ptr);
 		while (!IsEndOfName(*ptr))
 			ptr++;
 
-		e = ptr;
+		auto e = ptr;
 
 		if (objects.empty())
 			return ptr;
@@ -648,7 +641,6 @@ namespace ether {
 		double        div;
 		int           eval;
 		const double* powers;
-
 
 		ptr = SkipWhitespace(ptr);
 

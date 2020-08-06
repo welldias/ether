@@ -11,7 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="external\file_browser\ImGuiFileBrowser.cpp" />
     <ClCompile Include="external\glad\src\glad.c" />
+    <ClCompile Include="external\imgui\imgui.cpp" />
+    <ClCompile Include="external\imgui\imgui_demo.cpp" />
+    <ClCompile Include="external\imgui\imgui_draw.cpp" />
+    <ClCompile Include="external\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="external\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="external\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\display.cpp" />
     <ClCompile Include="src\engine.cpp" />
@@ -102,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;MS_OS_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)\src;$(ProjectDir)external\glfw\include;$(ProjectDir)external\glad\include;$(ProjectDir)external\stb_image;$(ProjectDir)external\cglm\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)external\glfw\include;$(ProjectDir)external\glad\include;$(ProjectDir)external\stb_image;$(ProjectDir)external\cglm\include;$(ProjectDir)external\imgui;$(ProjectDir)external\file_browser</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,7 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>MS_OS_WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)external\glfw\include;$(ProjectDir)external\glad\include;$(ProjectDirexternal\stb_image;$(ProjectDir)external\cglm\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)external\glfw\include;$(ProjectDir)external\glad\include;$(ProjectDirexternal\stb_image;$(ProjectDir)external\cglm\include;$(ProjectDir)external\imgui;$(ProjectDir)external\file_browser</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

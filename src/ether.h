@@ -6,6 +6,13 @@
 
 #include <cglm\cglm.h>
 
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+#include <imgui_internal.h>
+
+#include <ImGuiFileBrowser.h>
+
 #include <string>
 #include <iostream>
 #include <iterator>
@@ -14,6 +21,8 @@
 #include <fstream>
 #include <sstream>
 #include <cmath>
+#include <functional>
+#include <chrono>
 
 #include "exception.h"
 #include "property.h"
