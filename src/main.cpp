@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 
 	auto engine = Engine::getInstance();
 
-	engine->Display.BackGroundColor = "#e3dfc8";
+	engine->Display.BackGroundColor = "#4a6572";
 	engine->Init();
 
 	Shader vertexShader("shader\\texture.vs", Shader::Type::Vertex);
@@ -39,9 +39,9 @@ int main(int argc, char* argv[]) {
 	//engine->Vaos.push_back(vao);
 
 	//ObjFile
-	TextureLoader textureLoader("resources\\LowPolyForestPack_Devilswork\\tex\\ground.png");
+	TextureLoader textureLoader("resources\\green.jpg");
 	textureLoader.Load();
-	ObjFile objFile("resources\\LowPolyForestPack_Devilswork\\obj\\Low_Poly_Forest_Landscape.obj");
+	ObjFile objFile("resources\\cube.obj");
 	objFile.Load();
 	Vao vao;
 	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalIndices() * 3, objFile.Indices()));

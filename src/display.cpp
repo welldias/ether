@@ -37,28 +37,21 @@ namespace ether {
 	}
 
 	void Display::Init() {
-
 		CreateWindow();
-
-		// Setup Dear ImGui context
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-
-		//ImGuiIO& io = ImGui::GetIO();
-		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-		ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-
-		// Setup Dear ImGui style
-		ImGui::StyleColorsDark();
-
-		// Setup Platform/Renderer bindings
-		ImGui_ImplGlfw_InitForOpenGL(window, true);
-		ImGui_ImplOpenGL3_Init("#version 330");
 	}
 
 	void Display::ShowWindow() {
 		glfwRestoreWindow(window);
 		glfwFocusWindow(window);
+	}
+
+	void Display::FullScreen(bool set) {
+		if (set) {
+			glfwSetWindowMonitor(window, primaryMonitor, 0, 0, videoMode->width, videoMode->height, videoMode->refreshRate);
+		}
+		else {
+			glfwSetWindowMonitor(window, NULL, 200, 200, Width, Height, videoMode->refreshRate);
+		}
 	}
 
 	void Display::CreateWindow() {

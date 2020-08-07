@@ -117,7 +117,7 @@ namespace ether {
 			return;
 		}
 
-		buffer[read] = '\0';
+		buffer[read] = '\n';
 		auto end = buffer + read;
 
 		PreProcess(buffer, end);

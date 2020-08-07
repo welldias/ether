@@ -32,19 +32,17 @@ namespace ether {
 		Display.SetFramebufferSizeCallback([this](int width, int height) { InputFramebufferSizeEvent(width, height); });
 		
 		Display.Init();
+		RenderUI.Init(Display);
+		Render.Init();
 
 		lastX = Display.Width / 2.0f;
 		lastY = Display.Height / 2.0f;
 
 		//InputsConfigure();
 
-		glEnable(GL_DEPTH_TEST);
-
 		ShaderProgram.Init();
 
 		Camera.Configure(0.0f, 0.0f, 7.0f, 0.0f, 1.0f, 0.0f, -90.0f, 0.0f);
-
-		Render.Init();
 	}
 
 	void Engine::Message(const std::string& msg, const std::string& title, const std::string& log) {
@@ -81,8 +79,9 @@ namespace ether {
 			Display.Clear();
 
 			RenderUI.StartFrame();
-			
-			RenderUI.ShowBenchmarkWindow(0);
+
+			RenderUI.ShowToolBar();
+			//RenderUI.ShowBenchmarkWindow(0);
 
 			ShaderProgram.Use();
 
@@ -116,6 +115,7 @@ namespace ether {
 		}
 	}
 
+	bool is_fullscreen = false;
 	void Engine::KeyEvent(int key, int scancode, int action, int mods) {
 
 		if (key == GLFW_KEY_ESCAPE && (action == GLFW_PRESS || action == GLFW_REPEAT))
@@ -128,6 +128,10 @@ namespace ether {
 			Camera.MoveLeft((float)2.5 * deltaTime);
 		if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT))
 			Camera.MoveRight((float)2.5 * deltaTime);
+		if (key == GLFW_KEY_F11 && action == GLFW_PRESS) {
+			is_fullscreen = !is_fullscreen;
+			Display.FullScreen(is_fullscreen);
+		}
 	}
 
 	void Engine::MousePositionEvent(double xpos, double ypos) {

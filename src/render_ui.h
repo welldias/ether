@@ -9,7 +9,7 @@ namespace ether {
 		RenderUI();
 		~RenderUI();
 
-		void Init(GLFWwindow* window);
+		void Init(Display& display);
 		void StartFrame();
 		void RenderFrame();
 		
@@ -24,12 +24,12 @@ namespace ether {
 		void ShowMessageBox(std::string title, std::string msg, std::string log);
 
 	private:
+		GLuint logoImageID;
 
 		bool uiBenchmarkShown;
 		int uiBenchmarkWheight;
 
-		struct WindowSize { int width; int height; };
-		std::vector<WindowSize> supported_sizes;
+		std::vector<Vector2> supported_sizes;
 		std::vector<std::string> supported_exts;
 		imgui_addons::ImGuiFileBrowser file_dialog;
 	};

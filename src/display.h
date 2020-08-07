@@ -17,6 +17,7 @@ namespace ether {
 
         void Init();
         void ShowWindow();
+        void FullScreen(bool set);
         bool ShouldClose();
         void Close();
         void Clear();

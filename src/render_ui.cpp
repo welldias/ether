@@ -3,6 +3,8 @@
 namespace ether {
 
 	RenderUI::RenderUI() {
+		logoImageID = 0;
+
 		uiBenchmarkShown = true;
 		uiBenchmarkWheight = 25;
 
@@ -24,7 +26,7 @@ namespace ether {
 
 	}
 
-	void RenderUI::Init(GLFWwindow* window) {
+	void RenderUI::Init(Display& display) {
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -37,15 +39,29 @@ namespace ether {
 		ImGui::StyleColorsDark();
 
 		// Setup Platform/Renderer bindings
-		ImGui_ImplGlfw_InitForOpenGL(window, true);
+		ImGui_ImplGlfw_InitForOpenGL(display.getWindowHandle(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
+
+		TextureLoader textureLoader("resources\\ui\\ether.png");
+		textureLoader.Load();
+		logoImageID = textureLoader.GetId();
+
+		ImGuiStyle& style = ImGui::GetStyle();
+		style.GrabRounding = 2;
+		style.ChildBorderSize = 0;
+
+		style.WindowRounding = 0;
+		style.WindowPadding.x = 2; style.WindowPadding.y = 0;
+
+		style.FrameRounding = 3;
+		style.FramePadding.x = 2; style.FramePadding.y = 2;
 	}
 
 	void RenderUI::ShowToolBar() {
 
 		ImGuiIO& io = ImGui::GetIO();
 
-		ImVec2 mainWindowSize(io.DisplaySize.x, 80);
+		ImVec2 mainWindowSize(io.DisplaySize.x, 52);
 		ImVec2 mainWindowPos(io.DisplaySize.x, 0);
 
 		ImGuiStyle& style = ImGui::GetStyle();
@@ -61,6 +77,10 @@ namespace ether {
 		if (ImGui::Begin("Main-ToolBar", NULL, window_flags))
 		{
 			ImGui::BeginGroup();
+
+			//ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+			//ImVec4 border_col = ImVec4(1.0f, 1.0f, 1.0f, 0.5f);
+			//ImGui::Image((void*)(intptr_t)logoImageID, ImVec2((float)50, (float)49), ImVec2(0, 0), ImVec2(1, 1), tint_col, border_col);
 
 			ImVec2 button_sz(50, 50);
 			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor(90, 100, 100));
@@ -127,6 +147,7 @@ namespace ether {
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.GrabRounding = 0;
 		style.ChildBorderSize = 0;
+		style.WindowRounding = 0;
 
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
 		//window_flags |= ImGuiWindowFlags_NoTitleBar;
@@ -301,7 +322,7 @@ namespace ether {
 				{
 					for (int i = 0; i < supported_sizes.size(); i++)
 					{
-						std::string win_size = std::to_string(supported_sizes[i].width) + "x" + std::to_string(supported_sizes[i].height);
+						//std::string win_size = std::to_string(supported_sizes[i].x) + "x" + std::to_string(supported_sizes[i].y);
 						//if (ImGui::MenuItem(win_size.c_str(), NULL, selected_size == i, !is_fullscreen))
 						//{
 						//	selected_size = i;
