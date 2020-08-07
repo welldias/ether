@@ -46,6 +46,7 @@
     <ClCompile Include="external\file_browser\ImGuiFileBrowser.cpp">
       <Filter>file_browser</Filter>
     </ClCompile>
+    <ClCompile Include="src\render_ui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ether.h" />
@@ -70,6 +71,7 @@
     <ClInclude Include="src\time.h" />
     <ClInclude Include="src\rgba.h" />
     <ClInclude Include="src\light.h" />
+    <ClInclude Include="src\render_ui.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="glad">

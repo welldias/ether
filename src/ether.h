@@ -30,6 +30,7 @@
 #include "vector3.h"
 #include "matrix4.h"
 #include "rgba.h"
+#include "render_ui.h"
 #include "obj_file.h"
 #include "texture_loader.h"
 #include "noise.h"

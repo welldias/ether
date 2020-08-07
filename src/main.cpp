@@ -14,16 +14,16 @@ int main(int argc, char* argv[]) {
 	engine->Display.BackGroundColor = "#e3dfc8";
 	engine->Init();
 
-	//Shader vertexShader("shader\\texture.vs", Shader::Type::Vertex);
-	//Shader fragmentShader("shader\\texture.fs", Shader::Type::Fragment);
-	Shader vertexShader("shader\\color.vs", Shader::Type::Vertex);
-	Shader fragmentShader("shader\\color.fs", Shader::Type::Fragment);
+	Shader vertexShader("shader\\texture.vs", Shader::Type::Vertex);
+	Shader fragmentShader("shader\\texture.fs", Shader::Type::Fragment);
+	//Shader vertexShader("shader\\color.vs", Shader::Type::Vertex);
+	//Shader fragmentShader("shader\\color.fs", Shader::Type::Fragment);
 	vertexShader.Load();
 	fragmentShader.Load();
 
 	engine->ShaderProgram.BindAttibute(0, "position");
-	//engine->ShaderProgram.BindAttibute(1, "textureCoordinates");
-	engine->ShaderProgram.BindAttibute(1, "color");
+	engine->ShaderProgram.BindAttibute(1, "textureCoordinates");
+	//engine->ShaderProgram.BindAttibute(1, "color");
 	engine->ShaderProgram.BindAttibute(2, "normal");
 
 	engine->ShaderProgram.Add(vertexShader);
@@ -39,15 +39,15 @@ int main(int argc, char* argv[]) {
 	//engine->Vaos.push_back(vao);
 
 	//ObjFile
-	//TextureLoader textureLoader("resources\\green.jpg");
-	//textureLoader.Load();
-	ObjFile objFile("resources\\tree_01.obj");
+	TextureLoader textureLoader("resources\\LowPolyForestPack_Devilswork\\tex\\ground.png");
+	textureLoader.Load();
+	ObjFile objFile("resources\\LowPolyForestPack_Devilswork\\obj\\Low_Poly_Forest_Landscape.obj");
 	objFile.Load();
 	Vao vao;
 	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalIndices() * 3, objFile.Indices()));
 	vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertex() * 3, objFile.Vertices()));
-	//vao.Add(Vbo(Vbo::Type::Texture, objFile.TotalTextcoords() * 2, objFile.Textcoords(), textureLoader.GetId()));
-	vao.Add(Vbo(Vbo::Type::Colours, objFile.TotalColors() * 3, objFile.Colors()));
+	vao.Add(Vbo(Vbo::Type::Texture, objFile.TotalTextcoords() * 2, objFile.Textcoords(), textureLoader.GetId()));
+	//vao.Add(Vbo(Vbo::Type::Colours, objFile.TotalColors() * 3, objFile.Colors()));
 	vao.Add(Vbo(Vbo::Type::Normals, objFile.TotalNormals() * 3, objFile.Normals()));
 	vao.Load();
 	engine->Vaos.push_back(vao);

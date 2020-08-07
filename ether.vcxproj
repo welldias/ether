@@ -31,6 +31,7 @@
     <ClCompile Include="src\noise.cpp" />
     <ClCompile Include="src\obj_file.cpp" />
     <ClCompile Include="src\render.cpp" />
+    <ClCompile Include="src\render_ui.cpp" />
     <ClCompile Include="src\rgba.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\shader_program.cpp" />
@@ -55,6 +56,7 @@
     <ClInclude Include="src\obj_file.h" />
     <ClInclude Include="src\property.h" />
     <ClInclude Include="src\render.h" />
+    <ClInclude Include="src\render_ui.h" />
     <ClInclude Include="src\rgba.h" />
     <ClInclude Include="src\shader.h" />
     <ClInclude Include="src\shader_program.h" />
@@ -110,6 +112,7 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;MS_OS_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)external\glfw\include;$(ProjectDir)external\glad\include;$(ProjectDir)external\stb_image;$(ProjectDir)external\cglm\include;$(ProjectDir)external\imgui;$(ProjectDir)external\file_browser</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,6 +130,7 @@
       <PreprocessorDefinitions>MS_OS_WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)src;$(ProjectDir)external\glfw\include;$(ProjectDir)external\glad\include;$(ProjectDirexternal\stb_image;$(ProjectDir)external\cglm\include;$(ProjectDir)external\imgui;$(ProjectDir)external\file_browser</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

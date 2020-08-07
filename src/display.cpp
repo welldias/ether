@@ -5,13 +5,10 @@ namespace ether {
 	const unsigned int WIDTH  = 1024;
 	const unsigned int HEIGHT = 786;
 
-	std::function<void(const Vector3&, float, float)> Display::CameraUpdateCallback;
-	std::function<void(const std::string&, const std::string&, const std::string&)> Display::MessageCallback;
-
 	Display::Display() 
 		: OpenglMajorVersion(3), OpenglMinorVersion(3), Width(WIDTH), Height(HEIGHT) {
 
-		glfwSetErrorCallback(ErrorCallback);
+		glfwSetErrorCallback(GlfErrorCallback);
 		
 		if (!glfwInit())
 			throw std::runtime_error("GLFW failed to initialize.");
@@ -19,9 +16,6 @@ namespace ether {
 		this->TitleWindow = "Ether";
 		this->window = NULL;
 		this->Mode = Mode::Windows;
-
-		CreateWindow();
-		InitImGui();
 	}
 
 	Display::~Display() {
@@ -42,16 +36,14 @@ namespace ether {
 		glfwTerminate();
 	}
 
-	void Display::ShowWindow() {
-		glfwRestoreWindow(window);
-		glfwFocusWindow(window);
-	}
+	void Display::Init() {
 
-	void Display::InitImGui() {
+		CreateWindow();
+
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
-		
+
 		//ImGuiIO& io = ImGui::GetIO();
 		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
@@ -62,6 +54,11 @@ namespace ether {
 		// Setup Platform/Renderer bindings
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 330");
+	}
+
+	void Display::ShowWindow() {
+		glfwRestoreWindow(window);
+		glfwFocusWindow(window);
 	}
 
 	void Display::CreateWindow() {
@@ -105,9 +102,11 @@ namespace ether {
 		glGetError();
 		glfwSetWindowUserPointer(window, this);
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		glfwSetKeyCallback(window, KeyCallback);
-		glfwSetCursorPosCallback(window, CursorPosCallback);
-		glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
+		glfwSetKeyCallback(window, GlfKeyCallback);
+		glfwSetMouseButtonCallback(window, GlfMouseButtonCallback);
+		glfwSetCursorPosCallback(window, GlfCursorPosCallback);
+		glfwSetScrollCallback(window, GlfScrollCallback);
+		glfwSetFramebufferSizeCallback(window, GlfFramebufferSizeCallback);
 
 		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
 		glViewport(0, 0, framebufferWidth, framebufferHeight);
@@ -147,28 +146,24 @@ namespace ether {
 
 		if (status != GL_FRAMEBUFFER_COMPLETE) {
 			if (status == GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT)
-				MessageCallback("Framebuffer not complete. Error code: GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT", "FrameBuffer Incomplete!", "");
+				messageCallback("Framebuffer not complete. Error code: GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT", "FrameBuffer Incomplete!", "");
 			else if (status == GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT)
-				MessageCallback("Framebuffer not complete. Error code: GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT", "FrameBuffer Incomplete!", "");
+				messageCallback("Framebuffer not complete. Error code: GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT", "FrameBuffer Incomplete!", "");
 			else if (status == GL_FRAMEBUFFER_UNDEFINED)
-				MessageCallback("Framebuffer not complete. Error code: GL_FRAMEBUFFER_UNDEFINED", "FrameBuffer Incomplete!", "");
+				messageCallback("Framebuffer not complete. Error code: GL_FRAMEBUFFER_UNDEFINED", "FrameBuffer Incomplete!", "");
 			else if (status == GL_FRAMEBUFFER_UNSUPPORTED)
-				MessageCallback("Framebuffer not complete. Error code: GL_FRAMEBUFFER_UNSUPPORTED", "FrameBuffer Incomplete!", "");
+				messageCallback("Framebuffer not complete. Error code: GL_FRAMEBUFFER_UNSUPPORTED", "FrameBuffer Incomplete!", "");
 			else if (status == GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER)
-				MessageCallback("Framebuffer not complete. Error code: GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER", "FrameBuffer Incomplete!", "");
+				messageCallback("Framebuffer not complete. Error code: GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER", "FrameBuffer Incomplete!", "");
 			else if (status == GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER)
-				MessageCallback("Framebuffer not complete. Error code: GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER", "FrameBuffer Incomplete!", "");
+				messageCallback("Framebuffer not complete. Error code: GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER", "FrameBuffer Incomplete!", "");
 			else
-				MessageCallback("Framebuffer not complete. Error code: " + std::to_string((int)status), "FrameBuffer Incomplete!", "");
+				messageCallback("Framebuffer not complete. Error code: " + std::to_string((int)status), "FrameBuffer Incomplete!", "");
 			return false;
 		}
 
-		//glClearColor(0.f, 0.f, 0.f, 1.0f);
-		glClearColor(
-			static_cast<GLfloat>(BackGroundColor.r),
-			static_cast<GLfloat>(BackGroundColor.g),
-			static_cast<GLfloat>(BackGroundColor.b),
-			static_cast<GLfloat>(BackGroundColor.a));
+		glClearColor(0.f, 0.f, 0.f, 1.0f);
+
 		glDrawBuffer(GL_COLOR_ATTACHMENT0);
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -220,30 +215,49 @@ namespace ether {
 			glfwSetWindowShouldClose(window, true);
 	}
 
-	void Display::ErrorCallback(int error, const char* msg) {
+	void Display::GlfErrorCallback(int error, const char* msg) {
 		std::cout << msg << std::endl;
 	}
 
-	void Display::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	void Display::GlfKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 		if (ImGui::GetIO().WantCaptureKeyboard)
 			return;
 		Display* display = (Display*)glfwGetWindowUserPointer(window);
+
+		if (display->keyCallback)
+			display->keyCallback(key, scancode, action, mods);
 	}
 
-	void Display::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+	void Display::GlfMouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
 		Display* display = (Display*)glfwGetWindowUserPointer(window);
+
+		if (display->mouseButtonCallback)
+			display->mouseButtonCallback(button, action, mods);
 	}
 
-	void Display::CursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
+	void Display::GlfScrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
 		Display* display = (Display*)glfwGetWindowUserPointer(window);
+
+		if (display->mouseScrollCallback)
+			display->mouseScrollCallback(xoffset, yoffset);
 	}
 
-	void Display::FramebufferSizeCallback(GLFWwindow* window, int width, int height) {
+	void Display::GlfCursorPosCallback(GLFWwindow* window, double xpos, double ypos) {
+		Display* display = (Display*)glfwGetWindowUserPointer(window);
+
+		if (display->mouseCursorCallback)
+			display->mouseCursorCallback(xpos, ypos);
+	}
+
+	void Display::GlfFramebufferSizeCallback(GLFWwindow* window, int width, int height) {
 		Display* display = (Display*)glfwGetWindowUserPointer(window);
 
 		glViewport(0, 0, width, height);
 
 		display->framebufferWidth = width;
 		display->framebufferHeight = height;
+
+		if (display->framebufferSizeCallback)
+			display->framebufferSizeCallback(width, height);
 	}
 }

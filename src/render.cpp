@@ -8,6 +8,8 @@ namespace ether {
 	}
 
 	void Render::Init() {
+		glEnable(GL_DEPTH_TEST);
+
 		SetMode(mode);
 	}
 
