@@ -14,7 +14,7 @@ namespace ether {
 
 		Render();
 		void Init();
-		void Execute(const Vao& vao);
+		void Execute(const VertexArray& vao);
 
 		void SetMode(Render::Mode mode);
 		Render::Mode GetMode();

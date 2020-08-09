@@ -80,7 +80,9 @@ namespace ether {
 
 			RenderUI.StartFrame();
 
-			RenderUI.ShowToolBar();
+			RenderUI.ShowPanelControl();
+			//RenderUI.ShowMiscSettings();
+			//RenderUI.ShowToolBar();
 			//RenderUI.ShowBenchmarkWindow(0);
 
 			ShaderProgram.Use();
@@ -140,19 +142,19 @@ namespace ether {
 			firstMouse = true;
 			return;
 		}
-
+		
 		if (firstMouse) {
 			lastX = (float)xpos;
 			lastY = (float)ypos;
 			firstMouse = false;
 		}
-
+		
 		float xoffset = (float)xpos - lastX;
 		float yoffset = lastY - (float)ypos;  // reversed since y-coordinates go from bottom to top
-
+		
 		lastX = (float)xpos;
 		lastY = (float)ypos;
-
+		
 		Camera.PointTo(xoffset, yoffset, true);
 	}
 

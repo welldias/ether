@@ -39,16 +39,16 @@ int main(int argc, char* argv[]) {
 	//engine->Vaos.push_back(vao);
 
 	//ObjFile
-	TextureLoader textureLoader("resources\\green.jpg");
+	TextureLoader textureLoader("resources\\white.jpg");
 	textureLoader.Load();
-	ObjFile objFile("resources\\cube.obj");
+	ObjFile objFile("resources\\dragon.obj");
 	objFile.Load();
-	Vao vao;
-	vao.Add(Vbo(Vbo::Type::Indices, objFile.TotalIndices() * 3, objFile.Indices()));
-	vao.Add(Vbo(Vbo::Type::Vertices, objFile.TotalVertex() * 3, objFile.Vertices()));
-	vao.Add(Vbo(Vbo::Type::Texture, objFile.TotalTextcoords() * 2, objFile.Textcoords(), textureLoader.GetId()));
+	VertexArray vao;
+	vao.Add(VertexBuffer(VertexBuffer::Type::Indices, objFile.TotalIndices() * 3, objFile.Indices()));
+	vao.Add(VertexBuffer(VertexBuffer::Type::Vertices, objFile.TotalVertex() * 3, objFile.Vertices()));
+	vao.Add(VertexBuffer(VertexBuffer::Type::Texture, objFile.TotalTextcoords() * 2, objFile.Textcoords(), textureLoader.GetId()));
 	//vao.Add(Vbo(Vbo::Type::Colours, objFile.TotalColors() * 3, objFile.Colors()));
-	vao.Add(Vbo(Vbo::Type::Normals, objFile.TotalNormals() * 3, objFile.Normals()));
+	vao.Add(VertexBuffer(VertexBuffer::Type::Normals, objFile.TotalNormals() * 3, objFile.Normals()));
 	vao.Load();
 	engine->Vaos.push_back(vao);
 
@@ -59,6 +59,8 @@ int main(int argc, char* argv[]) {
 	//vao.Add(Vbo(Vbo::Type::Texture, sizeof(textureCoords) / sizeof(textureCoords[0]), textureCoords, textureLoader.GetId()));
 	//vao3.Load();
 	//engine.Vaos.push_back(vao3);
+
+	std::cout << glGetString(GL_VERSION) << std::endl;
 
 	engine->Run();
 

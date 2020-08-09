@@ -1,9 +1,9 @@
-#ifndef __ETHER_VBO_H__
-#define __ETHER_VBO_H__
+#ifndef __ETHER_VERTEX_BUFFER_H__
+#define __ETHER_VERTEX_BUFFER_H__
 
 namespace ether {
 
-	class Vbo
+	class VertexBuffer
 	{
 	public:
 		enum class Type {
@@ -15,9 +15,9 @@ namespace ether {
 			Normals,
 		};
 
-		Vbo();
-		Vbo(Vbo::Type type, unsigned int count, void* data, unsigned textureID=0);
-		~Vbo();
+		VertexBuffer();
+		VertexBuffer(VertexBuffer::Type type, unsigned int count, void* data, unsigned textureID=0);
+		~VertexBuffer();
 
 		void Load(unsigned int attributeNumber);
 		void ReleaseBuffer();
@@ -48,6 +48,4 @@ namespace ether {
 	};
 }
 
-#endif // __ETHER_VBO_H__
-
-
+#endif // __ETHER_VERTEX_BUFFER_H__

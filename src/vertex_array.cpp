@@ -2,11 +2,11 @@
 
 namespace ether {
 
-	Vao::Vao() {
+	VertexArray::VertexArray() {
 		glGenVertexArrays(1, &id);
 	}
 
-	Vao::~Vao() {
+	VertexArray::~VertexArray() {
 		glBindVertexArray(id);
 
 		indices.ReleaseBuffer();
@@ -19,23 +19,23 @@ namespace ether {
 		glBindVertexArray(0);
 	}
 
-	void Vao::Add(const Vbo& vbo) {
+	void VertexArray::Add(const VertexBuffer& vbo) {
 		
 		switch (vbo.GetType())
 		{
-		case Vbo::Type::Indices:
+		case VertexBuffer::Type::Indices:
 			this->indices = vbo;
 			break;
-		case Vbo::Type::Vertices:
+		case VertexBuffer::Type::Vertices:
 			this->vertices = vbo;
 			break;
-		case Vbo::Type::Texture:
+		case VertexBuffer::Type::Texture:
 			this->texture = vbo;
 			break;
-		case Vbo::Type::Normals:
+		case VertexBuffer::Type::Normals:
 			this->normals = vbo;
 			break;
-		case Vbo::Type::Colours:
+		case VertexBuffer::Type::Colours:
 			this->colours = vbo;
 			break;
 		default:
@@ -43,7 +43,7 @@ namespace ether {
 		}
 	}
 
-	void Vao::Load() {
+	void VertexArray::Load() {
 
 		glBindVertexArray(id);
 
@@ -56,7 +56,7 @@ namespace ether {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	void Vao::Draw() const {
+	void VertexArray::Draw() const {
 
 		if (id == 0)
 			return;

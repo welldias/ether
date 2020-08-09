@@ -4,16 +4,20 @@ namespace ether {
 
 
 	Render::Render() {
-		this->mode = Mode::Fill;
+		this->mode = Mode::Point;
 	}
 
 	void Render::Init() {
+
 		glEnable(GL_DEPTH_TEST);
+
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
 
 		SetMode(mode);
 	}
 
-	void Render::Execute(const Vao& vao) {
+	void Render::Execute(const VertexArray& vao) {
 		vao.Draw();
 	}
 

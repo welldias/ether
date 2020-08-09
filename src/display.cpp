@@ -101,8 +101,8 @@ namespace ether {
 		glfwSetScrollCallback(window, GlfScrollCallback);
 		glfwSetFramebufferSizeCallback(window, GlfFramebufferSizeCallback);
 
-		glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
-		glViewport(0, 0, framebufferWidth, framebufferHeight);
+		glfwGetFramebufferSize(window, &FramebufferWidth, &FramebufferHeight);
+		glViewport(0, 0, FramebufferWidth, FramebufferHeight);
 		glfwIconifyWindow(window);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glfwSwapInterval(0);
@@ -120,19 +120,19 @@ namespace ether {
 		glGenRenderbuffers(4, rboIDs);
 
 		glBindRenderbuffer(GL_RENDERBUFFER, rboIDs[0]);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA32F, framebufferWidth, framebufferHeight);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA32F, FramebufferWidth, FramebufferHeight);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, rboIDs[0]);
 
 		glBindRenderbuffer(GL_RENDERBUFFER, rboIDs[1]);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA32F, framebufferWidth, framebufferHeight);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA32F, FramebufferWidth, FramebufferHeight);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_RENDERBUFFER, rboIDs[1]);
 
 		glBindRenderbuffer(GL_RENDERBUFFER, rboIDs[2]);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA32F, framebufferWidth, framebufferHeight);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA32F, FramebufferWidth, FramebufferHeight);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_RENDERBUFFER, rboIDs[2]);
 
 		glBindRenderbuffer(GL_RENDERBUFFER, rboIDs[3]);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA32F, framebufferWidth, framebufferHeight);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA32F, FramebufferWidth, FramebufferHeight);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_RENDERBUFFER, rboIDs[3]);
 
 		GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -192,7 +192,7 @@ namespace ether {
 			static_cast<GLfloat>(BackGroundColor.b),
 			static_cast<GLfloat>(BackGroundColor.a));
 
-		glBlitFramebuffer(0, 0, framebufferWidth, framebufferHeight, 0, 0, framebufferWidth, framebufferHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
+		glBlitFramebuffer(0, 0, FramebufferWidth, FramebufferHeight, 0, 0, FramebufferWidth, FramebufferHeight, GL_COLOR_BUFFER_BIT, GL_LINEAR);
 #endif
 	}
 
@@ -247,8 +247,8 @@ namespace ether {
 
 		glViewport(0, 0, width, height);
 
-		display->framebufferWidth = width;
-		display->framebufferHeight = height;
+		display->FramebufferWidth = width;
+		display->FramebufferHeight = height;
 
 		if (display->framebufferSizeCallback)
 			display->framebufferSizeCallback(width, height);

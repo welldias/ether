@@ -2,18 +2,18 @@
 
 namespace ether {
 
-	Vbo::Vbo() {
+	VertexBuffer::VertexBuffer() {
 
 		this->id = 0;
 		this->attributeNumber = 0;
-		this->type = Vbo::Type::Undefined;
+		this->type = VertexBuffer::Type::Undefined;
 		this->count = 0;
 		this->data = NULL;
 		this->textureID = 0;
 	}
 
 
-	Vbo::Vbo(Vbo::Type type, unsigned int count, void* data, unsigned textureID) {
+	VertexBuffer::VertexBuffer(VertexBuffer::Type type, unsigned int count, void* data, unsigned textureID) {
 
 		this->id = 0;
 		this->type = type;
@@ -22,11 +22,11 @@ namespace ether {
 		this->textureID = textureID;
 	}
 
-	Vbo::~Vbo() {
+	VertexBuffer::~VertexBuffer() {
 		ReleaseBuffer();
 	}
 
-	void Vbo::ReleaseBuffer() {
+	void VertexBuffer::ReleaseBuffer() {
 		if (id == 0)
 			return;
 
@@ -34,20 +34,20 @@ namespace ether {
 		id = 0;
 	}
 
-	void  Vbo::Load(unsigned int attributeNumber) {
+	void  VertexBuffer::Load(unsigned int attributeNumber) {
 
 		if (data == NULL || id != 0)
 			return;
 
 		switch (this->type)
 		{
-		case Vbo::Type::Vertices:
-		case Vbo::Type::Texture:
-		case Vbo::Type::Colours:
-		case Vbo::Type::Normals:
+		case VertexBuffer::Type::Vertices:
+		case VertexBuffer::Type::Texture:
+		case VertexBuffer::Type::Colours:
+		case VertexBuffer::Type::Normals:
 			BindArrayByffer(attributeNumber);
 			break;
-		case Vbo::Type::Indices:
+		case VertexBuffer::Type::Indices:
 			BindElementArrayByffer();
 			break;
 		default:
@@ -56,15 +56,15 @@ namespace ether {
 		}
 	}
 
-	unsigned int Vbo::Size() const {
+	unsigned int VertexBuffer::Size() const {
 		switch (this->type)
 		{
-		case Vbo::Type::Vertices:
-		case Vbo::Type::Texture:
-		case Vbo::Type::Normals:
-		case Vbo::Type::Colours:
+		case VertexBuffer::Type::Vertices:
+		case VertexBuffer::Type::Texture:
+		case VertexBuffer::Type::Normals:
+		case VertexBuffer::Type::Colours:
 			return sizeof(float) * count;
-		case Vbo::Type::Indices:
+		case VertexBuffer::Type::Indices:
 			return sizeof(int) * count;
 		default:
 			break;
@@ -73,26 +73,26 @@ namespace ether {
 		throw EngineError("Databuffer type unsupported");
 	}
 
-	void Vbo::BindArrayByffer(unsigned int attributeNumber) {
+	void VertexBuffer::BindArrayByffer(unsigned int attributeNumber) {
 
 		unsigned int glUnitSize = 0;
 		unsigned int glType = 0;
 		switch (this->type)
 		{
-		case Vbo::Type::Vertices:
-		case Vbo::Type::Normals:
+		case VertexBuffer::Type::Vertices:
+		case VertexBuffer::Type::Normals:
 			glUnitSize = 3;
 			glType = GL_FLOAT;
 			break;
-		case Vbo::Type::Colours:
+		case VertexBuffer::Type::Colours:
 			glUnitSize = 3;
 			glType = GL_FLOAT;
 			break;
-		case Vbo::Type::Texture:
+		case VertexBuffer::Type::Texture:
 			glUnitSize = 2;
 			glType = GL_FLOAT;
 			break;
-		case Vbo::Type::Indices:
+		case VertexBuffer::Type::Indices:
 		default:
 			throw EngineError("Databuffer type unsupported");
 		}
@@ -106,30 +106,30 @@ namespace ether {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	void Vbo::BindElementArrayByffer() {
+	void VertexBuffer::BindElementArrayByffer() {
 		glGenBuffers(1, &id);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Size(), data, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	void Vbo::EnableAttributeArray() const {
+	void VertexBuffer::EnableAttributeArray() const {
 		if (id == 0)
 			return;
-		if (this->type == Vbo::Type::Indices)
+		if (this->type == VertexBuffer::Type::Indices)
 			return;
 		glEnableVertexAttribArray(attributeNumber);
 
-		if (this->type == Vbo::Type::Texture) {
+		if (this->type == VertexBuffer::Type::Texture) {
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, id);
 		}
 	}
 
-	void Vbo::DisableAttributeArray() const {
+	void VertexBuffer::DisableAttributeArray() const {
 		if (id == 0)
 			return;
-		if (this->type == Vbo::Type::Indices)
+		if (this->type == VertexBuffer::Type::Indices)
 			return;
 		glDisableVertexAttribArray(attributeNumber);
 	}

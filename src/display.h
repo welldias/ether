@@ -24,13 +24,12 @@ namespace ether {
 
         GLFWwindow* getWindowHandle() { return window; };
 
-        void SetMessageCallbackFunction(MessageCallbackFunction cb) { messageCallback = cb; };
-        void SetKeyCallbackFunction(KeyCallbackFunction cb) { keyCallback = cb; };
-
-        void SetMouseButtonCallback(MouseButtonCallbackFunction cb) { mouseButtonCallback = cb; };
-        void SetMouseScrollCallback(MouseScrollCallbackFunction cb) { mouseScrollCallback = cb; };
-        void SetMouseCursorCallback(MouseCursorCallbackFunction cb) { mouseCursorCallback = cb; };
-        void SetFramebufferSizeCallback(FramebufferSizeCallbackFunction cb) { framebufferSizeCallback = cb; };
+        inline void SetMessageCallbackFunction(MessageCallbackFunction cb) { messageCallback = cb; };
+        inline void SetKeyCallbackFunction(KeyCallbackFunction cb) { keyCallback = cb; };
+        inline void SetMouseButtonCallback(MouseButtonCallbackFunction cb) { mouseButtonCallback = cb; };
+        inline void SetMouseScrollCallback(MouseScrollCallbackFunction cb) { mouseScrollCallback = cb; };
+        inline void SetMouseCursorCallback(MouseCursorCallbackFunction cb) { mouseCursorCallback = cb; };
+        inline void SetFramebufferSizeCallback(FramebufferSizeCallbackFunction cb) { framebufferSizeCallback = cb; };
 
     private:
         void CreateWindow();
@@ -64,8 +63,8 @@ namespace ether {
         unsigned int OpenglMajorVersion;
         unsigned int OpenglMinorVersion;
 
-        int framebufferWidth;
-        int framebufferHeight;
+        int FramebufferWidth;
+        int FramebufferHeight;
 
     private:
 

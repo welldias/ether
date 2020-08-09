@@ -23,6 +23,7 @@
     <ClCompile Include="src\display.cpp" />
     <ClCompile Include="src\engine.cpp" />
     <ClCompile Include="src\exception.cpp" />
+    <ClCompile Include="src\index_buffer.cpp" />
     <ClCompile Include="src\light.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\math_util.cpp" />
@@ -37,8 +38,8 @@
     <ClCompile Include="src\shader_program.cpp" />
     <ClCompile Include="src\texture_loader.cpp" />
     <ClCompile Include="src\time.cpp" />
-    <ClCompile Include="src\vao.cpp" />
-    <ClCompile Include="src\vbo.cpp" />
+    <ClCompile Include="src\vertex_array.cpp" />
+    <ClCompile Include="src\vertex_buffer.cpp" />
     <ClCompile Include="src\vector2.cpp" />
     <ClCompile Include="src\vector3.cpp" />
   </ItemGroup>
@@ -48,6 +49,7 @@
     <ClInclude Include="src\engine.h" />
     <ClInclude Include="src\ether.h" />
     <ClInclude Include="src\exception.h" />
+    <ClInclude Include="src\index_buffer.h" />
     <ClInclude Include="src\light.h" />
     <ClInclude Include="src\math_util.h" />
     <ClInclude Include="src\matrix4.h" />
@@ -62,8 +64,8 @@
     <ClInclude Include="src\shader_program.h" />
     <ClInclude Include="src\texture_loader.h" />
     <ClInclude Include="src\time.h" />
-    <ClInclude Include="src\vao.h" />
-    <ClInclude Include="src\vbo.h" />
+    <ClInclude Include="src\vertex_array.h" />
+    <ClInclude Include="src\vertex_buffer.h" />
     <ClInclude Include="src\vector2.h" />
     <ClInclude Include="src\vector3.h" />
   </ItemGroup>

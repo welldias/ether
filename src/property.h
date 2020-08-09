@@ -10,6 +10,7 @@ namespace ether {
         virtual const T& operator() () const { return *value; }
         virtual explicit operator const T& () const { return *value; }
         virtual T* operator->() { return value; }
+        //virtual operator T* () const { return v; }
     protected:
         T* value;
     };

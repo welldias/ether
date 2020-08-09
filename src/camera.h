@@ -21,35 +21,35 @@ namespace ether {
         void Perspective(float aspect, float nearVal, float farVal, Matrix4& dest);
 
         inline float Zoom() const { return zoom; }
+        void Update();
 
     private:
-        void Update();
         void LookAt(Vector3 center, Matrix4& dest);
 
-    private:
+    public:
         // camera Attributes
-        Vector3 position;
-        Vector3 front;
-        Vector3 up;
-        Vector3 right;
-        Vector3 worldUp;
+        Vector3 Position;
+        Vector3 Front;
+        Vector3 Up;
+        Vector3 Right;
+        Vector3 WorldUp;
 
         // euler Angles
-        float yaw;
-        float pitch;
-        float rot;
+        float Yaw;
+        float Pitch;
+        float Rotation;
 
         // camera options
         float movementSpeed;
         float mouseSensitivity;
         float zoom;
 
-    private:
-        static const float DEFAULT_CAMERA_YAW;
-        static const float DEFAULT_CAMERA_PITCH;
-        static const float DEFAULT_CAMERA_SPEED;
-        static const float DEFAULT_CAMERA_SENSITIVITY;
-        static const float DEFAULT_CAMERA_ZOOM;
+    public:
+        static const float DefaultCameraYaw;
+        static const float DefaultCameraPitch;
+        static const float DefaultCameraSpeed;
+        static const float DefaultCameraSensitivity;
+        static const float DefaultCameraZoom;
 
 	};
 }
