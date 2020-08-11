@@ -14,10 +14,14 @@ int main(int argc, char* argv[]) {
 	engine->Display.BackGroundColor = "#4a6572";
 	engine->Init();
 
-	Shader vertexShader("shader\\texture.vs", Shader::Type::Vertex);
-	Shader fragmentShader("shader\\texture.fs", Shader::Type::Fragment);
+	std::cout << glGetString(GL_VERSION) << std::endl;
+
+	//Shader vertexShader("shader\\texture.vs", Shader::Type::Vertex);
+	//Shader fragmentShader("shader\\texture.fs", Shader::Type::Fragment);
 	//Shader vertexShader("shader\\color.vs", Shader::Type::Vertex);
 	//Shader fragmentShader("shader\\color.fs", Shader::Type::Fragment);
+	Shader vertexShader("shader\\simple.vs", Shader::Type::Vertex);
+	Shader fragmentShader("shader\\simple.fs", Shader::Type::Fragment);
 	vertexShader.Load();
 	fragmentShader.Load();
 
@@ -39,18 +43,29 @@ int main(int argc, char* argv[]) {
 	//engine->Vaos.push_back(vao);
 
 	//ObjFile
-	TextureLoader textureLoader("resources\\white.jpg");
+	TextureLoader textureLoader("resources\\cube.png");
 	textureLoader.Load();
-	ObjFile objFile("resources\\dragon.obj");
+	ObjFile objFile("resources\\cube.obj");
 	objFile.Load();
-	VertexArray vao;
-	vao.Add(VertexBuffer(VertexBuffer::Type::Indices, objFile.TotalIndices() * 3, objFile.Indices()));
-	vao.Add(VertexBuffer(VertexBuffer::Type::Vertices, objFile.TotalVertex() * 3, objFile.Vertices()));
-	vao.Add(VertexBuffer(VertexBuffer::Type::Texture, objFile.TotalTextcoords() * 2, objFile.Textcoords(), textureLoader.GetId()));
+	
+	auto indices = new IndexBuffer<int>(static_cast<void*>(objFile.Indices()), objFile.TotalIndices() * 3);
+	auto vertices = new VertexBuffer<float>(objFile.Vertices(), objFile.TotalVertex(), 3);
+	auto texture = new VertexBuffer<float>(objFile.Textcoords(), objFile.TotalTextcoords(), 2);
+
+	engine->Vao = new VertexArray();
+	engine->Vao->AddIndex(indices);
+	engine->Vao->Add(vertices);
+	engine->Vao->Add(texture);
+	engine->Vao->Load();
+
+	//VertexArray vao;
+	//vao.Add(VertexBuffer(VertexBuffer::Type::Indices, objFile.TotalIndices() * 3, objFile.Indices()));
+	//vao.Add(VertexBuffer(VertexBuffer::Type::Vertices, objFile.TotalVertex() * 3, objFile.Vertices()));
+	//vao.Add(VertexBuffer(VertexBuffer::Type::Texture, objFile.TotalTextcoords() * 2, objFile.Textcoords(), textureLoader.GetId()));
 	//vao.Add(Vbo(Vbo::Type::Colours, objFile.TotalColors() * 3, objFile.Colors()));
-	vao.Add(VertexBuffer(VertexBuffer::Type::Normals, objFile.TotalNormals() * 3, objFile.Normals()));
-	vao.Load();
-	engine->Vaos.push_back(vao);
+	//vao.Add(VertexBuffer(VertexBuffer::Type::Normals, objFile.TotalNormals() * 3, objFile.Normals()));
+	//vao.Load();
+	//engine->Vaos.push_back(vao);
 
 	//Static square
 	//Vao vao3;
@@ -59,8 +74,6 @@ int main(int argc, char* argv[]) {
 	//vao.Add(Vbo(Vbo::Type::Texture, sizeof(textureCoords) / sizeof(textureCoords[0]), textureCoords, textureLoader.GetId()));
 	//vao3.Load();
 	//engine.Vaos.push_back(vao3);
-
-	std::cout << glGetString(GL_VERSION) << std::endl;
 
 	engine->Run();
 

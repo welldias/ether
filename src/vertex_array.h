@@ -7,19 +7,20 @@ namespace ether {
 		VertexArray();
 		~VertexArray();
 
-		void Add(const VertexBuffer& vbo);
+		void Bind() const;
+		void UnBind() const;
+
+		void AddIndex(IVertexBuffer* vertexBuffer);
+		void Add(IVertexBuffer* vertexBuffer);
 		void Load();
 		void Draw() const;
 
-		inline unsigned int GetID() const { return id; }
+		ConstProperty<unsigned int> Id;
 
 	private:
 		unsigned int id;
-		VertexBuffer indices;
-		VertexBuffer vertices;
-		VertexBuffer texture;
-		VertexBuffer normals;
-		VertexBuffer colours;
+		IVertexBuffer* indexBuffer;
+		std::vector<IVertexBuffer*> vertexBuffers;
 	};
 }
 

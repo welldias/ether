@@ -12,7 +12,7 @@ namespace ether {
 	bool  Engine::firstMouse = true;
 
 	Engine::Engine() {
-
+		Vao = NULL;
 		mouseButton1Pressed = false;
 	}
 
@@ -80,7 +80,7 @@ namespace ether {
 
 			RenderUI.StartFrame();
 
-			RenderUI.ShowPanelControl();
+			//RenderUI.ShowPanelControl();
 			//RenderUI.ShowMiscSettings();
 			//RenderUI.ShowToolBar();
 			//RenderUI.ShowBenchmarkWindow(0);
@@ -106,9 +106,7 @@ namespace ether {
 			//model.Rotate(MathUtil::Radian(10.0f * static_cast<float>(glfwGetTime())), vecB);
 			ShaderProgram.Uniform("model", model);
 
-			for (auto it = Vaos.begin(); it != Vaos.end(); it++) {
-				Render.Execute(*(it));
-			}
+			Render.Execute(*Vao);
 
 			RenderUI.RenderFrame();
 

@@ -33,6 +33,8 @@ namespace ether {
 	private:
 		bool miscSettingsShown;
 
+		bool uiToolTipShown;
+
 		bool uiBenchmarkShown;
 		int uiBenchmarkWheight;
 

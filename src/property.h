@@ -14,6 +14,17 @@ namespace ether {
     protected:
         T* value;
     };
+
+    template <typename T>
+    class ConstProperty {
+    public:
+        ConstProperty(T* v) :value(v) {}
+        virtual const T& operator() () const { return *value; }
+        virtual explicit operator const T& () const { return *value; }
+        virtual T* operator->() { return value; }
+    protected:
+        T* value;
+    };
 }
 
 #endif //__ETHER_PROPERTY_H__

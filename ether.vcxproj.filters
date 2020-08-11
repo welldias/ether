@@ -48,6 +48,7 @@
     <ClCompile Include="src\vertex_array.cpp" />
     <ClCompile Include="src\vertex_buffer.cpp" />
     <ClCompile Include="src\index_buffer.cpp" />
+    <ClCompile Include="src\complex_vertex_buffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ether.h" />
@@ -74,6 +75,7 @@
     <ClInclude Include="src\vertex_array.h" />
     <ClInclude Include="src\vertex_buffer.h" />
     <ClInclude Include="src\index_buffer.h" />
+    <ClInclude Include="src\complex_vertex_buffer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="glad">

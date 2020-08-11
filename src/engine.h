@@ -35,7 +35,7 @@ namespace ether {
         Render Render;
         RenderUI RenderUI;
         ShaderProgram ShaderProgram;
-        std::vector<VertexArray> Vaos;
+        VertexArray* Vao;
 
         bool mouseButton1Pressed;
 

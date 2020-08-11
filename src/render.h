@@ -20,7 +20,6 @@ namespace ether {
 		Render::Mode GetMode();
 
 	public:
-		Vector3 BackColor;
 		Mode mode;
 	};
 }

@@ -4,6 +4,7 @@ namespace ether {
 
 	RenderUI::RenderUI() {
 
+		uiToolTipShown = false;
 		uiBenchmarkShown = true;
 		uiBenchmarkWheight = 25;
 
@@ -367,47 +368,50 @@ namespace ether {
 		SliderFromParam("intensityOutput");
 		SliderFromParam("temperatureOutput");
 
-		ImGui::BeginTooltip();
-		float percent = 2.5f;
+		if (uiToolTipShown) {
+			ImGui::BeginTooltip();
+			float percent = 2.5f;
 
-		ImGui::PushFont(fonts->Fonts[3]);
-		ImGui::Text("ID: %i\nVersion: %i.%i", 10, 3, 2);
-		ImGui::Text("Remote %i selected", 123);
+			ImGui::PushFont(fonts->Fonts[3]);
+			ImGui::Text("ID: %i\nVersion: %i.%i", 10, 3, 2);
+			ImGui::Text("Remote %i selected", 123);
 
-		ImGui::PushFont(fonts->Fonts[4]);
-		ImGui::TextUnformatted("Faders");
-		ImGui::PopFont();
-		
-		ImGui::Text("Intensity: %.1f %%\nTemperature: %i k", percent, 23);
+			ImGui::PushFont(fonts->Fonts[4]);
+			ImGui::TextUnformatted("Faders");
+			ImGui::PopFont();
 
-		ImGui::PushFont(fonts->Fonts[4]);
-		ImGui::TextUnformatted("Remote");
-		ImGui::PopFont();
+			ImGui::Text("Intensity: %.1f %%\nTemperature: %i k", percent, 23);
 
-		ImGui::Text("Channel: %i\nIntensity: %.1f %%\nTemperature: %i k\nMix: %.1f %%", 11, percent, 43, 3.1f);
+			ImGui::PushFont(fonts->Fonts[4]);
+			ImGui::TextUnformatted("Remote");
+			ImGui::PopFont();
 
-		ImGui::PushFont(fonts->Fonts[4]);
-		ImGui::TextUnformatted("Weather");
-		ImGui::PopFont();
-		ImGui::Text("Intensity: %.1f %%\nTemperature: %i k\nMix: %.1f %%", percent, 221, 13.0f);
+			ImGui::Text("Channel: %i\nIntensity: %.1f %%\nTemperature: %i k\nMix: %.1f %%", 11, percent, 43, 3.1f);
 
-		ImGui::PushFont(fonts->Fonts[4]);
-		ImGui::TextUnformatted("Output");
-		ImGui::PopFont();
-		ImGui::Text("Intensity: %.1f %%\nTemperature: %i k", percent, 28);
+			ImGui::PushFont(fonts->Fonts[4]);
+			ImGui::TextUnformatted("Weather");
+			ImGui::PopFont();
+			ImGui::Text("Intensity: %.1f %%\nTemperature: %i k\nMix: %.1f %%", percent, 221, 13.0f);
 
-		ImGui::PushFont(fonts->Fonts[4]);
-		ImGui::TextUnformatted("Movement Sensor");
-		ImGui::PopFont();
-		ImGui::Text("Sensor: %s\nLevel: %.1f %%", "activity", 23.21);
+			ImGui::PushFont(fonts->Fonts[4]);
+			ImGui::TextUnformatted("Output");
+			ImGui::PopFont();
+			ImGui::Text("Intensity: %.1f %%\nTemperature: %i k", percent, 28);
 
-		ImGui::PushFont(fonts->Fonts[4]);
-		ImGui::TextUnformatted("Light Sensor");
-		ImGui::PopFont();
-		ImGui::Text("Intensity: %i lux\nTemperature: %i k\nLevel: %i", 2, 3, 5);
-		ImGui::PopFont();
+			ImGui::PushFont(fonts->Fonts[4]);
+			ImGui::TextUnformatted("Movement Sensor");
+			ImGui::PopFont();
+			ImGui::Text("Sensor: %s\nLevel: %.1f %%", "activity", 23.21);
 
-		ImGui::EndTooltip();
+			ImGui::PushFont(fonts->Fonts[4]);
+			ImGui::TextUnformatted("Light Sensor");
+			ImGui::PopFont();
+			ImGui::Text("Intensity: %i lux\nTemperature: %i k\nLevel: %i", 2, 3, 5);
+			ImGui::PopFont();
+
+			ImGui::EndTooltip();
+		}
+
 		ImGui::End();
 	}
 

@@ -11,7 +11,7 @@ namespace ether {
 		glfwSetErrorCallback(GlfErrorCallback);
 		
 		if (!glfwInit())
-			throw std::runtime_error("GLFW failed to initialize.");
+			throw EngineError("GLFW failed to initialize.");
 
 		this->TitleWindow = "Ether";
 		this->window = NULL;

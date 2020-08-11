@@ -2,82 +2,73 @@
 
 namespace ether {
 
-	VertexArray::VertexArray() {
+	VertexArray::VertexArray()
+		:Id(&id) {
+		indexBuffer = NULL;
 		glGenVertexArrays(1, &id);
 	}
 
 	VertexArray::~VertexArray() {
-		glBindVertexArray(id);
+		Bind();
 
-		indices.ReleaseBuffer();
-		vertices.ReleaseBuffer();
-		texture.ReleaseBuffer();
-		normals.ReleaseBuffer();
-		colours.ReleaseBuffer();
+		for (auto vb : vertexBuffers) {
+			delete vb;
+		}
+		vertexBuffers.clear();
 
 		glDeleteVertexArrays(1, &id);
-		glBindVertexArray(0);
+		UnBind();
 	}
 
-	void VertexArray::Add(const VertexBuffer& vbo) {
-		
-		switch (vbo.GetType())
-		{
-		case VertexBuffer::Type::Indices:
-			this->indices = vbo;
-			break;
-		case VertexBuffer::Type::Vertices:
-			this->vertices = vbo;
-			break;
-		case VertexBuffer::Type::Texture:
-			this->texture = vbo;
-			break;
-		case VertexBuffer::Type::Normals:
-			this->normals = vbo;
-			break;
-		case VertexBuffer::Type::Colours:
-			this->colours = vbo;
-			break;
-		default:
-			throw EngineError("Databuffer type unsupported");
-		}
+	void VertexArray::Bind() const {
+		glBindBuffer(GL_ARRAY_BUFFER, this->id);
+	}
+
+	void VertexArray::UnBind() const {
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	void VertexArray::AddIndex(IVertexBuffer* indexBuffer) {
+		this->indexBuffer = indexBuffer;
+	}
+
+	void VertexArray::Add(IVertexBuffer* vertexBuffer) {
+		vertexBuffers.push_back(vertexBuffer);
 	}
 
 	void VertexArray::Load() {
 
-		glBindVertexArray(id);
+		Bind();
 
-		indices.Load(0);
-		vertices.Load(0);
-		//texture.Load(1);
-		colours.Load(1);
-		normals.Load(2);
+		unsigned int attribute = 0;
+		for (auto vb : vertexBuffers) {
+			vb->EnableAttribute(attribute);
+			attribute++;
+		}
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		//UnBind();
 	}
 
 	void VertexArray::Draw() const {
 
-		if (id == 0)
-			return;
-	
-		if (indices.GetCount() == 0)
-			return;
+		//if (indices.GetCount() == 0)
+		//	return;
 
-		glBindVertexArray(id);
+		Bind();
+		indexBuffer->Bind();
 
-		vertices.EnableAttributeArray();
-		normals.EnableAttributeArray();
-		texture.EnableAttributeArray();
-		colours.EnableAttributeArray();
+		//vertices.EnableAttributeArray();
+		//normals.EnableAttributeArray();
+		//texture.EnableAttributeArray();
+		//colours.EnableAttributeArray();
 
-		glDrawElements(GL_TRIANGLES, (GLsizei)indices.GetCount(), GL_UNSIGNED_INT, 0);
+		//glDrawElements(GL_TRIANGLES, (GLsizei)indices.GetCount(), GL_UNSIGNED_INT, 0);
 
-		colours.DisableAttributeArray();
-		texture.DisableAttributeArray();
-		normals.DisableAttributeArray();
-		vertices.DisableAttributeArray();
+		//colours.DisableAttributeArray();
+		//texture.DisableAttributeArray();
+		//normals.DisableAttributeArray();
+		//vertices.DisableAttributeArray();
 
-		glBindVertexArray(0);
+		//UnBind();
 	}
 }

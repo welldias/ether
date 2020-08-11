@@ -20,6 +20,7 @@
     <ClCompile Include="external\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="external\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\camera.cpp" />
+    <ClCompile Include="src\complex_vertex_buffer.cpp" />
     <ClCompile Include="src\display.cpp" />
     <ClCompile Include="src\engine.cpp" />
     <ClCompile Include="src\exception.cpp" />
@@ -45,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera.h" />
+    <ClInclude Include="src\complex_vertex_buffer.h" />
     <ClInclude Include="src\display.h" />
     <ClInclude Include="src\engine.h" />
     <ClInclude Include="src\ether.h" />
