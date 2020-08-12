@@ -97,11 +97,18 @@ namespace ether {
 		~ObjFile();
 		void Load();
 
-		unsigned int TotalVertex() const { return vertexCount;  }
+		unsigned int TotalVerteces() const { return vertexCount;  }
 		unsigned int TotalIndices() const { return indexCount;  }
 		unsigned int TotalTextcoords() const { return vertexCount; }
 		unsigned int TotalColors() const { return vertexCount; }
 		unsigned int TotalNormals() const { return vertexCount; }
+
+		unsigned int SizeVerteces() const { return sizeof(ObjFileVertice) * vertexCount; }
+		unsigned int SizeIndices() const { return sizeof(ObjFileIndice) * indexCount; }
+		unsigned int SizeTextcoords() const { return sizeof(ObjFileVeTextcoord) * vertexCount; }
+		unsigned int SizeColors() const { return sizeof(ObjFileColor) * vertexCount; }
+		unsigned int SizeNormals() const { return sizeof(ObjFileNormal) * vertexCount; }
+
 
 		ObjFileVertice* Vertices() { return vertices; }
 		ObjFileIndice* Indices() { return indices; }

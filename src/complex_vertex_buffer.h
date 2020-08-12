@@ -49,6 +49,19 @@ namespace ether {
 		ComplexVertexBuffer(const void* data, const Layout& layout);
 		~ComplexVertexBuffer();
 
+		virtual void ReleaseBuffer() {
+			//glDeleteBuffers(1, &id);
+			//id = 0;
+		}
+
+		virtual void Bind() const {
+			//glBindBuffer(GL_ARRAY_BUFFER, this->id);
+		}
+
+		virtual void UnBind() const {
+		//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+		}
+
 		virtual void EnableAttribute(unsigned int attribute);
 
 	private:

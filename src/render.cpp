@@ -4,7 +4,7 @@ namespace ether {
 
 
 	Render::Render() {
-		this->mode = Mode::Point;
+		this->mode = Mode::Line;
 	}
 
 	void Render::Init() {
@@ -27,19 +27,19 @@ namespace ether {
 		int glMode = GL_FILL;
 		switch (mode)
 		{
-		case ether::Render::Mode::Point:
+		case Mode::Point:
 			glMode = GL_POINT;
 			break;
-		case ether::Render::Mode::Line:
+		case Mode::Line:
 			glMode = GL_LINE;
 			break;
-		case ether::Render::Mode::Fill:
+		case Mode::Fill:
 		default:
 			glMode = GL_FILL;
 			break;
 		}
 
-		glPolygonMode(GL_FRONT_AND_BACK, glMode);
+		//glPolygonMode(GL_FRONT_AND_BACK, glMode);
 	}
 
 	Render::Mode Render::GetMode() {

@@ -21,11 +21,11 @@ namespace ether {
 	}
 
 	void VertexArray::Bind() const {
-		glBindBuffer(GL_ARRAY_BUFFER, this->id);
+		glBindVertexArray(id);
 	}
 
 	void VertexArray::UnBind() const {
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
 	}
 
 	void VertexArray::AddIndex(IVertexBuffer* indexBuffer) {
@@ -38,37 +38,17 @@ namespace ether {
 
 	void VertexArray::Load() {
 
-		Bind();
-
 		unsigned int attribute = 0;
 		for (auto vb : vertexBuffers) {
 			vb->EnableAttribute(attribute);
 			attribute++;
 		}
-
-		//UnBind();
+		
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	void VertexArray::Draw() const {
-
-		//if (indices.GetCount() == 0)
-		//	return;
-
 		Bind();
-		indexBuffer->Bind();
-
-		//vertices.EnableAttributeArray();
-		//normals.EnableAttributeArray();
-		//texture.EnableAttributeArray();
-		//colours.EnableAttributeArray();
-
-		//glDrawElements(GL_TRIANGLES, (GLsizei)indices.GetCount(), GL_UNSIGNED_INT, 0);
-
-		//colours.DisableAttributeArray();
-		//texture.DisableAttributeArray();
-		//normals.DisableAttributeArray();
-		//vertices.DisableAttributeArray();
-
-		//UnBind();
+		glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indexBuffer->Count), GL_UNSIGNED_INT, 0);
 	}
 }

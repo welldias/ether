@@ -1,3 +1,154 @@
+#if 0
+#include <Ether.h>
+
+/* converting rgb color to opengl format */
+//float out = (1.0f / 255) * byte_in;
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void processInput(GLFWwindow* window);
+
+// settings
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 600;
+
+const char* vertexShaderSource = "#version 330 core\n"
+"layout (location = 0) in vec3 aPos;\n"
+"void main()\n"
+"{\n"
+"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+"}\0";
+const char* fragmentShaderSource = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"}\n\0";
+
+using namespace ether;
+
+int main()
+{
+	// glfw: initialize and configure
+	// ------------------------------
+	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+	// glfw window creation
+	// --------------------
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Ether Opengl", NULL, NULL);
+	if (window == NULL)
+	{
+		printf("Failed to create GLFW window\n");
+		glfwTerminate();
+		return -1;
+	}
+	glfwMakeContextCurrent(window);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+
+	// glad: load all OpenGL function pointers
+	// ---------------------------------------
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		printf("Failed to initialize GLAD\n");
+		return -1;
+	}
+
+	ShaderProgram  shaderProgram;
+	shaderProgram.Init();
+
+	Shader vertexShader("shader\\simple.vs", Shader::Type::Vertex); vertexShader.Load();
+	Shader fragmentShader("shader\\simple.fs", Shader::Type::Fragment); fragmentShader.Load();
+
+	shaderProgram.Add(vertexShader);
+	shaderProgram.Add(fragmentShader);
+
+
+	// set up vertex data (and buffer(s)) and configure vertex attributes
+	// ------------------------------------------------------------------
+	float vertices[] = {
+		 0.5f,  0.5f, 0.0f,  // top right
+		 0.5f, -0.5f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f,  // bottom left
+		-0.5f,  0.5f, 0.0f   // top left 
+	};
+	unsigned int indices[] = {  // note that we start from 0!
+		0, 1, 3,  // first Triangle
+		1, 2, 3   // second Triangle
+	};
+
+
+	VertexArray* VAO = new VertexArray();
+	VAO->Bind();
+	VAO->Add(new VertexBuffer<float>(vertices, sizeof(vertices), 3));
+	VAO->AddIndex(new IndexBuffer<unsigned int>(indices, sizeof(indices)));
+	VAO->Load();
+	VAO->UnBind();
+		
+	// uncomment this call to draw in wireframe polygons.
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	// render loop
+	// -----------
+	while (!glfwWindowShouldClose(window))
+	{
+		// input
+		// -----
+		processInput(window);
+
+		// render
+		// ------
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		shaderProgram.Use();
+
+		VAO->Draw();
+
+		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+		// -------------------------------------------------------------------------------
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+
+	// optional: de-allocate all resources once they've outlived their purpose:
+	// ------------------------------------------------------------------------
+	//glDeleteVertexArrays(1, &VAO);
+	//glDeleteBuffers(1, &VBO);
+	//glDeleteBuffers(1, &EBO);
+	//glDeleteProgram(shaderProgram);
+
+	// glfw: terminate, clearing all previously allocated GLFW resources.
+	// ------------------------------------------------------------------
+	glfwTerminate();
+	return 0;
+}
+
+// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
+// ---------------------------------------------------------------------------------------------------------
+void processInput(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GL_TRUE);
+}
+
+// glfw: whenever the window size changed (by OS or user resize) this callback function executes
+// ---------------------------------------------------------------------------------------------
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	// make sure the viewport matches the new window dimensions; note that width and 
+	// height will be significantly larger than specified on retina displays.
+	glViewport(0, 0, width, height);
+}
+
+#else
+
 #include <cglm\cglm.h>
 
 #include "ether.h"
@@ -25,10 +176,10 @@ int main(int argc, char* argv[]) {
 	vertexShader.Load();
 	fragmentShader.Load();
 
-	engine->ShaderProgram.BindAttibute(0, "position");
-	engine->ShaderProgram.BindAttibute(1, "textureCoordinates");
+	//engine->ShaderProgram.BindAttibute(0, "position");
+	//engine->ShaderProgram.BindAttibute(1, "textureCoordinates");
 	//engine->ShaderProgram.BindAttibute(1, "color");
-	engine->ShaderProgram.BindAttibute(2, "normal");
+	//engine->ShaderProgram.BindAttibute(2, "normal");
 
 	engine->ShaderProgram.Add(vertexShader);
 	engine->ShaderProgram.Add(fragmentShader);
@@ -43,20 +194,28 @@ int main(int argc, char* argv[]) {
 	//engine->Vaos.push_back(vao);
 
 	//ObjFile
-	TextureLoader textureLoader("resources\\cube.png");
-	textureLoader.Load();
-	ObjFile objFile("resources\\cube.obj");
-	objFile.Load();
-	
-	auto indices = new IndexBuffer<int>(static_cast<void*>(objFile.Indices()), objFile.TotalIndices() * 3);
-	auto vertices = new VertexBuffer<float>(objFile.Vertices(), objFile.TotalVertex(), 3);
-	auto texture = new VertexBuffer<float>(objFile.Textcoords(), objFile.TotalTextcoords(), 2);
+	//TextureLoader textureLoader("resources\\cube.png");
+	//textureLoader.Load();
+	//ObjFile objFile("resources\\cube.obj");
+	//objFile.Load();
+
+	float vertices[] = {
+	 0.5f,  0.5f, 0.0f,  // top right
+	 0.5f, -0.5f, 0.0f,  // bottom right
+	-0.5f, -0.5f, 0.0f,  // bottom left
+	-0.5f,  0.5f, 0.0f   // top left 
+	};
+	unsigned int indices[] = {  // note that we start from 0!
+		0, 1, 3,  // first Triangle
+		1, 2, 3   // second Triangle
+	};
 
 	engine->Vao = new VertexArray();
-	engine->Vao->AddIndex(indices);
-	engine->Vao->Add(vertices);
-	engine->Vao->Add(texture);
+	engine->Vao->Bind();
+	engine->Vao->Add(new VertexBuffer<float>(vertices, sizeof(vertices), 3));
+	engine->Vao->AddIndex(new IndexBuffer<unsigned int>(indices, sizeof(indices)));
 	engine->Vao->Load();
+	engine->Vao->UnBind();
 
 	//VertexArray vao;
 	//vao.Add(VertexBuffer(VertexBuffer::Type::Indices, objFile.TotalIndices() * 3, objFile.Indices()));
@@ -74,6 +233,8 @@ int main(int argc, char* argv[]) {
 	//vao.Add(Vbo(Vbo::Type::Texture, sizeof(textureCoords) / sizeof(textureCoords[0]), textureCoords, textureLoader.GetId()));
 	//vao3.Load();
 	//engine.Vaos.push_back(vao3);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	engine->Run();
 
@@ -229,3 +390,4 @@ void build_planet_mesh(Mesh& mesh, float radius, int resolution)
 		}
 	}
 }
+#endif

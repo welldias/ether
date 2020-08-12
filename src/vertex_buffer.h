@@ -48,9 +48,9 @@ namespace ether {
 		ConstProperty<unsigned int> Count;
 		ConstProperty<unsigned int> Size;
 
-		void ReleaseBuffer();
-		void Bind() const;
-		void UnBind() const;
+		virtual void ReleaseBuffer() = 0;
+		virtual void Bind() const = 0;
+		virtual void UnBind() const = 0;
 
 	protected:
 		BufferType type;
@@ -63,104 +63,77 @@ namespace ether {
 	class VertexBuffer : public  IVertexBuffer
 	{
 	public:
-		VertexBuffer(const void* data, unsigned int count, unsigned int attributeCount);
-		~VertexBuffer();
+		VertexBuffer(const void* data, unsigned int size, unsigned int attributeCount) {
 
-		virtual void EnableAttribute(unsigned int attribute);
+			this->type = GetType<T>();
+			this->size = size;
+			this->count = size / sizeof(T);
+			this->attributeCount = attributeCount;
+			
+			glGenBuffers(1, &id);
+			Bind();
+			glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+		}
+
+		~VertexBuffer() {
+			ReleaseBuffer();
+		}
+
+		virtual void ReleaseBuffer() {
+			glDeleteBuffers(1, &id);
+			id = 0;
+		}
+
+		virtual void Bind() const {
+			glBindBuffer(GL_ARRAY_BUFFER, id);
+		}
+
+		virtual void UnBind() const {
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		}
+
+		virtual void EnableAttribute(unsigned int attribute) {
+
+			GLenum glType = 0;
+			GLboolean glNormalized = GL_FALSE;
+
+			switch (type)
+			{
+			case BufferType::Float:
+				glType = GL_FLOAT;
+				break;
+			case BufferType::Int:
+				glType = GL_INT;
+				break;
+			case BufferType::UnsignedInt:
+				glType = GL_UNSIGNED_INT;
+				break;
+			case BufferType::Short:
+				glType = GL_SHORT;
+				break;
+			case BufferType::UnsignedShort:
+				glType = GL_UNSIGNED_SHORT;
+				break;
+			case BufferType::Byte:
+				glType = GL_BYTE;
+				glNormalized = GL_TRUE;
+				break;
+			case BufferType::UnsignedByte:
+				glType = GL_UNSIGNED_BYTE;
+				glNormalized = GL_TRUE;
+				break;
+			default:
+				throw EngineError("Unsupported type");
+			}
+
+			//Bind();
+			glVertexAttribPointer(attribute, attributeCount, glType, glNormalized, attributeCount * sizeof(T), (void*)0);
+			glEnableVertexAttribArray(attribute);
+		}
+
 	private:
 		unsigned int attributeCount;
 	};
-
-	template <typename T>
-	VertexBuffer<T>::VertexBuffer(const void* data, unsigned int count, unsigned int attributeCount) {
-
-		this->type = GetType<T>();
-		this->count = count * attributeCount;
-		this->attributeCount = attributeCount;
-		this->size = sizeof(T) * this->count;
-
-		//if (typeid(T) == typeid(float)) {
-		//	this->size = sizeof(float) * count;
-		//	type = BufferType::Float;
-		//}
-		//else if (typeid(T) == typeid(int)) {
-		//	this->size = sizeof(int) * count;
-		//	type = BufferType::Int;
-		//}
-		//else if (typeid(T) == typeid(unsigned int)) {
-		//	this->size = sizeof(int) * count;
-		//	type = BufferType::UnsignedInt;
-		//}
-		//else if (typeid(T) == typeid(short)) {
-		//	this->size = sizeof(short) * count;
-		//	type = BufferType::Short;
-		//}
-		//else if (typeid(T) == typeid(unsigned short)) {
-		//	this->size = sizeof(short) * count;
-		//	type = BufferType::UnsignedShort;
-		//}
-		//else if (typeid(T) == typeid(char)) {
-		//	this->size = count;
-		//	type = BufferType::UnsignedByte;
-		//}
-		//else if (typeid(T) == typeid(unsigned char)) {
-		//	this->size = count;
-		//	type = BufferType::UnsignedByte;
-		//}
-		//else {
-		//	throw EngineError("Unsupported type");
-		//}
-
-		glGenBuffers(1, &(this->id));
-		glBindBuffer(GL_ARRAY_BUFFER, this->id);
-		glBufferData(GL_ARRAY_BUFFER, this->size, static_cast<const void*>(data), GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
-
-	template <typename T>
-	VertexBuffer<T>::~VertexBuffer() {
-		ReleaseBuffer();
-	}
-
-	template<typename T>
-	void VertexBuffer<T>::EnableAttribute(unsigned int id) {
-
-		GLenum glType = 0;
-		GLboolean glNormalized = GL_FALSE;
-
-		switch (type)
-		{
-		case BufferType::Float:
-			glType = GL_FLOAT;
-			break;
-		case BufferType::Int:
-			glType = GL_INT;
-			break;
-		case BufferType::UnsignedInt:
-			glType = GL_UNSIGNED_INT;
-			break;
-		case BufferType::Short:
-			glType = GL_SHORT;
-			break;
-		case BufferType::UnsignedShort:
-			glType = GL_UNSIGNED_SHORT;
-			break;
-		case BufferType::Byte:
-			glType = GL_BYTE;
-			glNormalized = GL_TRUE;
-			break;
-		case BufferType::UnsignedByte:
-			glType = GL_UNSIGNED_BYTE;
-			glNormalized = GL_TRUE;
-			break;
-		default:
-			throw EngineError("Unsupported type");
-		}
-
-		Bind();
-		glEnableVertexAttribArray(id);
-		glVertexAttribPointer(id, attributeCount, glType, glNormalized, 0, 0);
-	}
 }
 
 #endif // __ETHER_VERTEX_BUFFER_H__

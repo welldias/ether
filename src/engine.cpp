@@ -78,7 +78,7 @@ namespace ether {
 
 			Display.Clear();
 
-			RenderUI.StartFrame();
+			//RenderUI.StartFrame();
 
 			//RenderUI.ShowPanelControl();
 			//RenderUI.ShowMiscSettings();
@@ -87,28 +87,29 @@ namespace ether {
 
 			ShaderProgram.Use();
 
-			ShaderProgram.Uniform("lightPosition", Light.Position);
-			ShaderProgram.Uniform("lightColour", Light.Color);
+			//ShaderProgram.Uniform("lightPosition", Light.Position);
+			//ShaderProgram.Uniform("lightColour", Light.Color);
 
-			Matrix4 projection;
-			Camera.Perspective((float)Display.Width / (float)Display.Height, 0.1f, 100.0f, projection);
-			ShaderProgram.Uniform("projection", projection);
+			//Matrix4 projection;
+			//Camera.Perspective((float)Display.Width / (float)Display.Height, 0.1f, 100.0f, projection);
+			//ShaderProgram.Uniform("projection", projection);
+			//
+			//Matrix4 view;
+			//Camera.ViewMatrix(view);
+			//ShaderProgram.Uniform("view", view);
+			//
+			//Matrix4 model;
+			////Vector3 vecA(0.0f, 0.0f, 0.0f);
+			////Vector3 vecB(0.0f, -0.05f, 0.0f);
+			//model.Identity();
+			////model.Translate(vecA);
+			////model.Rotate(MathUtil::Radian(10.0f * static_cast<float>(glfwGetTime())), vecB);
+			//ShaderProgram.Uniform("model", model);
 
-			Matrix4 view;
-			Camera.ViewMatrix(view);
-			ShaderProgram.Uniform("view", view);
+			Vao->Draw();
+			//Render.Execute(*Vao);
 
-			Matrix4 model;
-			//Vector3 vecA(0.0f, 0.0f, 0.0f);
-			//Vector3 vecB(0.0f, -0.05f, 0.0f);
-			model.Identity();
-			//model.Translate(vecA);
-			//model.Rotate(MathUtil::Radian(10.0f * static_cast<float>(glfwGetTime())), vecB);
-			ShaderProgram.Uniform("model", model);
-
-			Render.Execute(*Vao);
-
-			RenderUI.RenderFrame();
+			//RenderUI.RenderFrame();
 
 			glfwSwapBuffers(Display.getWindowHandle());
 			glfwPollEvents();
