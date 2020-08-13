@@ -23,7 +23,9 @@ namespace ether {
 	}
 
 	RenderUI::~RenderUI() {
-
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
 	}
 
 	void RenderUI::Init(Display& display) {

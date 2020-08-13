@@ -7,39 +7,50 @@ namespace ether {
 	{
 	public:
 		struct Layout {
+
+			enum class BufferType {
+				Complex,
+				Float,
+				Int,
+				UnsignedInt,
+				Short,
+				UnsignedShort,
+				Byte,
+				UnsignedByte,
+			};
+
+			template <typename T>
+			BufferType GetType() {
+
+				if (typeid(T) == typeid(float))
+					return BufferType::Float;
+				if (typeid(T) == typeid(int))
+					return BufferType::Int;
+				if (typeid(T) == typeid(unsigned int))
+					return BufferType::UnsignedInt;
+				if (typeid(T) == typeid(short))
+					return BufferType::Short;
+				if (typeid(T) == typeid(unsigned short))
+					return BufferType::UnsignedShort;
+				if (typeid(T) == typeid(char))
+					return BufferType::UnsignedByte;
+				if (typeid(T) == typeid(unsigned char))
+					return BufferType::UnsignedByte;
+
+				throw EngineError("Unsupported type");
+			}
+
 			struct Element {
 				unsigned int count;
-				IVertexBuffer::BufferType type;
+				BufferType type;
 				bool normalized;
 			};
 
 			template <typename T>
 			void Push(unsigned int count) {
 
-				IVertexBuffer::BufferType type = IVertexBuffer::BufferType::Float;
-				bool normalized = false;
-
-				if (typeid(T) == typeid(float))
-					type = IVertexBuffer::BufferType::Float;
-				else if (typeid(T) == typeid(int))
-					type = IVertexBuffer::BufferType::Int;
-				else if (typeid(T) == typeid(unsigned int))
-					type = IVertexBuffer::BufferType::UnsignedInt;
-				else if (typeid(T) == typeid(short))
-					type = IVertexBuffer::BufferType::Short;
-				else if (typeid(T) == typeid(unsigned short))
-					type = IVertexBuffer::BufferType::UnsignedShort;
-				else if (typeid(T) == typeid(char)) {
-					normalized = true;
-					type = IVertexBuffer::BufferType::UnsignedByte;
-				}
-				else if (typeid(T) == typeid(unsigned char)) {
-					normalized = true;
-					type = IVertexBuffer::BufferType::UnsignedByte;
-				}
-				else
-					throw EngineError("Unsupported type");
-
+				BufferType type = GetType<T>();
+				bool normalized = (typeid(T) == typeid(char) || typeid(T) == typeid(unsigned char)) ? true :  false;
 				Elements.push_back({ count, type, normalized });
 			}
 

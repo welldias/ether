@@ -103,7 +103,7 @@ namespace ether {
 		unsigned int TotalColors() const { return vertexCount; }
 		unsigned int TotalNormals() const { return vertexCount; }
 
-		unsigned int SizeVerteces() const { return sizeof(ObjFileVertice) * vertexCount; }
+		unsigned int SizeVertices() const { return sizeof(ObjFileVertice) * vertexCount; }
 		unsigned int SizeIndices() const { return sizeof(ObjFileIndice) * indexCount; }
 		unsigned int SizeTextcoords() const { return sizeof(ObjFileVeTextcoord) * vertexCount; }
 		unsigned int SizeColors() const { return sizeof(ObjFileColor) * vertexCount; }

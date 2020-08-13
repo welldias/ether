@@ -6,44 +6,11 @@ namespace ether {
 	class IVertexBuffer
 	{
 	public:
-		enum class BufferType {
-			Complex,
-			Float,
-			Int,
-			UnsignedInt,
-			Short,
-			UnsignedShort,
-			Byte,
-			UnsignedByte,
-		};
 
-		IVertexBuffer() : Type(&type), Id(&id), Count(&count), Size(&size) {}
+		IVertexBuffer() : Id(&id), Count(&count), Size(&size) {}
 
 		virtual void EnableAttribute(unsigned int attribute) = 0;
 
-		template <typename T>
-		BufferType GetType() {
-		
-			if (typeid(T) == typeid(float))
-				return IVertexBuffer::BufferType::Float;
-			if (typeid(T) == typeid(int))
-				return IVertexBuffer::BufferType::Int;
-			if (typeid(T) == typeid(unsigned int))
-				return IVertexBuffer::BufferType::UnsignedInt;
-			if (typeid(T) == typeid(short))
-				return IVertexBuffer::BufferType::Short;
-			if (typeid(T) == typeid(unsigned short))
-				return IVertexBuffer::BufferType::UnsignedShort;
-			if (typeid(T) == typeid(char))
-				return IVertexBuffer::BufferType::UnsignedByte;
-			if (typeid(T) == typeid(unsigned char))
-				return IVertexBuffer::BufferType::UnsignedByte;
-		
-			throw EngineError("Unsupported type");
-		}
-
-
-		ConstProperty<BufferType> Type;
 		ConstProperty<unsigned int> Id;
 		ConstProperty<unsigned int> Count;
 		ConstProperty<unsigned int> Size;
@@ -53,7 +20,6 @@ namespace ether {
 		virtual void UnBind() const = 0;
 
 	protected:
-		BufferType type;
 		unsigned int id;
 		unsigned int count;
 		unsigned int size;
@@ -65,7 +31,16 @@ namespace ether {
 	public:
 		VertexBuffer(const void* data, unsigned int size, unsigned int attributeCount) {
 
-			this->type = GetType<T>();
+			if (typeid(T) != typeid(float) 
+				&& typeid(T) != typeid(int) 
+				&& typeid(T) != typeid(unsigned int)
+				&& typeid(T) != typeid(short)
+				&& typeid(T) != typeid(unsigned short) 
+				&& typeid(T) != typeid(char) 
+				&& typeid(T) != typeid(unsigned char)) {
+				throw EngineError("Unsupported type");
+			}
+
 			this->size = size;
 			this->count = size / sizeof(T);
 			this->attributeCount = attributeCount;
@@ -97,38 +72,30 @@ namespace ether {
 			GLenum glType = 0;
 			GLboolean glNormalized = GL_FALSE;
 
-			switch (type)
-			{
-			case BufferType::Float:
+			if (typeid(T) == typeid(float))
 				glType = GL_FLOAT;
-				break;
-			case BufferType::Int:
+			else if (typeid(T) == typeid(int))
 				glType = GL_INT;
-				break;
-			case BufferType::UnsignedInt:
+			else if (typeid(T) == typeid(unsigned int))
 				glType = GL_UNSIGNED_INT;
-				break;
-			case BufferType::Short:
+			else if (typeid(T) == typeid(short))
 				glType = GL_SHORT;
-				break;
-			case BufferType::UnsignedShort:
+			else if (typeid(T) == typeid(unsigned short))
 				glType = GL_UNSIGNED_SHORT;
-				break;
-			case BufferType::Byte:
+			else if (typeid(T) == typeid(char)) {
 				glType = GL_BYTE;
 				glNormalized = GL_TRUE;
-				break;
-			case BufferType::UnsignedByte:
+			}
+			else if (typeid(T) == typeid(unsigned char)) {
 				glType = GL_UNSIGNED_BYTE;
 				glNormalized = GL_TRUE;
-				break;
-			default:
-				throw EngineError("Unsupported type");
 			}
 
-			//Bind();
-			glVertexAttribPointer(attribute, attributeCount, glType, glNormalized, attributeCount * sizeof(T), (void*)0);
+			Bind();
+			glVertexAttribPointer(attribute, attributeCount, glType, glNormalized, 0, 0);
 			glEnableVertexAttribArray(attribute);
+			//glVertexAttribPointer(attribute, attributeCount, glType, glNormalized, attributeCount * sizeof(T), (void*)0);
+			UnBind();
 		}
 
 	private:

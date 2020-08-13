@@ -87,24 +87,24 @@ namespace ether {
 
 			ShaderProgram.Use();
 
-			//ShaderProgram.Uniform("lightPosition", Light.Position);
-			//ShaderProgram.Uniform("lightColour", Light.Color);
-
-			//Matrix4 projection;
-			//Camera.Perspective((float)Display.Width / (float)Display.Height, 0.1f, 100.0f, projection);
-			//ShaderProgram.Uniform("projection", projection);
-			//
-			//Matrix4 view;
-			//Camera.ViewMatrix(view);
-			//ShaderProgram.Uniform("view", view);
-			//
-			//Matrix4 model;
-			////Vector3 vecA(0.0f, 0.0f, 0.0f);
-			////Vector3 vecB(0.0f, -0.05f, 0.0f);
-			//model.Identity();
-			////model.Translate(vecA);
-			////model.Rotate(MathUtil::Radian(10.0f * static_cast<float>(glfwGetTime())), vecB);
-			//ShaderProgram.Uniform("model", model);
+			ShaderProgram.Uniform("lightPosition", Light.Position);
+			ShaderProgram.Uniform("lightColour", Light.Color);
+			
+			Matrix4 projection;
+			Camera.Perspective((float)Display.Width / (float)Display.Height, 0.1f, 100.0f, projection);
+			ShaderProgram.Uniform("projection", projection);
+			
+			Matrix4 view;
+			Camera.ViewMatrix(view);
+			ShaderProgram.Uniform("view", view);
+			
+			Matrix4 model;
+			Vector3 vecA(0.0f, 0.0f, 0.0f);
+			Vector3 vecB(0.0f, 1.0f, 0.0f);
+			model.Identity();
+			model.Translate(vecA);
+			model.Rotate(MathUtil::Radian(10.0f * static_cast<float>(glfwGetTime())), vecB);
+			ShaderProgram.Uniform("model", model);
 
 			Vao->Draw();
 			//Render.Execute(*Vao);
@@ -129,6 +129,8 @@ namespace ether {
 			Camera.MoveLeft((float)2.5 * deltaTime);
 		if (key == GLFW_KEY_D && (action == GLFW_PRESS || action == GLFW_REPEAT))
 			Camera.MoveRight((float)2.5 * deltaTime);
+		if (key == GLFW_KEY_M && (action == GLFW_PRESS))
+			Render.SetMode(Render::Mode::Fill);
 		if (key == GLFW_KEY_F11 && action == GLFW_PRESS) {
 			is_fullscreen = !is_fullscreen;
 			Display.FullScreen(is_fullscreen);

@@ -10,10 +10,10 @@ namespace ether {
 	void Render::Init() {
 
 		glEnable(GL_DEPTH_TEST);
-
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-
+		
+		//glEnable(GL_CULL_FACE);
+		//glCullFace(GL_BACK);
+		
 		SetMode(mode);
 	}
 
@@ -39,7 +39,7 @@ namespace ether {
 			break;
 		}
 
-		//glPolygonMode(GL_FRONT_AND_BACK, glMode);
+		glPolygonMode(GL_FRONT_AND_BACK, glMode);
 	}
 
 	Render::Mode Render::GetMode() {

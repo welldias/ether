@@ -23,13 +23,6 @@ namespace ether {
 		if (window) {
 			glDeleteRenderbuffers(3, rboIDs);
 			glDeleteFramebuffers(1, &fboID);
-		}
-
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
-
-		if (window) {
 			glfwDestroyWindow(window);
 		}
 
@@ -103,7 +96,7 @@ namespace ether {
 
 		glfwGetFramebufferSize(window, &FramebufferWidth, &FramebufferHeight);
 		glViewport(0, 0, FramebufferWidth, FramebufferHeight);
-		glfwIconifyWindow(window);
+		//glfwIconifyWindow(window);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glfwSwapInterval(0);
 		glfwPollEvents();
@@ -213,8 +206,8 @@ namespace ether {
 	}
 
 	void Display::GlfKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-		if (ImGui::GetIO().WantCaptureKeyboard)
-			return;
+		//if (ImGui::GetIO().WantCaptureKeyboard)
+		//	return;
 		Display* display = (Display*)glfwGetWindowUserPointer(window);
 
 		if (display->keyCallback)

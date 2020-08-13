@@ -8,8 +8,6 @@ namespace ether {
 	public:
 		IndexBuffer(const void* data, unsigned int size) {
 
-			GetType<T>();
-
 			this->count = size / sizeof(T);
 			this->size = size;
 

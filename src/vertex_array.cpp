@@ -29,6 +29,10 @@ namespace ether {
 	}
 
 	void VertexArray::AddIndex(IVertexBuffer* indexBuffer) {
+		
+		if(this->indexBuffer != NULL)
+			throw EngineError("Vertex array already defined");
+
 		this->indexBuffer = indexBuffer;
 	}
 
@@ -38,17 +42,21 @@ namespace ether {
 
 	void VertexArray::Load() {
 
+		if (this->indexBuffer == NULL)
+			throw EngineError("Vertex array not defined");
+
+		Bind();
 		unsigned int attribute = 0;
 		for (auto vb : vertexBuffers) {
 			vb->EnableAttribute(attribute);
 			attribute++;
 		}
-		
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		UnBind();
 	}
 
 	void VertexArray::Draw() const {
 		Bind();
 		glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indexBuffer->Count), GL_UNSIGNED_INT, 0);
+		UnBind();
 	}
 }
