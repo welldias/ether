@@ -1,4 +1,8 @@
-#include <Ether.h>
+#include <stdlib.h>
+#include <math.h>
+
+#include "ether_rep.h"
+#include "ether_facet.h"
 
 static unsigned int _ether_rep_find_id;
 static int          _ether_rep_facet_count;
@@ -122,8 +126,10 @@ void
 ether_rep_compute_vertex_normals(EtherRep *rep)
 {
 	float mag;
-    if(rep == NULL)
-        return;
+	
+	if(rep == NULL)
+		return;
+
 	if(rep->normals == NULL)
 		rep->normals = calloc(rep->nvertices, sizeof(EtherVector));
 	for(_ether_rep_vertex_num = 0; _ether_rep_vertex_num < rep->nvertices; ++_ether_rep_vertex_num)
@@ -154,7 +160,7 @@ ether_rep_build_edges(EtherRep *rep)
 {
 	_ether_rep_npoints_count = 0;
 	ether_rep_traverse_facets(rep, _ether_rep_facet_npoints_counter);
-	rep->edges = calloc(_ether_rep_npoints_count / 2, sizeof(Ether_Edge));
+	rep->edges = calloc(_ether_rep_npoints_count / 2, sizeof(EtherEdge));
 	if(rep->edges == NULL)
 		return;
 	_ether_rep_this_rep = rep;
@@ -163,14 +169,14 @@ ether_rep_build_edges(EtherRep *rep)
 }
 
 void
-ether_rep_sorting_set(EtherRep *rep, Ether_Sorting_Type type)
+ether_rep_sorting_set(EtherRep *rep, EtherSortingType type)
 {
 	if(rep == NULL)
 		return;
 	rep->sorttype = type;
 }
 
-Ether_Sorting_Type
+EtherSortingType
 ether_rep_sorting_get(EtherRep *rep)
 {
 	if(rep == NULL)

@@ -26,7 +26,8 @@ all:
 %.o: %.c
 	# CC $(notdir $(filter %.c,$^)) -o $(notdir $@)
 	@$(CC) $(CPPFLAGS) $(CFLAGS) -c $(filter %.c,$^) -o $@
-ifneq ($(DISABLE_CPPCHECK), true)
+ifeq ($(ENABLE_CPPCHECK), true)
+	# CK $(notdir $(filter %.c,$^))
 	@cppcheck --enable=performance,portability,information,missingInclude -f -q $(INCLUDE_PATHS) $(FLAGS) --inline-suppr $(filter %.c,$^)
 endif
 

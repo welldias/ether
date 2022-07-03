@@ -1,12 +1,13 @@
-#include <Ether.h>
+#include <math.h>
+#include <string.h>
+
+#include "ether_vector.h"
+#include "ether_math.h"
 
 #define _ETHER_SCALAR_PRODUCT(s1, s2)      (ETHER_SCALAR_TO_FLOAT(s1) * ETHER_SCALAR_TO_FLOAT(s2))
 #define _ETHER_SCALAR_FACTOR_PRODUCT(s, f) (ETHER_SCALAR_TO_FLOAT(s)  * ETHER_FACTOR_TO_FLOAT(f))
 
-EtherVector Ether_VectorNULL = { 0, 0, 0 };
-
-void
-ether_vector_create(EtherVector result, EtherScalar x, EtherScalar y, EtherScalar z)
+void ether_vector_create(EtherVector result, EtherScalar x, EtherScalar y, EtherScalar z)
 {
 	result[X] = x;  result[Y] = y;  result[Z] = z;
 }
@@ -56,8 +57,9 @@ ether_vector_crossproduct(EtherVector result, EtherVector v1, EtherVector v2)
 	m = (float)sqrt(xf * xf + yf * yf + zf * zf);
 	if (m == 0) 
 		xf = yf = zf = 0;
-	else
+	else {
 		xf /= m;  yf /= m;  zf /= m;
+	}
 	result[X] = ETHER_FLOAT_TO_FACTOR(xf);
 	result[Y] = ETHER_FLOAT_TO_FACTOR(yf);
 	result[Z] = ETHER_FLOAT_TO_FACTOR(zf);

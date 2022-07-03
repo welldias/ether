@@ -1,5 +1,9 @@
-#include <Ether.h>
+#include "ether_shape.h"
+#include "ether_facet.h"
+#include "ether_math.h"
 #include "ether_private.h"
+#include "ether_rep.h"
+#include "ether_vector.h"
 
 static EtherShape *_ether_shape_list = NULL;
 

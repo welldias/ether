@@ -1,53 +1,7 @@
 #ifndef __ETHER_OBJECT_H__
 #define __ETHER_OBJECT_H__
 
-/* Objects are the most important entities in a virtual world. 
- * All objects have a location and orientation, and they can be 
- * attached to each other in a tree-structured hierarchy. 
- * Each object can have a shape (i.e. geometric description) and 
- * a surface map. You can create an object statically (by declaring 
- * a variable of type Ether_Object) or dynamically (either by using 
- * malloc() to allocate the space and ether_object_init() to initialize 
- * it, or by simply calling ether_object_create()). If you use 
- * ether_object_create(), you can optionally specify a shape for the 
- * object to use; if you don't want to assign a shape, use NULL. You 
- * can also destroy objects using Ether_object_destroy().
- * 
- */
-
-typedef enum _Ether_Coord_Frame
-{
-   ETHER_COORD_LOCAL = 0,
-   ETHER_COORD_PARENT,
-   ETHER_COORD_WORLD,
-   ETHER_COORD_OBJREL
-} EtherCoordFrame;
-
-typedef int (*EtherObjectFunction)(EtherObject *obj);
-
-struct _Ether_Object
-{
-  EtherShape *shape;             /**< geometry information */
-  EtherSurfaceMap *surfmap;      /**< array of pointers to surface descriptors */
-  EtherMatrix localmat;          /**< transformation matrix relative to our parent */
-  EtherMatrix globalmat;         /**< transformation matrix relative to the world */
-  EtherObject *parent;           /**< pointer to our parent in the hierarchy */
-  EtherObject *children;         /**< pointer to our children */
-  EtherObject *siblings;         /**< pointers to our siblings */
-  EtherVector minbound, maxbound;/**< bounding box (world coords) */
-  int fixed : 1;                 /**< set if object is immobile */
-  int moved : 1;                 /**< set when our local matrix has changed */
-  int rotate_box : 1;            /**< set if bounding box should rotate */
-  int highlight : 1;             /**< set if object is highlighted */
-  int invisible : 1;             /**< set if object is invisible */
-  char *name;                    /**< name of the object (may be NULL) */
-  void *applic_data;             /**< pointer to application-specific data */
-  unsigned char layer;           /**< the layer we're on (0 for all, 1-255) */
-  EtherObject *contents;         /**< points to objects contained by this one (not used) */
-  EtherRep *forced_rep;          /**< if not NULL, forces a rep to be used */
-  EtherObjectFunction function;/**< object function */
-  EtherObject *next;             /**< points to next object on a list */
-};
+#include "ether_defines.h"
 
 EAPI EtherObject           *ether_object_init                    (EtherObject *obj);
 EAPI EtherObject           *ether_object_create                  (EtherShape *shape);

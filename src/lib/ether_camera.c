@@ -1,4 +1,6 @@
-#include <Ether.h>
+#include "ether_camera.h"
+#include "ether_object.h"
+#include "ether_world.h"
 
 EtherCamera *
 ether_camera_create(void)

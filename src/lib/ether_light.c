@@ -1,4 +1,7 @@
-#include <Ether.h>
+#include "ether_light.h"
+#include "ether_object.h"
+#include "ether_world.h"
+#include "ether_camera.h"
 
 EtherLight *
 ether_light_create(void)
@@ -35,13 +38,13 @@ ether_light_destroy(EtherLight *light)
 }
 
 void
-ether_light_type_set(EtherLight *light, Ether_Lighting_Type type)
+ether_light_type_set(EtherLight *light, EtherLightingType type)
 {
     if(light)
         light->type = type;
 }
 
-Ether_Lighting_Type
+EtherLightingType
 ether_light_type_get(EtherLight *light)
 {
     if(light)

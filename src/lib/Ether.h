@@ -1,27 +1,6 @@
 #ifndef _ETHER_H
 #define _ETHER_H
 
-#define EAPI
-/*
-#ifdef EAPI
-#undef EAPI
-#endif
-#ifdef _WIN32
-# ifdef BUILDING_DLL
-#  define EAPI __declspec(dllexport)
-# else
-#  define EAPI __declspec(dllimport)
-# endif
-#else
-# ifdef GCC_HASCLASSVISIBILITY
-#  define EAPI __attribute__ ((visibility("default")))
-# else
-#  define EAPI
-# endif
-#endif
-#define EAPI
-*/
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -30,67 +9,6 @@ extern "C" {
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-
-#define ETHER_UNITY 1.0
-#define ETHER_ANGLE_CONVERSION 1
-
-#ifndef NULL
-#define NULL 0
-#endif
-
-#ifndef PI
-#define PI 3.14159265358979323846
-#endif
-
-#ifndef max
-#define max(a,b) (((a) > (b)) ? (a) : (b))
-#endif
-
-#ifndef min
-#define min(a,b) (((a) < (b)) ? (a) : (b))
-#endif
-
-#define X    0
-#define Y    1
-#define Z    2
-#define XROT 3
-#define YROT 4
-#define ZROT 5
-
-#define ETHER_FLOAT_TO_SCALAR(f) ((EtherScalar)(f))
-#define ETHER_SCALAR_TO_FLOAT(s) ((float)(s))
-#define ETHER_FLOAT_TO_FACTOR(f) ((EtherFactor) ((f) * ETHER_UNITY))
-#define ETHER_FACTOR_TO_FLOAT(f) ((float)((f) / ETHER_UNITY))
-#define ETHER_FLOAT_TO_ANGLE(f)  ((EtherAngle) ((f) * ETHER_ANGLE_CONVERSION))
-#define ETHER_ANGLE_TO_FLOAT(a)  ((float)((a)/ETHER_ANGLE_CONVERSION))
-
-/* Three special data types are used in Ether:
- * - Ether_Scalar : a measure of virtual distance
- * - Ether_Angle  : a multiplication factor, usually in the range -1 to +1
- * - Ether_Factor : measured in 65536th's of a degree
- */
-
-typedef float EtherScalar;
-typedef float EtherAngle;
-typedef float EtherFactor;
-
-typedef unsigned int EtherTime;
-typedef unsigned int EtherColor;
-
-typedef struct _Ether_Shape        EtherShape;
-typedef struct _Ether_Surface_Map  EtherSurfaceMap;
-typedef struct _Ether_Facet        EtherFacet;
-typedef struct _Ether_Edge         Ether_Edge;
-typedef struct _Ether_Rep          EtherRep;
-typedef struct _Ether_Surface      EtherSurface;
-typedef struct _Ether_Object       EtherObject;
-typedef struct _Ether_Light        EtherLight;
-typedef struct _Ether_Camera       EtherCamera;
-typedef struct _Ether_World        EtherWorld;
-typedef struct _Ether_Statistics   EtherStatistics;
-typedef struct _Ether_Raster       EtherRaster;
-typedef struct _Ether_Outputvertex EtherOutputvertex;
-typedef struct _Ether_Outputfacet  EtherOutputfacet;
 
 #include <ether_math.h>
 #include <ether_timer.h>

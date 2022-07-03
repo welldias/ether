@@ -1,6 +1,7 @@
-#include <Ether.h>
 #include <sys/time.h>
 #include <unistd.h>
+
+#include "ether_timer.h"
 
 static int        _ether_timer_notimer = 0;
 static EtherTime  _ether_timer_count   = 0;  /* notimer */
@@ -8,8 +9,7 @@ static EtherTime  _ether_timer_count   = 0;  /* notimer */
 struct timeval ether_time_start;
 struct timeval ether_time_end;
 
-int
-ether_timer_init(void)
+int ether_timer_init(void)
 {
 	if(_ether_timer_notimer)
 		return 0;
@@ -19,8 +19,7 @@ ether_timer_init(void)
 	return 0;
 }
 
-void
-ether_timer_quit(void)
+void ether_timer_quit(void)
 {
 	if(_ether_timer_notimer)
 		return;
@@ -28,8 +27,7 @@ ether_timer_quit(void)
   gettimeofday(&ether_time_end, NULL);
 }
 
-EtherTime
-ether_timer_read(void)
+EtherTime ether_timer_read(void)
 {
   long seconds, useconds;    
 
@@ -43,14 +41,12 @@ ether_timer_read(void)
 	return ((seconds) * 1000 + useconds/1000.0) + 0.5;
 }
 
-EtherTime
-ether_timer_tick_rate_get(void)
+EtherTime ether_timer_tick_rate_get(void)
 {
 	return (EtherTime)1000;
 }
 
-void
-ether_timer_delay(EtherTime milliseconds)
+void ether_timer_delay(EtherTime milliseconds)
 {
   struct timeval start, end;
   long now, seconds, useconds;    
@@ -69,4 +65,3 @@ ether_timer_delay(EtherTime milliseconds)
     now = ((seconds) * 1000 + useconds/1000.0) + 0.5;
   }
 }
-

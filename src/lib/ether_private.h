@@ -24,17 +24,18 @@
 #define strncasecmp(a, b, c) _strnicmp(a, b, c)
 #endif
 
+#include "ether_defines.h"
+
 typedef struct _Ether_Local_Light   EtherLocalLight;
 
-struct _Ether_Local_Light
-{
-	Ether_Lighting_Type type;
+struct _Ether_Local_Light {
+	EtherLightingType type;
 	EtherFactor intensity;
-	EtherMatrix mat;		/**< transforms from light space into object space */
-} ;
+	EtherMatrix mat;		/* transforms from light space into object space */
+};
 
 /* ether_math.c */
-void        _ether_math_mult3x3   (EtherMatrix result, EtherMatrix m1, EtherMatrix m2);
+void _ether_math_mult3x3   (EtherMatrix result, EtherMatrix m1, EtherMatrix m2);
 
 /* ether_transform.c */
 void        _ether_transform   (EtherVector result, EtherMatrix m, EtherVector v);

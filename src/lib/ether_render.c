@@ -1,52 +1,33 @@
-#include <Ether.h>
+#include "ether_render.h"
+#include "ether_display.h"
+#include "ether_math.h"
+#include "ether_matrix.h"
+#include "ether_object.h"
 #include "ether_private.h"
-
-
-typedef struct _Ether_Render_Output_Object  EtherRenderOutputObject;
-typedef struct _Ether_Temp_Vertex           EtherTempVertex;
-
-struct _Ether_Render_Output_Object
-{
-  EtherObject *original;           /**< points back at the object we came from */
-  EtherOutputfacet **outfacets;   /**< array of output facets */
-  int noutfacets;                   /**< number of output facets */
-  int not_drawn;                    /**< set if object hasn't been drawn yet */
-};
-
-struct _Ether_Temp_Vertex
-{
-  EtherVector vertex;              /* transformed vertex */
-  long int projected_x;             /* projected X */
-  long int projected_y;             /* projected Y */
-  EtherFactor intensity;           /* for Gouraud shading */
-  enum
-  { 
-    TEMP_VERTEX_UNPROCESSED = 0, 
-    TEMP_VERTEX_Z_DONE, 
-    TEMP_VERTEX_XY_DONE, 
-    TEMP_VERTEX_PROJECTED 
-  } status;
-};
+#include "ether_shape.h"
+#include "ether_vector.h"
+#include "ether_world.h"
+#include "ether_surface.h"
 
 static EtherStatistics Stats;
 
-static EtherRenderOutputObject **_ether_render_objarray = NULL;   /**< array of object info (e.g. depth) */
-static int _ether_render_max_objs = 0;                               /**< maximum number of entries in the array */
-static int _ether_render_nobjs;                                      /**< number of entries actually in the array */
-static int _ether_render_first;                                      /**< counts through objarray[] */
+static EtherRenderOutputObject **_ether_render_objarray = NULL;   /* array of object info (e.g. depth) */
+static int _ether_render_max_objs = 0;                            /* maximum number of entries in the array */
+static int _ether_render_nobjs;                                   /* number of entries actually in the array */
+static int _ether_render_first;                                   /* counts through objarray[] */
 
-static EtherOutputfacet **_ether_render_outfacets = NULL;          /**< array of outfacets for sorting */
-static int _ether_render_max_facets = 0;                             /**< maximum number of entries in outfacets[] */
-static int _ether_render_nout_facets = 0;                            /**< number of entries currently in outfacets[] */
+static EtherOutputfacet **_ether_render_outfacets = NULL;         /* array of outfacets for sorting */
+static int _ether_render_max_facets = 0;                          /* maximum number of entries in outfacets[] */
+static int _ether_render_nout_facets = 0;                         /* number of entries currently in outfacets[] */
 
 static EtherTempVertex *_ether_render_tempverts = NULL;
-static int _ether_render_max_vertices = 0;                           /**< maximum number of entries in above four arrays */
+static int _ether_render_max_vertices = 0;                        /* maximum number of entries in above four arrays */
 
-static EtherRenderOutputObject *_ether_render_current_obj;        /**< current output object */
-static EtherSurfaceMap *_ether_render_current_surfmap;             /**< pointer to current object's surface map */
+static EtherRenderOutputObject *_ether_render_current_obj;        /* current output object */
+static EtherSurfaceMap *_ether_render_current_surfmap;            /* pointer to current object's surface map */
 
-static EtherVector *_ether_render_vert_array;                       /**< points to current rep's vertices */
-static EtherVector *_ether_render_norm_array;                       /**< points to current rep's normals */
+static EtherVector *_ether_render_vert_array;                     /* points to current rep's vertices */
+static EtherVector *_ether_render_norm_array;                     /* points to current rep's normals */
 
 /* there should be functions to set these next two: */
 static int _ether_render_object_sorting = 1;

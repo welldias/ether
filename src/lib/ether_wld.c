@@ -1,6 +1,20 @@
-#include <Ether.h>
-#include "ether_private.h"
 #include <ctype.h>
+
+#include "ether_camera.h"
+#include "ether_facet.h"
+#include "ether_light.h"
+#include "ether_matrix.h"
+#include "ether_object.h"
+#include "ether_plg.h"
+#include "ether_private.h"
+#include "ether_rep.h"
+#include "ether_shape.h"
+#include "ether_surface.h"
+#include "ether_vector.h"
+#include "ether_wld.h"
+#include "ether_world.h"
+#include "ether_fig.h"
+#include "ether_palette.h"
 
 #define _ETHER_WLD_DEFAULT_SURFACEMAP_ENTRIES 10
 

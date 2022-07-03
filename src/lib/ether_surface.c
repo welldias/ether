@@ -1,6 +1,8 @@
-#include <Ether.h>
+#include <stdlib.h>
 
-static EtherSurface      *_ether_surfaces = NULL;
+#include "ether_surface.h"
+
+static EtherSurface     *_ether_surfaces = NULL;
 static EtherSurfaceMap  *_ether_maps     = NULL;
 
 EtherSurface *

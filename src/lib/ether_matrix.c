@@ -1,5 +1,7 @@
-#include <Ether.h>
+#include "ether_matrix.h"
 #include "ether_private.h"
+#include "ether_math.h"
+#include "ether_vector.h"
 
 #define _ETHER_EPSILON 0.000001
    

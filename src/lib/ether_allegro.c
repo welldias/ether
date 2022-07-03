@@ -1,9 +1,13 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
-#include <Ether.h>
-#include "ether_private.h"
+
 #include "ether_allegro.h"
+#include "ether_math.h"
+#include "ether_palette.h"
+#include "ether_private.h"
+#include "ether_raster.h"
+#include "ether_display.h"
 
 #define _ETHER_ALLEGRO_SCREEN_UNITY                 (1L << _ETHER_SCREEN_FRACT_BITS)
 #define _ETHER_ALLEGRO_SCREEN_HALF_UNITY            (1L << (_ETHER_SCREEN_FRACT_BITS-1))
@@ -25,8 +29,7 @@
 #define _ETHER_ALLEGRO_ROUND_UP(a)   (_ETHER_ALLEGRO_S2I((a)+_ETHER_ALLEGRO_SCREEN_HALF_UNITY))
 #endif
 
-typedef struct
-{
+typedef struct {
 	int startx;
 	int endx;
 	int startcolor;
@@ -51,22 +54,20 @@ static int                _ether_allegro_dither[4][4]   = {
 	{((15-(15))<<4),((15-(7)) << 4),((15-(13))<< 4),((15-(5)) << 4)},
 };
 
-static EtherRaster _ether_allegro_video_raster   =
-{
-	1024, /* width  */
-	768, /* height */
-    8, /* depth  */ 
-	  0, /* top */
-	  0, /* left */
-	1023, /* right */
-	767, /* bottom   */
-	1024, /* rowbytes */ 
+static EtherRaster _ether_allegro_video_raster = {
+  1024, /* width  */
+   768, /* height */
+     8, /* depth  */ 
+     0, /* top */
+     0, /* left */
+  1023, /* right */
+   767, /* bottom   */
+  1024, /* rowbytes */ 
 	NULL
 };
 
 ALLEGRO_DISPLAY *_allegro_display = NULL;
 ALLEGRO_FONT *_allegro_font = NULL;
-
 
 static void   _ether_allegro_render_gouraud_poly       (void);
 static void   _ether_allegro_render_dithered_poly      (void);

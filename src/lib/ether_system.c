@@ -1,20 +1,26 @@
 #include <allegro5/allegro.h>
-#include <Ether.h>
-#include "ether_private.h"
 
-static int        _ether_system_running           = 0; /* non-zero while system is initialized and running */
-static int        _ether_system_need_to_redraw    = 0; /* non-zero if the screen needs updating */
+#include "ether_application.h"
+#include "ether_display.h"
+#include "ether_math.h"
+#include "ether_palette.h"
+#include "ether_private.h"
+#include "ether_render.h"
+#include "ether_system.h"
+#include "ether_task.h"
+#include "ether_timer.h"
+#include "ether_world.h"
+
+static int       _ether_system_running           = 0; /* non-zero while system is initialized and running */
+static int       _ether_system_need_to_redraw    = 0; /* non-zero if the screen needs updating */
 static EtherTime _ether_system_last_render_ticks;
 static your_blit_especial_func  *_your_blit = NULL;
 
-void ether_system_blit_func_set(your_blit_especial_func  *your_blit)
-{
+void ether_system_blit_func_set(your_blit_especial_func  *your_blit) {
   _your_blit = your_blit;
 }
 
-int
-ether_system_startup(void)
-{
+int ether_system_startup(void) {
 	ether_math_init();
 	ether_world_init(ether_world_current_get());
 	
@@ -55,62 +61,59 @@ ether_system_startup(void)
 	return 0;	
 }
 
-void
-ether_system_run(void)
-{
-  ALLEGRO_KEYBOARD_STATE key_state;
+void ether_system_run(void) {
+	ALLEGRO_KEYBOARD_STATE key_state;
 	EtherObject *list;
 
 	ether_application_init();
 	ether_system_request_refresh();
-	while(ether_system_is_running())
-  {
-    /*
-    if(ether_keyboard_check())
-    ether_application_key(ether_keyboard_read());
-    check_mouse();
-    */
-    ether_task_run();
-    /* ether_device_pollall(); */
+	while(ether_system_is_running()) {
+		/*
+		if(ether_keyboard_check())
+		ether_application_key(ether_keyboard_read());
+		check_mouse();
+		*/
+		ether_task_run();
+		/* ether_device_pollall(); */
 
-    list = ether_world_update();
-    if(ether_system_query_refresh())
-      ether_system_render(list);
-    al_rest(0.001);
+		list = ether_world_update();
+		if(ether_system_query_refresh())
+			ether_system_render(list);
+		al_rest(0.001);
 
-    al_get_keyboard_state(&key_state);
-    if (al_key_down(&key_state, ALLEGRO_KEY_ESCAPE)) {
-      ether_system_stop_running();
-      break;
-    }
-  }	
+		al_get_keyboard_state(&key_state);
+		if (al_key_down(&key_state, ALLEGRO_KEY_ESCAPE)) {
+			ether_system_stop_running();
+			break;
+		}
+	}	
 }
 
 EtherRenderStatus *
-ether_system_render(EtherObject *list)
-{
+ether_system_render(EtherObject *list) {
 	static EtherObject *lastlist = NULL;
 	EtherPalette *pal;
 	EtherRenderStatus *stat;
 	int pagenum;
+
 	EtherTime render_start = ether_timer_read();
 	if(list == NULL)
 		list = lastlist;
 	else
 		lastlist = list;
+	
 	pal = ether_world_palette_get();
-	if(ether_palette_has_changed(pal))
-	{
+	if(ether_palette_has_changed(pal)) {
 		ether_video_palette_set(0, 255, pal);
 		ether_palette_changed_set(pal, 0);
 	}
+
 	pagenum = ether_video_draw_page_get();
 	if(++pagenum >= ether_video_npages_get())
 		pagenum = 0;
 	ether_video_draw_page_set(pagenum);
 	ether_render_ambient_set(ether_world_ambient_get());
-	if(ether_world_screenclear_get())
-	{
+	if(ether_world_screenclear_get()) {
 		ether_display_begin_frame();
 		if(ether_world_horizon_get() && !ether_render_draw_mode_get())
 			ether_render_horizon();
@@ -128,34 +131,29 @@ ether_system_render(EtherObject *list)
 	ether_render_horizontal_shift_set(0);
 	ether_application_draw_over(stat);
 	ether_video_cursor_hide();
-  if(_your_blit)
-    _your_blit(ether_display_raster_get());
-  else
-	  ether_display_update();
+	if(_your_blit)
+		_your_blit(ether_display_raster_get());
+	else
+		ether_display_update();
 	ether_video_view_page_set(pagenum);
 	ether_video_cursor_show();
 	_ether_system_last_render_ticks = ether_timer_read() - render_start;
 	_ether_system_need_to_redraw = 0;
+
 	return stat;	
 }
 
-EtherTime
-ether_system_render_time_get(void)
-{
+EtherTime ether_system_render_time_get(void) {
 	return _ether_system_last_render_ticks;
 }
 
-EtherTime
-ether_system_frame_rate_get(void)
-{
+EtherTime ether_system_frame_rate_get(void) {
 	if(_ether_system_last_render_ticks == 0) 
 		_ether_system_last_render_ticks = 1;
 	return ether_timer_tick_rate_get() / _ether_system_last_render_ticks;
 }
 
-void
-ether_system_command_line(int argc, char *argv[])
-{
+void ether_system_command_line(int argc, char *argv[]) {
 	/*
 	int i;
 	Ether_Camera *cam;
@@ -177,32 +175,22 @@ ether_system_command_line(int argc, char *argv[])
 	*/
 }
 
-void
-ether_system_request_refresh(void)
-{
+void ether_system_request_refresh(void) {
 	_ether_system_need_to_redraw = 1;
 }
 
-int
-ether_system_query_refresh(void)
-{
+int ether_system_query_refresh(void) {
 	return _ether_system_need_to_redraw;
 }
 
-void
-ether_system_start_running(void)
-{
+void ether_system_start_running(void) {
 	_ether_system_running = 1;
 }
 
-void
-ether_system_stop_running(void)
-{
+void ether_system_stop_running(void) {
 	_ether_system_running = 0;
 }
 
-int
-ether_system_is_running(void)
-{
+int ether_system_is_running(void) {
 	return _ether_system_running;
 }

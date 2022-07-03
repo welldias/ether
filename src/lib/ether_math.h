@@ -1,6 +1,8 @@
 #ifndef __ETHER_MATH_H__
 #define __ETHER_MATH_H__
 
+#include "ether_defines.h"
+
 EAPI void        ether_math_init            (void);
 EAPI EtherScalar ether_math_scalar_abs      (EtherScalar alpha);
 EAPI EtherScalar ether_math_scalar_round    (EtherScalar alpha);

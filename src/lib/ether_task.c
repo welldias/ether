@@ -1,4 +1,7 @@
-#include <Ether.h>
+#include <stdlib.h>
+
+#include "ether_task.h"
+#include "ether_timer.h"
 
 typedef struct _Ether_Task EtherTask;
 
@@ -11,7 +14,7 @@ struct _Ether_Task
 	EtherTask *next;
 };
 
-static void *_ether_task_current_task_data         = NULL;
+static void *_ether_task_current_task_data        = NULL;
 static EtherTime _ether_task_current_task_elapsed = 0;
 static EtherTime _ether_task_time_now             = 0;
 static EtherTask *_ether_task_list                = NULL;

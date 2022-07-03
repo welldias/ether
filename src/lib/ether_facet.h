@@ -1,19 +1,7 @@
 #ifndef __ETHER_FACET_H__
 #define __ETHER_FACET_H__
 
-struct _Ether_Facet
-{
-  int surface;                           /**< index into object's surface array */
-  EtherVector normal;                   /**< perpendicular to facet, left-hand rule */
-  unsigned int id;                       /**< identifier for this facet */
-  int highlight : 1;                     /**< facet is highlighted */
-  int interior  : 1;                     /**< facet is on the interior of an object (not used) */
-  EtherFacet *details;                  /**< points to linked list of detail facets (not used) */
-  EtherFacet *nearside, *farside;       /**< only farside is used */
-  int npoints;                           /**< number of points in the facet */
-  int *points;                           /**< indices into array of vertices of the facet points */
-  int *edges;                            /**< indices into array edges */
-};
+#include "ether_defines.h"
 
 EAPI EtherFacet   *ether_face_init             (EtherFacet *facet, int npts);
 EAPI void          ether_facet_traverse        (EtherFacet *facet, int (*function)(EtherFacet *f));

@@ -1,7 +1,12 @@
 #include <allegro5/allegro.h>
-#include <Ether.h>
-#include "ether_private.h"
+
+#include "ether_display.h"
 #include "ether_drivers.h"
+#include "ether_math.h"
+#include "ether_palette.h"
+#include "ether_private.h"
+#include "ether_raster.h"
+#include "ether_world.h"
 
 #define _ETHER_DRIVERS_SCREEN_UNITY                 (1L << _ETHER_SCREEN_FRACT_BITS)
 #define _ETHER_DRIVERS_SCREEN_HALF_UNITY            (1L << (_ETHER_SCREEN_FRACT_BITS-1))

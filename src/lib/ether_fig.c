@@ -1,7 +1,9 @@
-#include <Ether.h>
-#include "ether_private.h"
 #include <ctype.h>
 
+#include "ether_fig.h"
+#include "ether_object.h"
+#include "ether_plg.h"
+#include "ether_private.h"
 
 #define match(a, b) (!strncasecmp((a), (b), strlen(b)))
 
@@ -17,30 +19,24 @@ static int _ether_fig_process_attribute(char *buff, EtherObject *obj, char *root
    };
    */
 static int            _ether_fig_error           = 0;
-static EtherObject **_ether_fig_part_array      = NULL;
+static EtherObject  **_ether_fig_part_array      = NULL;
 static int            _ether_fig_part_array_size = 0;
 static float          _ether_fig_xscale          = 1;
 static float          _ether_fig_yscale          = 1;
 static float          _ether_fig_zscale          = 1;
 
-void
-ether_fig_part_array_set(EtherObject **ptr, int maxparts)
-{
+void ether_fig_part_array_set(EtherObject **ptr, int maxparts) {
   _ether_fig_part_array = ptr;
   _ether_fig_part_array_size = maxparts;
 }
 
-void
-ether_fig_scale_set(float x, float y, float z)
-{
+void ether_fig_scale_set(float x, float y, float z) {
   _ether_fig_xscale = x;
   _ether_fig_yscale = y;
   _ether_fig_zscale = z;
 }
 
-EtherObject *
-ether_fig_read(FILE *in, EtherObject *parent, char *rootname)
-{
+EtherObject * ether_fig_read(FILE *in, EtherObject *parent, char *rootname) {
   char buff[256];
   int c, i = 0;
   EtherObject *obj = ether_object_create(NULL);
@@ -53,10 +49,11 @@ ether_fig_read(FILE *in, EtherObject *parent, char *rootname)
     switch (c)
     {
     case '#':   /* ignore comments */
-      while((c = getc(in)) != EOF)
+      while((c = getc(in)) != EOF) {
         if (c == '\n')
           break;
-        break;
+      }
+      break;
     case '{':
       ether_fig_read(in, obj, rootname);
       break;
@@ -76,9 +73,7 @@ ether_fig_read(FILE *in, EtherObject *parent, char *rootname)
   return obj;
 }
 
-EtherObject *
-ether_fig_load(char *filename)
-{
+EtherObject * ether_fig_load(char *filename) {
   FILE *in = fopen(_ether_wld_file_fixup_filename(filename), "r");
   EtherObject *obj;
   if(in == NULL)
@@ -88,9 +83,7 @@ ether_fig_load(char *filename)
   return obj;
 }
 
-static int 
-_ether_fig_process_attribute(char *buff, EtherObject *obj, char *rootname)
-{
+static int _ether_fig_process_attribute(char *buff, EtherObject *obj, char *rootname) {
   while(isspace((int)*buff))
     ++buff;
   if(match(buff, "plgfile"))

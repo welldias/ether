@@ -1,5 +1,9 @@
-#include <Ether.h>
+#include "ether_display.h"
+#include "ether_math.h"
+#include "ether_palette.h"
 #include "ether_private.h"
+#include "ether_raster.h"
+#include "ether_world.h"
 
 static unsigned char _ether_display_current_palette[256*3];
 static char          _ether_display_current_desc[100];
@@ -8,15 +12,15 @@ static int           _ether_display_viewpage          = 0;
 static int           _ether_display_drawpage          = 0;
 static int           _ether_display_npages            = 1;
 static int           _ether_display_depth             = 8;
-//static int           _ether_display_in_graphics_mode  = 0;
+//static int         _ether_display_in_graphics_mode  = 0;
 
 extern EtherDisplayDriverFunction  ether_drivers_display_default;
 extern EtherVideoDriverFunction    ether_drivers_video_default;
 extern EtherDisplayDriverFunction  ether_allegro_display_default;
 extern EtherVideoDriverFunction    ether_allegro_video_default;
 
-EtherDisplayDriverFunction        *_ether_display_current_driver  =  NULL;
-EtherVideoDriverFunction          *_ether_video_current_driver    = NULL;
+EtherDisplayDriverFunction  *_ether_display_current_driver  =  NULL;
+EtherVideoDriverFunction    *_ether_video_current_driver    = NULL;
 
 static void _ether_display_real_palette_set  (int start, int end, void *palette);
 static void _ether_display_real_window_set   (int x1, int y1, int x2, int y2);
@@ -26,20 +30,16 @@ static void _ether_display_display_reset     (void);
 #define _ETHER_DISPLAY_XYCLIP_MAXPOINTS 20
 static EtherOutputvertex _ether_display_xyclip_a1[100];
 static EtherOutputvertex _ether_display_xyclip_a2[100];
-static int                _ether_display_xyclip_left;
-static int                _ether_display_xyclip_right;
-static int                _ether_display_xyclip_top;
-static int                _ether_display_xyclip_bottom;
+static int               _ether_display_xyclip_left;
+static int               _ether_display_xyclip_right;
+static int               _ether_display_xyclip_top;
+static int               _ether_display_xyclip_bottom;
 
-void
-ether_display_driver_set(EtherDisplayDriverFunction *driver)
-{
+void ether_display_driver_set(EtherDisplayDriverFunction *driver) {
 	_ether_display_current_driver = driver;
 }
 
-int
-ether_display_init(EtherRaster *raster)
-{
+int ether_display_init(EtherRaster *raster) {
   int n;
 #if 0
   if(_ether_video_current_driver == NULL)

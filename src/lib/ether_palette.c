@@ -1,12 +1,9 @@
-#include <Ether.h>
+#include <stdlib.h>
+#include <string.h>
 
-/*
- Convertendo a paleta para 256
- x = (255*?)/63
-*/	
+#include "ether_palette.h"
 
-static EtherPalette _default_palette_256 =
-{
+static EtherPalette _default_palette_256 = {
   {
     {  0,   0,   0},
     {  0,   0, 170},

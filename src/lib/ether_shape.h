@@ -1,17 +1,7 @@
 #ifndef __ETHER_SHAPE_H__
 #define __ETHER_SHAPE_H__
 
-struct _Ether_Shape
-{
-  EtherVector center;                  /**< center of bounding sphere */
-  EtherScalar radius;                  /**< radius of bounding sphere */
-  EtherVector minbound;                /**< bounding box */
-  EtherVector maxbound;
-  EtherSurfaceMap *default_surfacemap; /**< default surface map for this shape */
-  EtherRep *replist;                   /**< linked list of representations */
-  char *name;                          /**< name of this shape */
-  EtherShape *next;                    /**< shapes are kept in a linked list */
-};
+#include "ether_defines.h"
 
 EAPI EtherShape      *ether_shape_create                  (void);
 EAPI EtherShape      *ether_shape_init                    (EtherShape *shape);

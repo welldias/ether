@@ -1,7 +1,7 @@
 #ifndef __ETHER_SYSTEM_H__
 #define __ETHER_SYSTEM_H__
 
-typedef void your_blit_especial_func(EtherRaster *raster);
+#include "ether_defines.h"
 
 int                ether_system_startup         (void);
 void               ether_system_run             (void);

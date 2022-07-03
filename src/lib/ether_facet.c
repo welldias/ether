@@ -1,15 +1,16 @@
-#include <Ether.h>
+#include <stdlib.h>
 
-EtherFacet *
-ether_facet_create(int npts)
+#include "ether_facet.h"
+#include "ether_vector.h"
+
+EtherFacet * ether_facet_create(int npts)
 {
     EtherFacet * facet = malloc(sizeof(EtherFacet));
     ether_face_init(facet, npts);
     return facet;
 }
 
-EtherFacet *
-ether_face_init(EtherFacet *facet, int npts)
+EtherFacet * ether_face_init(EtherFacet *facet, int npts)
 {
     if (facet == NULL) 
         return NULL;
@@ -33,8 +34,7 @@ ether_face_init(EtherFacet *facet, int npts)
     return facet;
 }
 
-void
-ether_facet_traverse(EtherFacet *facet, int (*function)(EtherFacet *f))
+void ether_facet_traverse(EtherFacet *facet, int (*function)(EtherFacet *f))
 {
     if(facet->nearside)
         ether_facet_traverse(facet->nearside, function);
@@ -44,8 +44,7 @@ ether_facet_traverse(EtherFacet *facet, int (*function)(EtherFacet *f))
         ether_facet_traverse(facet->farside, function);
 }
 
-void
-ether_facet_compute_normal(EtherFacet *facet, EtherVector *vertices)
+void ether_facet_compute_normal(EtherFacet *facet, EtherVector *vertices)
 {
     EtherScalar maxmag = 0;
     int i;
@@ -72,15 +71,13 @@ ether_facet_compute_normal(EtherFacet *facet, EtherVector *vertices)
      }
 }
 
-void
-ether_facet_surf_num_set(EtherFacet *facet, int n)
+void ether_facet_surf_num_set(EtherFacet *facet, int n)
 {
     if(facet)
         facet->surface = n;
 }
 
-int
-ether_facet_surf_num_get(EtherFacet *facet)
+int ether_facet_surf_num_get(EtherFacet *facet)
 {   
     if(facet)
         return facet->surface;
@@ -88,8 +85,7 @@ ether_facet_surf_num_get(EtherFacet *facet)
         return 0;
 }
 
-int
-ether_facet_count_points(EtherFacet *facet)
+int ether_facet_count_points(EtherFacet *facet)
 {
     if(facet)
      return facet->npoints;
@@ -97,22 +93,19 @@ ether_facet_count_points(EtherFacet *facet)
         return 0;
 }
 
-void
-ether_facet_vertex_get(EtherRep *rep, EtherFacet *facet, int n, EtherVector v)
+void ether_facet_vertex_get(EtherRep *rep, EtherFacet *facet, int n, EtherVector v)
 {
     if(rep && facet && facet->npoints > n)
         ether_vector_copy(v, rep->vertices[facet->points[n]]);
 }
 
-void
-ether_facet_highligth_set(EtherFacet *facet, int high)
+void ether_facet_highligth_set(EtherFacet *facet, int high)
 {
     if(facet)
         facet->highlight = ((high) ? 1 : 0);
 }
 
-int
-ether_facet_highligth_get(EtherFacet *facet)
+int ether_facet_highligth_get(EtherFacet *facet)
 {
     if(facet)
         return facet->highlight;
@@ -120,8 +113,7 @@ ether_facet_highligth_get(EtherFacet *facet)
         return 0;
 }
 
-void
-ether_facet_toggle_highligth(EtherFacet *facet)
+void ether_facet_toggle_highligth(EtherFacet *facet)
 {
     if(facet)
         facet->highlight = !(facet->highlight);
@@ -166,22 +158,19 @@ ether_facet_id_get(EtherFacet *facet)
         return 0;
 }
 
-void
-ether_facet_normal_get(EtherFacet *facet, EtherVector v)
+void ether_facet_normal_get(EtherFacet *facet, EtherVector v)
 {
     if(facet)
         ether_vector_copy(v, facet->normal);
 }
 
-void
-ether_facet_point_set(EtherFacet *facet, int n, int m)
+void ether_facet_point_set(EtherFacet *facet, int n, int m)
 {
     if(facet && facet->npoints > n)
         facet->points[n] = m;
 }
 
-int
-ether_facet_point_get(EtherFacet *facet, int n)
+int ether_facet_point_get(EtherFacet *facet, int n)
 {
     if(facet && facet->npoints > n)
      return facet->points[n];
