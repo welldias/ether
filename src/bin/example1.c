@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 {
   EtherObject *cube = NULL;
   EtherCamera *camera = NULL;
-  EtherLight *light = NULL;
+  EtherLight  *light = NULL;
 
   //ether_system_blit_func_set(ether_blit);
   ether_system_startup();

@@ -836,9 +836,7 @@ ether_palette_init(EtherPalette *pal)
     }
 }
 
-int
-ether_palette_read(EtherPalette *pal, FILE *in)
-{
+int ether_palette_read(EtherPalette *pal, FILE *in) {
     if(pal == NULL || in == NULL) 
         return -1;
         
@@ -851,67 +849,49 @@ ether_palette_read(EtherPalette *pal, FILE *in)
     return 0;
 }
 
-EtherColor
-ether_palette_entry_get(EtherPalette *pal, int n)
-{
+EtherColor ether_palette_entry_get(EtherPalette *pal, int n) {
     return (((EtherColor) pal->data[n][0]) << 16)
         + (((EtherColor) pal->data[n][1]) << 8)
         + ((EtherColor) pal->data[n][2]);
 }
 
-void
-ether_palette_entry_set(EtherPalette *pal, int n, EtherColor color)
-{
+void ether_palette_entry_set(EtherPalette *pal, int n, EtherColor color) {
     pal->data[n][0] = (char)color >> 16;
     pal->data[n][1] = (char)color >> 8;
     pal->data[n][2] = (char)color;
 }
 
-int
-ether_palette_has_changed(EtherPalette *pal)
-{
+int ether_palette_has_changed(EtherPalette *pal) {
     if(pal)
         return (pal)->changed;
     else
         return 0;
 }
 
-void
-ether_palette_changed_set(EtherPalette *pal, int flag)
-{
+void ether_palette_changed_set(EtherPalette *pal, int flag) {
     if(pal)
         pal->changed = flag;
 }
 
-EtherHue *
-ether_palette_huemap_get(EtherPalette *pal)
-{
+EtherHue * ether_palette_huemap_get(EtherPalette *pal) {
     if(pal)
         return pal->huemap;
     else
         return NULL;
 }
 
-EtherPalette*
-ether_palette_default_palette_256_get(void)
-{
+EtherPalette* ether_palette_default_palette_256_get(void) {
 	return &_default_palette_256;
 }
 
-EtherPalette*
-ether_palette_default_palette_16_get(void)
-{
+EtherPalette* ether_palette_default_palette_16_get(void) {
 	return &_default_palette_16;
 }
 
-EtherPalette*
-ether_palette_anaglyph_palette_get(void)
-{
+EtherPalette * ether_palette_anaglyph_palette_get(void) {
 	return &_anaglyph_palette;
 }
 
-EtherPalette*
-ether_palette_chromadepth_palette_get(void)
-{
+EtherPalette * ether_palette_chromadepth_palette_get(void) {
 	return &_chromadepth_palette;
 }

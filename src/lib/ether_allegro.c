@@ -57,7 +57,7 @@ static int                _ether_allegro_dither[4][4]   = {
 static EtherRaster _ether_allegro_video_raster = {
   1024, /* width  */
    768, /* height */
-     8, /* depth  */ 
+     8, /* depth  */
      0, /* top */
      0, /* left */
   1023, /* right */
@@ -106,8 +106,12 @@ ether_allegro_display_default(EtherDisplayCommand cmd, int lparm1, void *pparm1)
           return -1;
         }
 
-        al_install_keyboard();
+        if (!al_init_primitives_addon()) {
+            return -1;
+        }
         al_init_font_addon();
+        al_install_mouse();
+        al_install_keyboard();
 
         if (pparm1)
         {
@@ -414,15 +418,13 @@ _ether_allegro_specular_update(EtherPalette *palette)
 	unsigned char value;
 	double exponent;
 	EtherHue *huemap = ether_palette_huemap_get(palette);
-	for(specnum = 0; specnum < _ETHER_ALLEGRO_NUMSPECS; ++specnum)
-	{
+	for(specnum = 0; specnum < _ETHER_ALLEGRO_NUMSPECS; ++specnum) {
 		exponent = 1.0 + 7 * specnum / 100.0;
 		for(shade = 0; shade <= huemap[0].maxshade; ++shade)
 			_ether_allegro_specular_table[specnum][shade] = shade;
-		for(hue = 1; hue < 256 && huemap[hue].maxshade; ++hue)
-		{
-			for(shade = 0; shade <= huemap[hue].maxshade; ++shade)
-			{
+
+		for(hue = 1; hue < 256 && huemap[hue].maxshade; ++hue) {
+			for(shade = 0; shade <= huemap[hue].maxshade; ++shade) {
 				value = (unsigned char)pow(shade, exponent);
 				if(value > huemap[hue].maxshade)
 					value = huemap[hue].maxshade;
@@ -504,11 +506,15 @@ _ether_allegro_scan_outline(EtherOutputvertex *list, EtherColor color)
   Vertex *vertex;
   EtherOutputvertex *v = list;
 
-  ALLEGRO_COLOR col = al_map_rgba(
-        (color >> (8*1)) & 0xff,
-        (color >> (8*2)) & 0xff,
-        (color >> (8*3)) & 0xff,
-        0);
+  //ALLEGRO_COLOR col = al_map_rgba(255, 100, 100, 255);
+  EtherPalette* pal = ether_palette_default_palette_256_get();
+  ALLEGRO_COLOR col = al_map_rgba(pal->data[color][0], pal->data[color][1], pal->data[color][2], 255);
+
+  //ALLEGRO_COLOR col = al_map_rgba(
+  //      (color >> (8*1)) & 0xff,
+  //      (color >> (8*2)) & 0xff,
+  //      (color >> (8*3)) & 0xff,
+  //      255);
 
   do {
     count++;
@@ -526,7 +532,13 @@ _ether_allegro_scan_outline(EtherOutputvertex *list, EtherColor color)
     v = v->next;
   } while (v != list);
 
-  al_draw_polygon((float *)vertex, count, ALLEGRO_LINE_JOIN_NONE, col, 1, 1);
+  al_draw_polygon(
+          (float *)vertex,
+          count,
+          ALLEGRO_LINE_JOIN_ROUND,
+          col,
+          1,
+          1);
 
   return 0;
 }
