@@ -1,6 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/welldias/src/ether'
-make -C src
-#make -C test
-make: Leaving directory '/home/welldias/src/ether'
- 
