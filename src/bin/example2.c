@@ -69,5 +69,7 @@ void ether_rot_obj(void)
 {
   EtherObject *obj = (EtherObject*)ether_task_data_get();
   ether_object_rot_y(obj, 0.1);
+  ether_object_rot_x(obj, 0.1);
+  ether_object_rot_z(obj, 0.1);
   ether_system_request_refresh();
 }
