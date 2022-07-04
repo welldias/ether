@@ -19,6 +19,8 @@
 *.tex
 *.gif
 
+*.log
+
 *.orig
 # Ctags file for source code
 tags

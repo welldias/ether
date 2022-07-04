@@ -1,0 +1,385 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 4.3
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2020 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Mon Jul  4 16:00:08 2022
+
+# Variables
+
+# environment
+GDK_BACKEND = x11
+# environment
+LC_ALL = C
+# environment
+GNOME_SHELL_SESSION_MODE = pop
+# environment
+SSH_AGENT_LAUNCHER = gnome-keyring
+# makefile (from 'config.mk', line 2)
+AR = $(CROSS_PREFIX)ar
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-98bc0f0b-f21b-4157-92df-f2e231480849.sock
+# environment
+LC_NAME = pt_BR.UTF-8
+# environment
+LC_NUMERIC = pt_BR.UTF-8
+# environment
+VSCODE_CWD = /home/welldias/src/ether
+# environment
+WINDOWPATH = 2
+# environment
+LC_ADDRESS = pt_BR.UTF-8
+# default
+MAKE_COMMAND := make
+# environment
+QT_ACCESSIBILITY = 1
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# default
+.VARIABLES := 
+# environment
+PWD = /home/welldias/src/ether
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# environment
+XDG_DATA_DIRS = /usr/share/pop:/usr/share/gnome:/home/welldias/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share/:/usr/share/
+# environment
+OLDPWD = /home/welldias/src
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+VSCODE_LOG_STACK = false
+# automatic
+%F = $(notdir $%)
+# makefile (from 'config.mk', line 4)
+LIBETHER_DIR = $(PWD)
+# environment
+VSCODE_CODE_CACHE_PATH = /home/welldias/.config/Code/CachedData/30d9c6cd9483b2cc586687151bcbcd635f373630
+# makefile (from 'config.mk', line 8)
+ENABLE_TESTS_COVERAGE = false
+# environment
+LANG = C
+# environment
+XAUTHORITY = /run/user/1000/gdm/Xauthority
+# default
+.LOADED := 
+# default
+.INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
+# environment
+GNOME_TERMINAL_SERVICE = :1.99
+# makefile
+MAKEFLAGS = pqrR
+# makefile
+CURDIR := /home/welldias/src/ether
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+LESSOPEN = | /usr/bin/lesspipe %s
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+MFLAGS = -pqrR
+# environment
+SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
+# default
+.SHELLFLAGS := -c
+# environment
+XDG_CONFIG_DIRS = /etc/xdg/xdg-pop:/etc/xdg
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# environment
+XDG_SESSION_DESKTOP = pop
+# makefile (from 'default.mk', line 1)
+MAKEFILE_LIST := Makefile config.mk default.mk
+# automatic
+@F = $(notdir $@)
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+VSCODE_PID = 23393
+# environment
+XDG_SESSION_TYPE = x11
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# makefile (from 'config.mk', line 3)
+LIBETHER = libether.a
+# environment
+SESSION_MANAGER = local/black-tower-amd:@/tmp/.ICE-unix/18429,unix/black-tower-amd:/tmp/.ICE-unix/18429
+# automatic
+*F = $(notdir $*)
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# environment
+GNOME_DESKTOP_SESSION_ID = this-is-deprecated
+# makefile
+SHELL = /bin/sh
+# default
+MAKECMDGOALS := all
+# environment
+PLATFORMIO_CALLER = vscode
+# environment
+XMODIFIERS = @im=ibus
+# environment
+SHLVL = 1
+# makefile (from 'config.mk', line 7)
+TARGET_INCLUDE_DIR = $(LIBETHER)/_built/include
+# environment
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/b19968e3_6b16_4a7b_be38_c6740e92affc
+# environment
+MAKELEVEL := 0
+# default
+MAKE = $(MAKE_COMMAND)
+# environment
+PATH = /home/welldias/.cargo/bin:/home/welldias/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/arm/gcc-arm-none-eabi-9-2019-q4-major/bin:/opt/xtensa/xtensa-esp32-elf/bin
+# default
+MAKEFILES := 
+# environment
+LANGUAGE = en_US:en
+# environment
+LC_MONETARY = pt_BR.UTF-8
+# automatic
+^F = $(notdir $^)
+# environment
+LC_TIME = pt_BR.UTF-8
+# environment
+VSCODE_LOG_NATIVE = false
+# environment
+USERNAME = welldias
+# environment
+LC_TELEPHONE = pt_BR.UTF-8
+# environment
+LESSCLOSE = /usr/bin/lesspipe %s %s
+# automatic
+?F = $(notdir $?)
+# environment
+GTK_IM_MODULE = ibus
+# environment
+NO_PROXY = 127.0.0.1
+# environment
+XDG_CURRENT_DESKTOP = Unity
+# environment
+LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+# automatic
++F = $(notdir $+)
+# environment
+DESKTOP_SESSION = pop
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = pop:GNOME
+# makefile (from 'default.mk', line 3)
+OBJECTS = $(SOURCES:.c=.o)
+# 'override' directive
+GNUMAKEFLAGS := 
+# environment
+LOGNAME = welldias
+# makefile (from 'default.mk', line 20)
+CPPFLAGS = -Wall -Werror -Wmissing-declarations -Wmissing-prototypes -Wno-format -fno-strict-aliasing -g3 -DLINUX -D__EXPORTED_HEADERS__  -DALLEGRO_NO_MAGIC_MAIN -O2 -DPC -Wno-unused-result -Wdeclaration-after-statement $(INCLUDE_PATHS) $(FLAGS)
+# environment
+PLATFORMIO_PATH = /home/welldias/.platformio/python3/bin:/home/welldias/.cargo/bin:/home/welldias/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/opt/arm/gcc-arm-none-eabi-9-2019-q4-major/bin:/opt/xtensa/xtensa-esp32-elf/bin
+# makefile
+.DEFAULT_GOAL := all
+# environment
+SYSTEMD_EXEC_PID = 18450
+# environment
+DISPLAY = :0
+# environment
+USER = welldias
+# environment
+GTK_MODULES = gail:atk-bridge:appmenu-gtk-module
+# default
+MAKE_VERSION := 4.3
+# environment
+LC_MEASUREMENT = pt_BR.UTF-8
+# environment
+_ = /usr/bin/code
+# environment
+LC_PAPER = pt_BR.UTF-8
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# environment
+GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
+# environment
+COLORTERM = truecolor
+# environment
+LC_CTYPE = pt_BR.UTF-8
+# environment
+XDG_SESSION_CLASS = user
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+PLATFORMIO_IDE = 2.5.0
+# environment
+HOME = /home/welldias
+# environment
+QT_IM_MODULE = ibus
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-54620fc3-1.68.1-main.sock
+# environment
+TERM = xterm-256color
+# makefile (from 'config.mk', line 6)
+TARGET_LIB_DIR = $(LIBETHER_DIR)/_built/lib
+# environment
+PAPERSIZE = a4
+# default
+.RECIPEPREFIX := 
+# automatic
+<F = $(notdir $<)
+# default
+SUFFIXES := 
+# environment
+VSCODE_CLI = 1
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# environment
+VTE_VERSION = 6800
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell nocomment grouped-target extra-prereqs archives jobserver output-sync check-symlink load
+# makefile (from 'config.mk', line 1)
+CC = $(CROSS_PREFIX)gcc
+# makefile (from 'default.mk', line 1)
+ALL_C = $(shell find . -name "*.c")
+# makefile (from 'default.mk', line 2)
+SOURCES = $(filter-out %_test.c,$(ALL_C))
+# makefile (from 'config.mk', line 9)
+ENABLE_CPPCHECK = false
+# environment
+XDG_MENU_PREFIX = gnome-
+# makefile (from 'default.mk', line 19)
+INCLUDE_PATHS = -I$(LIBETHER_DIR)/src/lib
+# environment
+GDMSESSION = pop
+# environment
+LC_IDENTIFICATION = pt_BR.UTF-8
+# variable set hash-table stats:
+# Load=128/1024=12%, Rehash=0, Collisions=15/183=8%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 64769, inode 11023423): 18 files, no impossibilities.
+
+# 18 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+%.o: %.c
+#  recipe to execute (from 'default.mk', line 27):
+	# CC $(notdir $(filter %.c,$^)) -o $(notdir $@)
+	@$(CC) $(CPPFLAGS) $(CFLAGS) -c $(filter %.c,$^) -o $@
+
+# 1 implicit rules, 0 (0.0%) terminal.
+# Files
+
+# Not a target:
+default.mk:
+#  Implicit rule search has been done.
+ 
+#  Last modified 2022-07-03 01:04:42.880951954
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-07-02 19:24:38.343080323
+#  File has been updated.
+#  Successfully updated.
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'default.mk', line 35):
+	@rm -f $(shell find . -name "*.[oa]") $(shell find . -name "*~") $(shell find . -name "*.gc*") $(shell find src/ -executable -type f)
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+all:
+#  Command line target.
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := all
+# automatic
+# * := 
+# automatic
+# < := 
+# automatic
+# + := 
+# automatic
+# % := 
+# automatic
+# ^ := 
+# automatic
+# ? := 
+# automatic
+# | := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/11=9%
+#  recipe to execute (from 'Makefile', line 7):
+	make -C src
+	#make -C test
+
+# Not a target:
+config.mk:
+#  Implicit rule search has been done.
+#  Last modified 2022-07-03 00:48:47.655724091
+#  File has been updated.
+#  Successfully updated.
+
+clobber: clean
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'default.mk', line 38):
+	@rm -f $(shell find . -name "*.d")
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# files hash-table stats:
+# Load=8/1024=1%, Rehash=0, Collisions=0/24=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 27 / storage = 213 B / avg = 7 B
+# current buf: size = 8162 B / used = 213 B / count = 27 / avg = 7 B
+
+# strcache performance: lookups = 43 / hit rate = 37%
+# hash-table stats:
+# Load=27/8192=0%, Rehash=0, Collisions=0/43=0%
+# Finished Make data base on Mon Jul  4 16:00:08 2022
+
+ 
